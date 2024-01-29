@@ -1,0 +1,22 @@
+@import "src/@core/scss/base/bootstrap-extended/_variables.scss";
+
+.btn-circle {
+  height: 150px;
+  width: 150px;
+  background-color: $primary;
+  border-radius: 100%;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+
+.btn-circle:hover {
+  box-shadow: 0 8px 25px -8px #008c78;
+}
+
+.fade {
+  transition: 0.4s all ease-in-out;
+}

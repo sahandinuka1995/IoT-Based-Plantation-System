@@ -21,8 +21,7 @@ const createUser = async (req, resp) => {
                 })
 
                 const conn = await db()
-                await conn.query(sql);
-
+                await conn.query(sql)
                 resp.status(200).json(STATUS_200(null))
             });
         }

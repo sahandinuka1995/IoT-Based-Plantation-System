@@ -16,10 +16,12 @@ const STATUS_200 = (data) => {
         data
     }
 }
+const USER_ROLES = ['ADMIN', 'USER']
 
 module.exports = {
     BASE_PATH,
     STATUS_200,
     STATUS_500,
-    STATUS_400
+    STATUS_400,
+    USER_ROLES
 }

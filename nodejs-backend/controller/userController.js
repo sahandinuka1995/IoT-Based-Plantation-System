@@ -5,6 +5,7 @@ const db = require("../service/db");
 const {GET_ALL_USERS, ADD_NEW_USER} = require("../const/query");
 const {userCreateValidation} = require("../validation/user");
 const {STATUS_400, STATUS_500, STATUS_200} = require("../const/const");
+const bcrypt = require("bcrypt")
 
 const createUser = async (req, resp) => {
     try {
@@ -12,13 +13,18 @@ const createUser = async (req, resp) => {
         if (validate?.message) {
             resp.status(400).json(STATUS_400(validate.message))
         } else {
-            const conn = await db()
-            const [rows, fields] = await conn.query(ADD_NEW_USER({
-                name: req.body.name,
-                role: req.body.role,
-                password: req.body.password
-            }));
-            resp.status(200).json(STATUS_200(null))
+            bcrypt.hash(req.body.password, 10, async (err, hash) => {
+                const sql = ADD_NEW_USER({
+                    name: req.body.name,
+                    role: req.body.role,
+                    password: hash
+                })
+
+                const conn = await db()
+                await conn.query(sql);
+
+                resp.status(200).json(STATUS_200(null))
+            });
         }
     } catch (err) {
         resp.status(500).json(STATUS_500)

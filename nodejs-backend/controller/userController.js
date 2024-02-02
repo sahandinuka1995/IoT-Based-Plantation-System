@@ -41,15 +41,15 @@ const deleteUser = (req, resp) => {
 const getAllUsers = async (req, resp) => {
     try {
         const conn = await db()
-        const [rows, fields] = await conn.query(GET_ALL_USERS);
+        const [rows, fields] = await conn.query(GET_ALL_USERS)
         if (rows?.length > 0) {
-            resp.status(STATUS_200).json(rows.map(item => {
+            await resp.status(200).json(STATUS_200(rows.map(item => {
                 // loop rows and make password as null for security
                 return {
                     ...item,
                     password: null
                 }
-            }))
+            })))
         }
     } catch (err) {
         resp.status(500).json(STATUS_500)

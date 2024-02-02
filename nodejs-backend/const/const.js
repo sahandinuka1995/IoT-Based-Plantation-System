@@ -1,8 +1,11 @@
 const BASE_PATH = '/api/v1'
+
+// http status
 const STATUS_500 = {
     message: "Something went wrong",
     data: null
 }
+
 const STATUS_400 = (message) => {
     return {
         message,
@@ -16,6 +19,8 @@ const STATUS_200 = (data) => {
         data
     }
 }
+
+// user roles
 const USER_ROLES = ['ADMIN', 'USER']
 
 module.exports = {

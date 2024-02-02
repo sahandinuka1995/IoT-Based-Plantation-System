@@ -27,6 +27,12 @@ const DELETE_USER_BY_ID = (id) => `DELETE
                                    FROM users
                                    WHERE id = ${id}`
 
+const UPDATE_USER_BY_ID = (data) => `UPDATE users
+                                     SET name="${data.name}",
+                                         role="${data.role}",
+                                         password="${data.password}"
+                                     WHERE id = "${data.id}"`
+
 module.exports = {
     CREATE_DATABASE,
     USE_DATABASE,
@@ -35,5 +41,6 @@ module.exports = {
     GET_ALL_USERS,
     ADD_NEW_USER,
     FIND_USER_BY_ID,
-    DELETE_USER_BY_ID
+    DELETE_USER_BY_ID,
+    UPDATE_USER_BY_ID
 }

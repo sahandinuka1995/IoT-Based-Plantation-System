@@ -5,13 +5,14 @@ const CREATE_DATABASE = "CREATE DATABASE IF NOT EXISTS iot_plantation"
 
 const USE_DATABASE = "USE iot_plantation"
 
-const CREATE_USER_TABLE = "CREATE TABLE IF NOT EXISTS users (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(100) NOT NULL, role ENUM('ADMIN', 'USER') NOT NULL, password VARCHAR(255) NOT NULL)"
+const CREATE_USER_TABLE = "CREATE TABLE IF NOT EXISTS users (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(100) NOT NULL, username VARCHAR(100) NOT NULL, role ENUM('ADMIN', 'USER') NOT NULL, password VARCHAR(255) NOT NULL)"
 
-const ADD_ADMIN_USER = `INSERT INTO users (id, name, role, password)
+const ADD_ADMIN_USER = `INSERT INTO users (id, name, role, password, username)
                         SELECT 1,
                                'Sahan Dinuka',
                                'ADMIN',
-                               '$2a$10$wpbOlcZGR9X/qrJ209VmKey6z55oZd6KTynkuHs6csMLTQOKPg5Oi'
+                               '$2a$10$wpbOlcZGR9X/qrJ209VmKey6z55oZd6KTynkuHs6csMLTQOKPg5Oi',
+                               'sahan'
                         FROM dual
                         WHERE NOT EXISTS(SELECT * FROM users)`
 
@@ -33,6 +34,10 @@ const UPDATE_USER_BY_ID = (data) => `UPDATE users
                                          password="${data.password}"
                                      WHERE id = "${data.id}"`
 
+const FIND_USER_BY_USERNAME = (username) => `SELECT *
+                                             FROM users
+                                             WHERE username = "${username}" LIMIT 1`
+
 module.exports = {
     CREATE_DATABASE,
     USE_DATABASE,
@@ -42,5 +47,6 @@ module.exports = {
     ADD_NEW_USER,
     FIND_USER_BY_ID,
     DELETE_USER_BY_ID,
-    UPDATE_USER_BY_ID
+    UPDATE_USER_BY_ID,
+    FIND_USER_BY_USERNAME
 }

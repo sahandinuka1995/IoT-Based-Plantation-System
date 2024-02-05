@@ -1,6 +1,3 @@
-const {userDto} = require("../dto/user");
-const mysql = require("mysql2/promise");
-const config = require("../config/db");
 const db = require("../service/db");
 const {GET_ALL_USERS, ADD_NEW_USER, FIND_USER_BY_ID, DELETE_USER_BY_ID, UPDATE_USER_BY_ID} = require("../const/query");
 const {userCreateValidation} = require("../validation/user");

@@ -34,11 +34,11 @@ const login = async (req, resp) => {
                             }
                         }))
                     } else {
-                        resp.status(400).json(STATUS_400('invalid password'))
+                        resp.status(404).json(STATUS_400('invalid password'))
                     }
                 });
             } else {
-                resp.status(400).json(STATUS_400('user not found'))
+                resp.status(404).json(STATUS_400('user not found'))
             }
         }
     } catch (e) {

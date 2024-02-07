@@ -6,6 +6,7 @@ import logo from '@src/assets/images/logo/logo_transparent.png'
 import {useState} from "react"
 import {loginValidation} from "../validations/auth"
 import {loginError} from "../consts/error"
+import {login} from "../services/authService"
 
 const initialFormData = {
     username: '',
@@ -19,7 +20,7 @@ const Login = () => {
     const [error, setError] = useState({...loginError})
     const [isRemember, setIsRemember] = useState(true)
 
-    const onLogin = () => {
+    const onLogin = async () => {
         const validate = loginValidation(formData)
         setError(validate)
         for (const key in validate) {
@@ -28,7 +29,8 @@ const Login = () => {
             }
         }
 
-        console.log('ffffffff')
+        const res = await login(formData)
+        console.log(res)
     }
 
     return (

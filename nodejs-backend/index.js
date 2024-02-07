@@ -15,7 +15,7 @@ app.use(express.urlencoded({extended: true}))
 const userRoute = require('./route/user')
 const authRoute = require('./route/auth')
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 5000
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`)
 })

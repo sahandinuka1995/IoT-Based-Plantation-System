@@ -35,12 +35,14 @@ import './assets/scss/style.scss'
 // ** Service Worker
 import * as serviceWorker from './serviceWorker'
 import {Toaster} from "react-hot-toast"
+import ApiSpinner from "./@core/components/spinner/Api-spinner"
 
 // ** Lazy load app
 const LazyApp = lazy(() => import('./App'))
 
 ReactDOM.render(
     <Provider store={store}>
+        <ApiSpinner/>
         <Toaster/>
         <Suspense fallback={<Spinner/>}>
             <ThemeContext>

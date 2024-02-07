@@ -1,0 +1,5 @@
+.api-loader-bg {
+    background-color: #fff;
+    z-index: 99999 !important;
+    display: none;
+}

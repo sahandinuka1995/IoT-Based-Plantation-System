@@ -7,6 +7,9 @@ import {useState} from "react"
 import {loginValidation} from "../validations/auth"
 import {loginError} from "../consts/error"
 import {login} from "../services/authService"
+import {COOKIES_TYPES} from "../consts/consts"
+import Cookies from 'js-cookie'
+import rs from '@consts/routes'
 
 const initialFormData = {
     username: '',
@@ -30,7 +33,11 @@ const Login = () => {
         }
 
         const res = await login(formData)
-        console.log(res)
+        if (res?.status === 200) {
+            Cookies.set(COOKIES_TYPES.ACCESS_TOKEN, res?.data?.access_token)
+            Cookies.set(COOKIES_TYPES.USER_DATA, JSON.stringify(res?.data?.user))
+            window.location.href = rs.feeds
+        }
     }
 
     return (

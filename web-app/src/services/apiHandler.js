@@ -2,8 +2,10 @@ import axios from "axios"
 import {SERVER_PATH} from "../configs/serverConfig"
 import qs from "qs"
 import toast from "react-hot-toast"
+import $ from 'jquery'
 
 export const apiHandler = async (apiObject) => {
+    $(".api-loader-bg").css("display", "block")
     let body = {}
     if (apiObject.formUrlEncoded) {
         body = qs.stringify(apiObject.body)
@@ -31,6 +33,7 @@ export const apiHandler = async (apiObject) => {
         })
         .finally(() => {
             // always executed
+            $(".api-loader-bg").css("display", "none")
         })
 
     return result

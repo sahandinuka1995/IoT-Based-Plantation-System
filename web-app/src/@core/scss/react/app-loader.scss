@@ -19,7 +19,7 @@
     width: 100%;
     height: 100%;
     border: 3px solid transparent;
-    border-left: 3px solid rgba(121, 97, 249, 1);
+    border-left: 3px solid rgba(0, 140, 120, 1);
     border-radius: 50%;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
@@ -28,14 +28,16 @@
   .effect-1 {
     animation: rotate 1s ease infinite;
   }
+
   .effect-2 {
     animation: rotateOpacity 1s ease infinite 0.1s;
   }
+
   .effect-3 {
     width: 100%;
     height: 100%;
     border: 3px solid transparent;
-    border-left: 3px solid rgba(121, 97, 249, 1);
+    border-left: 3px solid rgba(0, 140, 120, 1);
     -webkit-animation: rotateOpacity 1s ease infinite 0.2s;
     animation: rotateOpacity 1s ease infinite 0.2s;
     border-radius: 50%;
@@ -47,6 +49,7 @@
     transition: all 0.3s ease;
   }
 }
+
 .fallback-logo {
   position: absolute;
   left: calc(50% - 45px);
@@ -63,6 +66,7 @@
     transform: rotate(1turn);
   }
 }
+
 @keyframes rotateOpacity {
   0% {
     -webkit-transform: rotate(0deg);

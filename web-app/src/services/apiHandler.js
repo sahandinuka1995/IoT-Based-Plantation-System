@@ -9,6 +9,8 @@ export const apiHandler = async (apiObject) => {
     let body = {}
     if (apiObject.formUrlEncoded) {
         body = qs.stringify(apiObject.body)
+    } else {
+        body = apiObject.body
     }
 
     let result = null

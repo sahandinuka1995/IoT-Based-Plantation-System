@@ -67,7 +67,9 @@ const Login = () => {
                                        onChange={e => setFormData({...formData, username: e.target.value})}
                                        invalid={error.username && formData?.username?.trim() === ""}
                                        type='text'
-                                       id='login-username' placeholder='admin' autoFocus/>
+                                       id='login-username' placeholder='admin' autoFocus
+                                       onKeyUp={e => e.keyCode === 13 && onLogin()}
+                                />
                             </FormGroup>
                             <FormGroup>
                                 <div className='d-flex justify-content-between'>
@@ -85,7 +87,9 @@ const Login = () => {
                                         password: e.target.value
                                     })}
                                     invalid={error.password && formData?.password?.trim() === ""}
-                                    className='input-group-merge' id='login-password'/>
+                                    className='input-group-merge' id='login-password'
+                                    onKeyUp={e => e.keyCode === 13 && onLogin()}
+                                />
                             </FormGroup>
                             <FormGroup>
                                 <CustomInput type='checkbox' className='custom-control-Primary' id='remember-me'

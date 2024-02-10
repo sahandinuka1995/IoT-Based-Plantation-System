@@ -15,6 +15,7 @@ const createUser = async (req, resp) => {
                 const sql = ADD_NEW_USER({
                     name: req.body.name,
                     role: req.body.role,
+                    username: req.body.username,
                     password: hash
                 })
 
@@ -43,6 +44,7 @@ const updateUser = async (req, resp) => {
                         id: rows[0].id,
                         name: req.body.name,
                         role: req.body.role,
+                        username: req.body.username,
                         password: req.body.password ? hash : rows[0].password
                     }))
                 })

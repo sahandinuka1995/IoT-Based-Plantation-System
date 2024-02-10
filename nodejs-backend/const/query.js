@@ -18,7 +18,7 @@ const ADD_ADMIN_USER = `INSERT INTO users (id, name, role, password, username)
 
 const GET_ALL_USERS = "SELECT * FROM users"
 
-const ADD_NEW_USER = (data) => `INSERT INTO users (name, role, password) VALUE ("${data.name}", "${data.role}", "${data.password}")`
+const ADD_NEW_USER = (data) => `INSERT INTO users (name, role, password, username) VALUE ("${data.name}", "${data.role}", "${data.password}", "${data.username}")`
 
 const FIND_USER_BY_ID = (id) => `SELECT *
                                  FROM users
@@ -31,7 +31,8 @@ const DELETE_USER_BY_ID = (id) => `DELETE
 const UPDATE_USER_BY_ID = (data) => `UPDATE users
                                      SET name="${data.name}",
                                          role="${data.role}",
-                                         password="${data.password}"
+                                         password="${data.password}",
+                                         username="${data.username}"
                                      WHERE id = "${data.id}"`
 
 const FIND_USER_BY_USERNAME = (username) => `SELECT *

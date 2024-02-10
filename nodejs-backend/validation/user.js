@@ -6,9 +6,17 @@ const userCreateValidation = (data, isValidatePassword) => {
 
     for (const key in data) {
         if (data[key] === "") {
-            if (key === "password" && !isValidatePassword) return error
-            error[key] = true
-            error.message = `${key} should not be empty`
+            if (key === "password") {
+                if (isValidatePassword) {
+                    error[key] = true
+                    error.message = `${key} should not be empty`
+                } else {
+                    error[key] = false
+                }
+            } else {
+                error[key] = true
+                error.message = `${key} should not be empty`
+            }
 
             return error
         } else {

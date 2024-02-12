@@ -7,6 +7,8 @@ const USE_DATABASE = "USE iot_plantation"
 
 const CREATE_USER_TABLE = "CREATE TABLE IF NOT EXISTS users (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(100) NOT NULL, username VARCHAR(100) NOT NULL, role ENUM('ADMIN', 'USER') NOT NULL, password VARCHAR(255) NOT NULL)"
 
+const CREATE_DATA_TABLE = "CREATE TABLE IF NOT EXISTS data (id INT AUTO_INCREMENT PRIMARY KEY, N DECIMAL NOT NULL, P DECIMAL NOT NULL, K DECIMAL NOT NULL, temperature DECIMAL NOT NULL, humidity DECIMAL NOT NULL, ph DECIMAL NOT NULL, rainfall DECIMAL NOT NULL)"
+
 const ADD_ADMIN_USER = `INSERT INTO users (id, name, role, password, username)
                         SELECT 1,
                                'Sahan Dinuka',
@@ -15,6 +17,10 @@ const ADD_ADMIN_USER = `INSERT INTO users (id, name, role, password, username)
                                'sahan'
                         FROM dual
                         WHERE NOT EXISTS(SELECT * FROM users)`
+
+const ADD_DATA = (data) => `INSERT INTO data (N, P, K, temperature, humidity, ph, rainfall)
+                            VALUES ("${data.n}", "${data.p}", "${data.k}", "${data.temperature}", "${data.humidity}",
+                                    "${data.ph}", "${data.rainfall}")`
 
 const GET_ALL_USERS = "SELECT * FROM users"
 
@@ -49,5 +55,7 @@ module.exports = {
     FIND_USER_BY_ID,
     DELETE_USER_BY_ID,
     UPDATE_USER_BY_ID,
-    FIND_USER_BY_USERNAME
+    FIND_USER_BY_USERNAME,
+    CREATE_DATA_TABLE,
+    ADD_DATA
 }

@@ -1,6 +1,6 @@
 const config = require('../config/db')
 const mysql = require('mysql2/promise')
-const {CREATE_DATABASE, CREATE_USER_TABLE, USE_DATABASE, ADD_ADMIN_USER} = require("../const/query")
+const {CREATE_DATABASE, CREATE_USER_TABLE, USE_DATABASE, ADD_ADMIN_USER, CREATE_DATA_TABLE} = require("../const/query")
 
 const db = async () => {
     try {
@@ -10,6 +10,7 @@ const db = async () => {
         await conn.query(USE_DATABASE)
         await conn.query(CREATE_USER_TABLE)
         await conn.query(ADD_ADMIN_USER)
+        await conn.query(CREATE_DATA_TABLE)
 
         return conn
     } catch (e) {

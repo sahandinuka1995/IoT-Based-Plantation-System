@@ -13,6 +13,7 @@ app.use(express.urlencoded({extended: true}))
 
 const userRoute = require('./route/user')
 const authRoute = require('./route/auth')
+const dataRoute = require('./route/data')
 
 const PORT = process.env.PORT || 5000
 app.listen(PORT, () => {
@@ -21,3 +22,4 @@ app.listen(PORT, () => {
 
 app.use(`${BASE_PATH}/user`, userRoute)
 app.use(`${BASE_PATH}/auth`, authRoute)
+app.use(`${BASE_PATH}/data`, dataRoute)

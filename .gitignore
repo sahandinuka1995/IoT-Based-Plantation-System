@@ -37,3 +37,7 @@ dataset.csv
 nodejs-backend/node_modules
 web-app/node_modules
 nodejs-backend/config/keys.js
+
+#python files
+/python-backend/.venv
+python-backend/.venv

@@ -5,7 +5,7 @@ import pandas as pd
 app = Flask(__name__)
 
 try:
-  with open('model.pkl', 'rb') as file:
+  with open('./model.pkl', 'rb') as file:
     loaded_model = pickle.load(file)
 except:
   print("Failed to open model")

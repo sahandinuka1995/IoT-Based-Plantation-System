@@ -1,14 +1,14 @@
 from flask import Flask, jsonify, request
 import pickle
 import pandas as pd
+import requests
 
 app = Flask(__name__)
-
-try:
-  with open('./model.pkl', 'rb') as file:
-    loaded_model = pickle.load(file)
-except:
-  print("Failed to open model")
+def load_modal():
+    model_url = 'https://github.com/sahandinuka1995/IoT-Based-Plantation-System/raw/production/python-backend/model.pkl'
+    response = requests.get(model_url)
+    if response.status_code == 200:
+        return pickle.loads(response.content)
 
 @app.get("/")
 def get():
@@ -16,6 +16,7 @@ def get():
 
 @app.post("/prediction")
 def prediction():
+    loaded_model = load_modal()
     data = request.get_json()
     new_data = {
         'N': [data['N']],
@@ -30,4 +31,3 @@ def prediction():
     new_data_df = pd.DataFrame(new_data)
     predicted_label = loaded_model.predict(new_data_df)
     return predicted_label[0]
-    # return "API called"

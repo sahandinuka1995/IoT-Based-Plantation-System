@@ -25,17 +25,17 @@ const getPrediction = async (req, resp) => {
         }
 
         let res = null
-        axios.request(config)
+        await axios.request(config)
             .then((response) => {
-                res = JSON.stringify(response.data)
+                res = response.data.data
             })
             .catch((error) => {
                 console.log(error.data);
             });
 
-        resp.status(200).json(STATUS_200(null))
+        await resp.status(200).json(STATUS_200(res))
     } catch (e) {
-        resp.status(500).json(STATUS_500)
+        await resp.status(500).json(STATUS_500)
     }
 }
 module.exports = {

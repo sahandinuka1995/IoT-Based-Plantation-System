@@ -3,6 +3,6 @@ const router = express.Router()
 
 const predictionController = require('../controller/predictionController');
 
-router.post('/prediction', predictionController.getPrediction)
+router.get('/prediction', predictionController.getPrediction)
 
 module.exports = router

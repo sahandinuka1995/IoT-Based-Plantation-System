@@ -1,66 +1,127 @@
-#include "ESP8266WiFi.h"
-#include "ThingSpeak.h"
+/*
+  Welcome to JP Learning
+*/
+#include <SoftwareSerial.h>
 
-const char* ssid = "Galaxy S22";          //Wifi SSID
-const char* password = "sahan826076";     //Wifi Password
-const char* host = "api.thingspeak.com";  //host
+// GPIO Pins
+byte TX_PIN = 5, RX_PIN = 4;
+byte DE_RE_PIN = 16, LED_PIN = 2;
 
-unsigned long chanelId = 2412416;  // Enter Write Channel key from ThingSpeak
+SoftwareSerial Soft_Serial(RX_PIN, TX_PIN);
 
-const char* writeAPIkey = "S32HREE9BCOPNARZ";  // Enter Write API key from ThingSpeak
-const char* readAPIkey = "NLO6SZDQ1ATF602Y";   // Enter Read API key from ThingSpeak
+// Variables
+byte no_Byte, incomingByte[9] = { 0 };
 
-WiFiClient client;
-long nitrogen;
-long phosphorus;
-long potassium;
-long temperature;
-long humidity;
-long ph;
-long rainfall;
+// Modbus Request Bytes
+byte type = 2; // (1=Humidity, 2=Temperature, 3=Humidity and Temperature)
 
+// byte sendBuffer[] = { 0x01, 0x03, 0x00, 0x00, 0x00, 0x01, 0x84, 0x0A };  // Valid (Single Read for Humidity)
+// byte sendBuffer[] = { 0x01, 0x04, 0x00, 0x00, 0x00, 0x01, 0x31, 0xCA };  // Invalid (Single Read for Humidity)
+
+byte sendBuffer[] = { 0x01, 0x03, 0x00, 0x00, 0x00, 0x07, 0x04, 0x08 };  // Valid (Single Read for Temperature)
+// byte sendBuffer[] = { 0x01, 0x04, 0x00, 0x01, 0x00, 0x01, 0x60, 0x0A };  // Invalid (Single Read for Temperature)
+
+// byte sendBuffer[] = { 0x01, 0x03, 0x00, 0x00, 0x00, 0x02, 0xC4, 0x0B }; // Valid (Read for Humidity and Temperature)
+// byte sendBuffer[] = { 0x01, 0x04, 0x00, 0x00, 0x00, 0x02, 0x71, 0xCB }; // Invalid (Read for Humidity and Temperature)
+// byte sendBuffer[] = { 0x02, 0x03, 0x00, 0x00, 0x00, 0x02, 0xC4, 0x38 }; // Invalid (Read for Humidity and Temperature)
+
+float humidity, temperature;
 void setup() {
   Serial.begin(115200);
-  WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print("*");
-  }
+  Soft_Serial.begin(4800);
 
-  Serial.println("");
-  Serial.println("WiFi connection Successful");
-  Serial.print("The IP Address of ESP8266 Module is: ");
-  Serial.print(WiFi.localIP());  // Print the IP address
+  pinMode(DE_RE_PIN, OUTPUT);  //DE/RE Controling pin of RS-485
+  pinMode(LED_PIN, OUTPUT);
+  digitalWrite(LED_PIN, HIGH);
 
-  ThingSpeak.begin(client);
-  Serial.println("Thingspeak Connected");
-  Serial.println("");
+  Serial.println("\n\nWelcome to JP Learning\n");
 }
 
 void loop() {
-  nitrogen = random(10, 15);
-  phosphorus = random(10, 15);
-  potassium = random(12, 16);
-  temperature = random(30, 35);
-  humidity = random(26, 30);
-  ph = random(5, 8);
-  rainfall = random(100, 120);
+  read_Modbus();
 
-  ThingSpeak.setField(1, nitrogen);
-  ThingSpeak.setField(2, phosphorus);
-  ThingSpeak.setField(3, potassium);
-  ThingSpeak.setField(4, temperature);
-  ThingSpeak.setField(5, humidity);
-  ThingSpeak.setField(6, ph);
-  ThingSpeak.setField(7, rainfall);
+  if (no_Byte >= 7) {
+    String incomingBytesInString[no_Byte];
+    // Serial.println("\n\nno_Byte = " + String(no_Byte));
+    for (int i = 0; i < no_Byte; i++) {
+      // Serial.print("incomingByte[" + String(i) + "] = ");
+      // Serial.println(String(incomingByte[i]) + " " + String(incomingByte[i], HEX));
 
-  int respons = ThingSpeak.writeFields(chanelId, writeAPIkey);
+      if (String(incomingByte[i]).length() == 1)
+        incomingBytesInString[i] = "0" + String(incomingByte[i], HEX);
+      else
+        incomingBytesInString[i] = String(incomingByte[i], HEX);
+    }
 
-  if (respons == 200) {
-    Serial.println("Data upload sucessful");
-  } else {
-    Serial.println("Data upload unsucessful");
+    if (type == 1) {
+      String dataTemp = incomingBytesInString[3] + incomingBytesInString[4];
+      Serial.println("\ndataTemp = " + dataTemp);
+      int value = hexToDec(dataTemp);
+      Serial.println("value = " + String(value));
+      humidity = float(value) / 10;
+
+      Serial.println("\nHumidity = " + String(humidity, 2) + " %\n\n");
+    } else if (type == 2) {
+      String dataTemp = incomingBytesInString[3] + incomingBytesInString[4];
+      Serial.println("\ndataTemp = " + dataTemp);
+      int value = hexToDec(dataTemp);
+      Serial.println("value = " + String(value));
+      temperature = float(value) / 10;
+
+      Serial.println("\nTemperature = " + String(temperature, 2) + " °C\n\n");
+    } else if (type == 3) {
+      String dataTemp = incomingBytesInString[3] + incomingBytesInString[4];
+      Serial.println("\ndataTemp = " + dataTemp);
+      int value = hexToDec(dataTemp);
+      Serial.println("value = " + String(value));
+      humidity = float(value) / 10;
+
+      dataTemp = incomingBytesInString[5] + incomingBytesInString[6];
+      Serial.println("dataTemp = " + dataTemp);
+      value = hexToDec(dataTemp);
+      Serial.println("value = " + String(value));
+      temperature = float(value) / 10;
+
+      Serial.println("\nHumidity = " + String(humidity, 2) + " %");
+      Serial.println("Temperature = " + String(temperature, 2) + " °C\n\n");
+    }
+
+    no_Byte = 0;
   }
-  Serial.println("======================================");
-  delay(15000);
+  delay(5000);
+}
+
+void read_Modbus() {
+  // Transmition Enable
+  digitalWrite(DE_RE_PIN, HIGH);  //DE/RE=HIGH Transmit Enabled
+
+  Serial.println("\n\nsizeof(sendBuffer): " + String(sizeof(sendBuffer)));
+  for (byte i = 0; i < sizeof(sendBuffer); i++) {
+    Serial.println("Request: " + String(sendBuffer[i], DEC) + " " + String(sendBuffer[i], HEX));
+  }
+  Serial.println();
+  Soft_Serial.write(sendBuffer, sizeof(sendBuffer));
+  // Receiving Enable
+  digitalWrite(DE_RE_PIN, LOW);  //DE/RE=LOW Receive Enabled
+ Serial.println(Soft_Serial.available());
+  while (Soft_Serial.available() > 0) {
+    //    Serial.println(Soft_Serial.read(), HEX);
+    byte temp = Soft_Serial.read();
+    Serial.println("Response: " + String(temp, DEC) + " " + String(temp, HEX));
+    incomingByte[no_Byte] = temp;
+    no_Byte++;
+  }
+}
+
+int hexToDec(String hexString) {
+  int decValue = 0, nextInt;
+  for (int i = 0; i < hexString.length(); i++) {
+    nextInt = int(hexString.charAt(i));
+    if (nextInt >= 48 && nextInt <= 57) nextInt = map(nextInt, 48, 57, 0, 9);
+    if (nextInt >= 65 && nextInt <= 70) nextInt = map(nextInt, 65, 70, 10, 15);
+    if (nextInt >= 97 && nextInt <= 102) nextInt = map(nextInt, 97, 102, 10, 15);
+    nextInt = constrain(nextInt, 0, 15);
+    decValue = (decValue * 16) + nextInt;
+  }
+  return decValue;
 }

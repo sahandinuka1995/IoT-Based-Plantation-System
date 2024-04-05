@@ -2,7 +2,7 @@ const {STATUS_500, STATUS_400, STATUS_200} = require("../const/const")
 const {authValidation} = require("../validation/auth")
 const bcrypt = require("bcrypt")
 const {FIND_USER_BY_USERNAME} = require("../const/query")
-const db = require("../service/db")
+const {db} = require("../service/db")
 const jwt = require('jsonwebtoken')
 const {JWT_SECRET_KEY} = require("../config/keys");
 

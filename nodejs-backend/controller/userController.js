@@ -1,4 +1,4 @@
-const db = require("../service/db");
+const {db} = require("../service/db");
 const {GET_ALL_USERS, ADD_NEW_USER, FIND_USER_BY_ID, DELETE_USER_BY_ID, UPDATE_USER_BY_ID} = require("../const/query");
 const {userCreateValidation} = require("../validation/user");
 const {STATUS_400, STATUS_500, STATUS_200} = require("../const/const");
@@ -20,8 +20,8 @@ const createUser = async (req, resp) => {
                 })
 
                 const conn = await db()
-                await conn.query(sql)
-                resp.status(200).json(STATUS_200(null))
+                const result = await conn.query(sql)
+                resp.status(200).json(STATUS_200(result[0]))
             });
         }
     } catch (err) {

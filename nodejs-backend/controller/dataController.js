@@ -1,5 +1,5 @@
 const {ADD_DATA} = require("../const/query")
-const db = require("../service/db")
+const {db} = require("../service/db")
 const {STATUS_200, STATUS_500} = require("../const/const")
 
 const saveData = async (req, resp) => {

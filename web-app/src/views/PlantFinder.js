@@ -11,18 +11,23 @@ import {useState} from "react"
 import {plansResultSteps} from '@consts/consts'
 import {Search} from "react-feather"
 import '../assets/scss/custom-styles.scss'
-import {AnimateOnChange} from 'react-animation'
 import icnLoader from '@src/assets/images/loader.gif'
+import {getPrediction} from "../services/predictService"
 
 const PlantFinder = () => {
     const [steps, setSteps] = useState(plansResultSteps.FIND)
     const [loader, setLoader] = useState(false)
 
+    const onPredict = async () => {
+        const res = await getPrediction()
+    }
+
     const loaderHandler = () => {
         setLoader(true)
         setTimeout(async () => {
             await setLoader(false)
-            await setSteps(plansResultSteps.RESULT)
+            //await setSteps(plansResultSteps.RESULT)
+            await onPredict()
         }, 3000)
     }
 

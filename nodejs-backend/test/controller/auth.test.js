@@ -1,76 +1,63 @@
-const request = require('supertest');
 const {app, server} = require('../../index');
+const request = require('supertest');
+const jwt = require('jsonwebtoken');
+const {db, closeDB} = require('../../service/db');
+const {JWT_SECRET_KEY} = require('../../config/keys');
 const {BASE_PATH} = require("../../const/const");
-const {closeDB} = require("../../service/db");
 
-describe('User API Tests', () => {
-    let userId = 0
+jest.mock('../../service/db', () => ({
+    db: jest.fn().mockResolvedValue({
+        query: jest.fn().mockResolvedValue([[{
+            id: 1,
+            username: 'testuser',
+            password: '$2a$10$wpbOlcZGR9X/qrJ209VmKey6z55oZd6KTynkuHs6csMLTQOKPg5Oi'
+        }], []])
+    }),
+    closeDB: jest.fn()
+}));
 
-    describe('POST /create', () => {
-        it('should create a new user', async () => {
-            const userData = {
-                name: 'John Doe',
-                role: 'ADMIN',
-                username: 'johndoe',
-                password: 'password123'
-            };
+describe('Auth Controller - Login', () => {
 
+    describe('Login with correct details', () => {
+        it('should return a 200 status and JWT token for valid credentials', async () => {
             const response = await request(app)
-                .post(`${BASE_PATH}/user/create`)
-                .send(userData);
-
-            // assign created user id for other api uses
-            userId = response.body.data.insertId
+                .post(`${BASE_PATH}/auth/login`)
+                .send({username: 'testuser', password: '1234'});
 
             expect(response.statusCode).toBe(200);
-            expect(response.body.message).toBe('Operation Successfully');
+            expect(response.body.data).toHaveProperty('access_token');
+            expect(jwt.verify(response.body.data.access_token, JWT_SECRET_KEY)).toBeTruthy();
         });
-    });
+    })
 
-    describe('PUT /update/:id', () => {
-        it('should update an existing user', async () => {
-            const updatedData = {
-                name: 'Jane Doe',
-                role: 'USER',
-                username: 'janedoe',
-                password: 'newpassword123'
-            };
-
+    describe('Login with invalid password', () => {
+        it('should return a 404 status for invalid password', async () => {
             const response = await request(app)
-                .put(`${BASE_PATH}/user/update/${userId}`)
-                .send(updatedData);
+                .post(`${BASE_PATH}/auth/login`)
+                .send({username: 'testuser', password: 'wrongpassword'});
 
-            expect(response.statusCode).toBe(200);
-            expect(response.body.message).toBe('Operation Successfully');
+            expect(response.statusCode).toBe(404);
+            expect(response.body.message).toBe('invalid password');
         });
-    });
+    })
 
-    describe('GET /get-all', () => {
-        it('should retrieve all users', async () => {
+    describe('Login with invalid username', () => {
+        it('should return a 404 status for invalid username', async () => {
+            require('../../service/db').db.mockImplementation(() => Promise.resolve({
+                query: () => Promise.resolve([[], []])
+            }));
             const response = await request(app)
-                .get(`${BASE_PATH}/user/get-all`);
+                .post(`${BASE_PATH}/auth/login`)
+                .send({username: 'wronguser', password: '1234'});
 
-            expect(response.statusCode).toBe(200);
-            expect(Array.isArray(response.body.data)).toBe(true);
+            expect(response.statusCode).toBe(404);
+            expect(response.body.message).toBe('user not found');
         });
-    });
-
-    describe('DELETE /delete/:id', () => {
-        it('should delete an existing user', async () => {
-            const response = await request(app)
-                .delete(`${BASE_PATH}/user/delete/${userId}`);
-
-            expect(response.statusCode).toBe(200);
-            expect(response.body.message).toBe('Operation Successfully');
-        });
-    });
-
-    afterEach(async () => {
-        // Code to close database connections or clean up resources after each test
-    });
+    })
 
     afterAll(async () => {
         await server.close();
         await closeDB();
     }, 30000);
 });
+

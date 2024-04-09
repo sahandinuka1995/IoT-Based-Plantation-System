@@ -1,127 +1,106 @@
-/*
-  Welcome to JP Learning
-*/
 #include <SoftwareSerial.h>
+#include <ESP8266WiFi.h>
+#include "ThingSpeak.h"
+#include <Adafruit_Sensor.h>
+#include <ESP8266HTTPClient.h>
+#include <WiFiClientSecure.h>
 
-// GPIO Pins
-byte TX_PIN = 5, RX_PIN = 4;
-byte DE_RE_PIN = 16, LED_PIN = 2;
+const char* ssid = "Galaxy";
+const char* password = "sahan1234";
 
-SoftwareSerial Soft_Serial(RX_PIN, TX_PIN);
+SoftwareSerial mySerial(5, 4);  // RX, TX
 
-// Variables
-byte no_Byte, incomingByte[9] = { 0 };
+String server = "https://api.thingspeak.com";
+unsigned long myChannelNumber = 2483610;
+String myWriteAPIKey = "TI4TSDD5MQ4RXNBY";
 
-// Modbus Request Bytes
-byte type = 2; // (1=Humidity, 2=Temperature, 3=Humidity and Temperature)
+int RX_LED = 12;
+int TX_LED = 13;
+long sensorQueryDelay = 1000;
 
-// byte sendBuffer[] = { 0x01, 0x03, 0x00, 0x00, 0x00, 0x01, 0x84, 0x0A };  // Valid (Single Read for Humidity)
-// byte sendBuffer[] = { 0x01, 0x04, 0x00, 0x00, 0x00, 0x01, 0x31, 0xCA };  // Invalid (Single Read for Humidity)
+unsigned long lastTime = 0;
+unsigned long timerDelay = 30000;
 
-byte sendBuffer[] = { 0x01, 0x03, 0x00, 0x00, 0x00, 0x07, 0x04, 0x08 };  // Valid (Single Read for Temperature)
-// byte sendBuffer[] = { 0x01, 0x04, 0x00, 0x01, 0x00, 0x01, 0x60, 0x0A };  // Invalid (Single Read for Temperature)
-
-// byte sendBuffer[] = { 0x01, 0x03, 0x00, 0x00, 0x00, 0x02, 0xC4, 0x0B }; // Valid (Read for Humidity and Temperature)
-// byte sendBuffer[] = { 0x01, 0x04, 0x00, 0x00, 0x00, 0x02, 0x71, 0xCB }; // Invalid (Read for Humidity and Temperature)
-// byte sendBuffer[] = { 0x02, 0x03, 0x00, 0x00, 0x00, 0x02, 0xC4, 0x38 }; // Invalid (Read for Humidity and Temperature)
-
-float humidity, temperature;
 void setup() {
-  Serial.begin(115200);
-  Soft_Serial.begin(4800);
+  pinMode(RX_LED, OUTPUT);
+  pinMode(TX_LED, OUTPUT);
+  Serial.begin(9600);
+  mySerial.begin(4800);
 
-  pinMode(DE_RE_PIN, OUTPUT);  //DE/RE Controling pin of RS-485
-  pinMode(LED_PIN, OUTPUT);
-  digitalWrite(LED_PIN, HIGH);
-
-  Serial.println("\n\nWelcome to JP Learning\n");
+  connectToWifi();
 }
 
 void loop() {
-  read_Modbus();
+  if (WiFi.status() == WL_CONNECTED) {
+    byte queryData[] = { 0x01, 0x03, 0x00, 0x00, 0x00, 0x07, 0x04, 0x08 };
+    byte receivedData[19];
 
-  if (no_Byte >= 7) {
-    String incomingBytesInString[no_Byte];
-    // Serial.println("\n\nno_Byte = " + String(no_Byte));
-    for (int i = 0; i < no_Byte; i++) {
-      // Serial.print("incomingByte[" + String(i) + "] = ");
-      // Serial.println(String(incomingByte[i]) + " " + String(incomingByte[i], HEX));
+    digitalWrite(TX_LED, HIGH);
+    mySerial.write(queryData, sizeof(queryData));  // Send the query data to the NPK sensor
+    delay(sensorQueryDelay);
+    digitalWrite(TX_LED, LOW);
 
-      if (String(incomingByte[i]).length() == 1)
-        incomingBytesInString[i] = "0" + String(incomingByte[i], HEX);
-      else
-        incomingBytesInString[i] = String(incomingByte[i], HEX);
+    if (mySerial.available() >= sizeof(receivedData)) {
+      digitalWrite(RX_LED, HIGH);
+      mySerial.readBytes(receivedData, sizeof(receivedData));  // Read the received data into the receivedData array
+
+      // Parse and print the received data in decimal format
+      unsigned int nitrogen = (receivedData[11] << 8) | receivedData[12];
+      unsigned int phosphorus = (receivedData[13] << 8) | receivedData[14];
+      unsigned int potassium = (receivedData[15] << 8) | receivedData[16];
+      unsigned int soilTemperature = (receivedData[5] << 8) | receivedData[6];
+      unsigned int soilHumidity = (receivedData[3] << 8) | receivedData[4];
+      unsigned int soilPH = (receivedData[9] << 8) | receivedData[10];
+
+      float nitrogenResult = (float)soilHumidity / 10.0;
+      float temperatureResult = (float)soilTemperature / 10.0;
+      float humidityResult = (float)soilHumidity / 10.0;
+      float phResult = (float)soilPH / 10.0;
+
+      updateThingSpeak(String(nitrogenResult), String(phosphorus), String(potassium), String(temperatureResult), String(humidityResult), String(phResult));
+
+      delay(sensorQueryDelay);
+      digitalWrite(RX_LED, LOW);
     }
-
-    if (type == 1) {
-      String dataTemp = incomingBytesInString[3] + incomingBytesInString[4];
-      Serial.println("\ndataTemp = " + dataTemp);
-      int value = hexToDec(dataTemp);
-      Serial.println("value = " + String(value));
-      humidity = float(value) / 10;
-
-      Serial.println("\nHumidity = " + String(humidity, 2) + " %\n\n");
-    } else if (type == 2) {
-      String dataTemp = incomingBytesInString[3] + incomingBytesInString[4];
-      Serial.println("\ndataTemp = " + dataTemp);
-      int value = hexToDec(dataTemp);
-      Serial.println("value = " + String(value));
-      temperature = float(value) / 10;
-
-      Serial.println("\nTemperature = " + String(temperature, 2) + " °C\n\n");
-    } else if (type == 3) {
-      String dataTemp = incomingBytesInString[3] + incomingBytesInString[4];
-      Serial.println("\ndataTemp = " + dataTemp);
-      int value = hexToDec(dataTemp);
-      Serial.println("value = " + String(value));
-      humidity = float(value) / 10;
-
-      dataTemp = incomingBytesInString[5] + incomingBytesInString[6];
-      Serial.println("dataTemp = " + dataTemp);
-      value = hexToDec(dataTemp);
-      Serial.println("value = " + String(value));
-      temperature = float(value) / 10;
-
-      Serial.println("\nHumidity = " + String(humidity, 2) + " %");
-      Serial.println("Temperature = " + String(temperature, 2) + " °C\n\n");
-    }
-
-    no_Byte = 0;
-  }
-  delay(5000);
-}
-
-void read_Modbus() {
-  // Transmition Enable
-  digitalWrite(DE_RE_PIN, HIGH);  //DE/RE=HIGH Transmit Enabled
-
-  Serial.println("\n\nsizeof(sendBuffer): " + String(sizeof(sendBuffer)));
-  for (byte i = 0; i < sizeof(sendBuffer); i++) {
-    Serial.println("Request: " + String(sendBuffer[i], DEC) + " " + String(sendBuffer[i], HEX));
-  }
-  Serial.println();
-  Soft_Serial.write(sendBuffer, sizeof(sendBuffer));
-  // Receiving Enable
-  digitalWrite(DE_RE_PIN, LOW);  //DE/RE=LOW Receive Enabled
- Serial.println(Soft_Serial.available());
-  while (Soft_Serial.available() > 0) {
-    //    Serial.println(Soft_Serial.read(), HEX);
-    byte temp = Soft_Serial.read();
-    Serial.println("Response: " + String(temp, DEC) + " " + String(temp, HEX));
-    incomingByte[no_Byte] = temp;
-    no_Byte++;
+  } else {
+    connectToWifi();
   }
 }
 
-int hexToDec(String hexString) {
-  int decValue = 0, nextInt;
-  for (int i = 0; i < hexString.length(); i++) {
-    nextInt = int(hexString.charAt(i));
-    if (nextInt >= 48 && nextInt <= 57) nextInt = map(nextInt, 48, 57, 0, 9);
-    if (nextInt >= 65 && nextInt <= 70) nextInt = map(nextInt, 65, 70, 10, 15);
-    if (nextInt >= 97 && nextInt <= 102) nextInt = map(nextInt, 97, 102, 10, 15);
-    nextInt = constrain(nextInt, 0, 15);
-    decValue = (decValue * 16) + nextInt;
+void connectToWifi() {
+  Serial.print("Connecting to WiFi");
+  WiFi.begin(ssid, password);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+    digitalWrite(TX_LED, !digitalRead(TX_LED));
+    digitalWrite(RX_LED, !digitalRead(RX_LED));
   }
-  return decValue;
+
+  digitalWrite(TX_LED, LOW);
+  digitalWrite(RX_LED, LOW);
+
+  Serial.println("Connected to WiFi");
+  Serial.print("IP Address: ");
+  Serial.println(WiFi.localIP());
+}
+
+void updateThingSpeak(String nitrogenResult, String phosphorus, String potassium, String temperatureResult, String humidityResult, String phResult) {
+  WiFiClientSecure client;
+  HTTPClient http;
+
+  client.setInsecure();
+  http.begin(client, server + "/update?api_key=" + myWriteAPIKey + "&field1=" + nitrogenResult + "&field2=" + phosphorus + "&field3=" + potassium + "&field4=" + temperatureResult + "&field5=" + humidityResult + "&field6=" + phosphorus);
+
+  int httpCode = http.GET();  //Make the request
+
+  if (httpCode == 200) {  //Check for the returning code
+    Serial.println("Data updated successfully");
+    Serial.println("N:" + nitrogenResult + " | " + "P:" + phosphorus + " | " + "K:" + potassium + " | " + "Temperature:" + temperatureResult + " | " + "Humidity:" + humidityResult + " | " + "Ph:" + phosphorus);
+  } else {
+    Serial.println("Error on HTTP request");
+  }
+
+  http.end();  //Free the resources
 }

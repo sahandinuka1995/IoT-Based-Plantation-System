@@ -91,3 +91,11 @@ export const findObject = (array, value) => {
         return obj.value === value
     })
 }
+
+export const roundValues = (value) => {
+    let result = value
+    if (value > 1000) result = value / 1000
+    if (value > 100) result = value / 100
+
+    return Number.parseFloat(result).toFixed(2)
+}

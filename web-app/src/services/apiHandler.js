@@ -5,7 +5,7 @@ import toast from "react-hot-toast"
 import $ from 'jquery'
 
 export const apiHandler = async (apiObject) => {
-    $(".api-loader-bg").css("display", "block")
+    if (apiObject.loader !== false) $(".api-loader-bg").css("display", "block")
     let body = {}
     if (apiObject.formUrlEncoded) {
         body = qs.stringify(apiObject.body)
@@ -15,11 +15,13 @@ export const apiHandler = async (apiObject) => {
 
     let result = null
 
-    await axios[apiObject.method](`${SERVER_PATH.SERVER_URL}${SERVER_PATH.VERSION}/${apiObject.endpoint}`, body)
+    await axios[apiObject.method](apiObject.url ?? `${SERVER_PATH.SERVER_URL}${SERVER_PATH.VERSION}/${apiObject.endpoint}`, body)
         .then(response => {
             // handle success
             result = {
-                status: response.status, data: response.data.data, message: response.data.message
+                status: response.status,
+                data: apiObject.url ? response.data : response.data.data,
+                message: response.data.message
             }
         })
         .catch(error => {
@@ -35,7 +37,7 @@ export const apiHandler = async (apiObject) => {
         })
         .finally(() => {
             // always executed
-            $(".api-loader-bg").css("display", "none")
+            if (apiObject.loader !== false) $(".api-loader-bg").css("display", "none")
         })
 
     return result

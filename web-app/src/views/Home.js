@@ -71,18 +71,26 @@ const Home = () => {
     }, [counter])
 
     const chartOptions = {
+        stroke: {
+            show: true,
+            curve: 'smooth',
+            lineCap: 'butt',
+            colors: undefined,
+            width: 3,
+            dashArray: 0
+        },
         chart: {
             height: 350,
             type: "line",
             stacked: false,
             toolbar: {
-                show: false
+                show: true
             }
         },
         dataLabels: {
-            enabled: true
+            enabled: false
         },
-        colors: ["#0E9373", "#1C60D5", "#EA8D00"],
+        colors: ["#0E9373", "#1C60D5", "#EA8D00", "#F10B2F"],
         plotOptions: {
             bar: {
                 columnWidth: "20%"
@@ -117,6 +125,10 @@ const Home = () => {
         {
             name: 'Potassium',
             data: sensorData.k
+        },
+        {
+            name: 'Humidity',
+            data: sensorData.humidity
         }
     ]
 

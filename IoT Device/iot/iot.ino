@@ -16,10 +16,7 @@ String myWriteAPIKey = "TI4TSDD5MQ4RXNBY";
 
 int RX_LED = 12;
 int TX_LED = 13;
-long sensorQueryDelay = 1000;
-
-unsigned long lastTime = 0;
-unsigned long timerDelay = 30000;
+long sensorQueryDelay = 100;
 
 void setup() {
   pinMode(RX_LED, OUTPUT);

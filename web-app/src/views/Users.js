@@ -49,6 +49,7 @@ const Users = () => {
         },
         {
             name: 'Actions',
+            minWidth: '150px',
             selector: row => <div>
                 <Button size={'sm'} color={'warning'}
                         onClick={() => {
@@ -79,7 +80,7 @@ const Users = () => {
                         <h4 className={'mb-0'}>Users</h4>
                     </Col>
 
-                    <Col md={6} sm={6} xs={6} align={'right'}>
+                    <Col md={6} sm={6} xs={6} align={'right'} style={{paddingRight: 0}}>
                         <Button color={'primary'} onClick={() => setModal(true)}>Add New</Button>
                     </Col>
                 </Row>

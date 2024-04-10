@@ -1,6 +1,8 @@
 // ** Checks if an object is empty (returns boolean)
 import Cookies from "js-cookie"
 import {COOKIES_TYPES} from "../consts/consts"
+import {getSensorData} from "../services/sensorService"
+import moment from "moment/moment"
 
 export const isObjEmpty = obj => Object.keys(obj).length === 0
 
@@ -98,4 +100,34 @@ export const roundValues = (value) => {
     if (value > 100) result = value / 100
 
     return Number.parseFloat(result).toFixed(2)
+}
+
+export const getSensorDataCommon = async () => {
+    let sensorData = null
+
+    const res = await getSensorData()
+    if (res?.data) {
+        const n = []
+        const p = []
+        const k = []
+        const temperature = []
+        const humidity = []
+        const ph = []
+        const dates = []
+
+        res.data.feeds.map((item, i) => {
+            n.push(roundValues(item.field1))
+            p.push(roundValues(item.field2))
+            k.push(roundValues(item.field3))
+            if (i === (res.data.feeds.length - 1)) temperature.push(roundValues(item.field4))
+            humidity.push(roundValues(item.field5))
+            if (i === (res.data.feeds.length - 1)) ph.push(roundValues(item.field6))
+
+            dates.push(item?.created_at ? moment(item.created_at).format('HH:mm:ss') : '')
+        })
+
+        sensorData = {n, p, k, temperature, humidity, ph, dates}
+    }
+
+    return sensorData
 }

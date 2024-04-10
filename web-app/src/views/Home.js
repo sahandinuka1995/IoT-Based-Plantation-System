@@ -1,6 +1,5 @@
 import {Card, CardHeader, CardBody, CardTitle, CardText, CardLink, Row, Col, Label} from 'reactstrap'
 import Chart from "react-apexcharts"
-import {getSensorData} from "../services/sensorService"
 import {useEffect, useState} from "react"
 import RealtimeStats from "../@core/components/realtimeStats"
 import icnNitrogen from '@src/assets/images/icons/icons8-nitrogen-64.png'
@@ -10,9 +9,7 @@ import icnTemperature from '@src/assets/images/icons/icons8-temperature-50.png'
 import icnHumidity from '@src/assets/images/icons/icons8-humidity-48.png'
 import icnPh from '@src/assets/images/icons/icons8-ph.png'
 import icnRainfall from '@src/assets/images/icons/icons8-rainfall-48.png'
-import {lineChartOptions} from "../@core/components/widgets/stats/ChartOptions"
-import moment from "moment"
-import {roundValues} from "../utility/Utils"
+import {getSensorDataCommon} from "../utility/Utils"
 
 const initialData = {
     n: [],
@@ -22,35 +19,17 @@ const initialData = {
     humidity: [],
     ph: []
 }
+
 const Home = () => {
     const [sensorData, setSensorData] = useState(initialData)
     const [dateList, setDateList] = useState([])
     const [counter, setCounter] = useState(5)
 
     const loadData = async () => {
-        const res = await getSensorData()
-        if (res?.data) {
-            const n = []
-            const p = []
-            const k = []
-            const temperature = []
-            const humidity = []
-            const ph = []
-            const dates = []
-
-            res.data.feeds.map((item, i) => {
-                n.push(roundValues(item.field1))
-                p.push(roundValues(item.field2))
-                k.push(roundValues(item.field3))
-                if (i === (res.data.feeds.length - 1)) temperature.push(roundValues(item.field4))
-                humidity.push(roundValues(item.field5))
-                if (i === (res.data.feeds.length - 1)) ph.push(roundValues(item.field6))
-
-                dates.push(item?.created_at ? moment(item.created_at).format('HH:mm:ss') : '')
-            })
-
-            setSensorData({...sensorData, n, p, k, temperature, humidity, ph})
-            setDateList(dates)
+        const res = await getSensorDataCommon()
+        if (res) {
+            setSensorData({...sensorData, ...res})
+            setDateList(res.dates)
         }
     }
 

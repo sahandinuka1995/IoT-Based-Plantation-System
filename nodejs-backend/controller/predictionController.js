@@ -2,12 +2,14 @@ const {STATUS_200, STATUS_500} = require("../const/const")
 const axios = require('axios')
 const {thingspeak} = require("../config/thingspeak")
 const {tomorrow} = require("../config/rainfall")
+const predictionList = require("../const/predictions")
 
 const getPrediction = async (req, resp) => {
     try {
         let sensorData = null
-        let rainfall = null
-        await axios.get(`${thingspeak.url}/2483610/feeds.json`)
+        let rainfall = 0
+
+        await axios.get(`${thingspeak.url}/${thingspeak.channelId}/feeds.json?results=1`)
             .then((response) => {
                 sensorData = response?.data?.feeds[0]
             })
@@ -15,23 +17,13 @@ const getPrediction = async (req, resp) => {
                 console.log('error', error)
             });
 
-        await axios.get(tomorrow.url)
-            .then((response) => {
-                rainfall = response?.data?.data?.timelines[0]?.intervals[0]?.values?.precipitationIntensity
-            })
-            .catch((error) => {
-                console.log('error', error)
-            });
-
-        // const request_data = {
-        //     N: req.body.N,
-        //     P: req.body.P,
-        //     K: req.body.K,
-        //     temperature: req.body.temperature,
-        //     humidity: req.body.humidity,
-        //     ph: req.body.ph,
-        //     rainfall: req.body.rainfall
-        // }
+        // await axios.get(tomorrow.url)
+        //     .then((response) => {
+        //         rainfall = response?.data?.data?.timelines[0]?.intervals[0]?.values?.precipitationIntensity
+        //     })
+        //     .catch((error) => {
+        //         console.log('error', error)
+        //     });
 
         const request_data = {
             N: sensorData.field1,
@@ -55,7 +47,7 @@ const getPrediction = async (req, resp) => {
         let res = null
         await axios.request(config)
             .then((response) => {
-                res = response.data.data
+                res = predictionList[response.data.data]
             })
             .catch((error) => {
                 console.log('prediction error :', error.data);

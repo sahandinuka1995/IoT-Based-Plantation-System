@@ -7,16 +7,28 @@ import icnHumidity from '@src/assets/images/icons/icons8-humidity-48.png'
 import icnPh from '@src/assets/images/icons/icons8-ph.png'
 import icnRainfall from '@src/assets/images/icons/icons8-rainfall-48.png'
 import icnMaize from '@src/assets/images/icons/plants/icons8-maize-96.png'
-import {useState} from "react"
+import {useEffect, useState} from "react"
 import {plansResultSteps} from '@consts/consts'
 import {Search} from "react-feather"
 import '../assets/scss/custom-styles.scss'
 import icnLoader from '@src/assets/images/loader.gif'
 import {getPrediction} from "../services/predictService"
+import {getSensorDataCommon} from "../utility/Utils"
+
+// const initialData = {
+//     n: [],
+//     p: [],
+//     k: [],
+//     temperature: [],
+//     humidity: [],
+//     ph: []
+// }
 
 const PlantFinder = () => {
     const [steps, setSteps] = useState(plansResultSteps.FIND)
     const [loader, setLoader] = useState(false)
+    // const [sensorData, setSensorData] = useState(initialData)
+    // const [counter, setCounter] = useState(1)
 
     const onPredict = async () => {
         const res = await getPrediction()
@@ -31,6 +43,29 @@ const PlantFinder = () => {
         }, 3000)
     }
 
+    // const loadSensorData = async () => {
+    //     const res = await getSensorDataCommon()
+    //     if (res) {
+    //         setSensorData({...sensorData, ...res})
+    //     }
+    // }
+    //
+    // useEffect(() => {
+    //     loadSensorData()
+    // }, [])
+    //
+    // useEffect(async () => {
+    //     if (counter > 0) {
+    //         const timer = setTimeout(() => setCounter(counter - 1), 1000)
+    //         return () => clearTimeout(timer)
+    //     } else {
+    //         await loadSensorData()
+    //         setTimeout(() => {
+    //             setCounter(1)
+    //         }, 2000)
+    //     }
+    // }, [counter])
+
     return (
         <Card>
             <CardHeader className={'border-bottom'}>
@@ -40,57 +75,54 @@ const PlantFinder = () => {
             </CardHeader>
             <CardBody>
                 <Row className={'mt-2'}>
-                    <Col md={6}>
-                        <CardText>
-                            <h4>Environment Information</h4>
-                        </CardText>
-                        <CardText>
-                            <div className={'border p-2'}>
-                                <FormGroup className={'d-flex align-items-center'}>
-                                    <img src={icnNitrogen} width={30}/>
-                                    <h4 className={'mr-1 mb-0 ml-1'}>Nitrogen (N): </h4>
-                                    <h4 className={'mb-0'}>34%</h4>
-                                </FormGroup>
+                    {/*<Col md={6}>*/}
+                    {/*    <CardText>*/}
+                    {/*        <div className={'border p-2'}>*/}
+                    {/*            <FormGroup className={'d-flex align-items-center'}>*/}
+                    {/*                <img src={icnNitrogen} width={30}/>*/}
+                    {/*                <h4 className={'mr-1 mb-0 ml-1'}>Nitrogen (N): </h4>*/}
+                    {/*                <h4 className={'mb-0'}>{sensorData?.n[9] ?? 0}</h4>*/}
+                    {/*            </FormGroup>*/}
 
-                                <FormGroup className={'d-flex align-items-center'}>
-                                    <img src={icnPhosphorus} width={30}/>
-                                    <h4 className={'mr-1 mb-0 ml-1'}>Phosphorus (P): </h4>
-                                    <h4 className={'mb-0'}>34%</h4>
-                                </FormGroup>
+                    {/*            <FormGroup className={'d-flex align-items-center'}>*/}
+                    {/*                <img src={icnPhosphorus} width={30}/>*/}
+                    {/*                <h4 className={'mr-1 mb-0 ml-1'}>Phosphorus (P): </h4>*/}
+                    {/*                <h4 className={'mb-0'}>{sensorData?.p[9] ?? 0}</h4>*/}
+                    {/*            </FormGroup>*/}
 
-                                <FormGroup className={'d-flex align-items-center'}>
-                                    <img src={icnPotassium} width={30}/>
-                                    <h4 className={'mr-1 mb-0 ml-1'}>Potassium (K): </h4>
-                                    <h4 className={'mb-0'}>34%</h4>
-                                </FormGroup>
+                    {/*            <FormGroup className={'d-flex align-items-center'}>*/}
+                    {/*                <img src={icnPotassium} width={30}/>*/}
+                    {/*                <h4 className={'mr-1 mb-0 ml-1'}>Potassium (K): </h4>*/}
+                    {/*                <h4 className={'mb-0'}>{sensorData?.k[9] ?? 0}</h4>*/}
+                    {/*            </FormGroup>*/}
 
-                                <FormGroup className={'d-flex align-items-center'}>
-                                    <img src={icnTemperature} width={30}/>
-                                    <h4 className={'mr-1 mb-0 ml-1'}>Temperature: </h4>
-                                    <h4 className={'mb-0'}>34%</h4>
-                                </FormGroup>
+                    {/*            <FormGroup className={'d-flex align-items-center'}>*/}
+                    {/*                <img src={icnTemperature} width={30}/>*/}
+                    {/*                <h4 className={'mr-1 mb-0 ml-1'}>Temperature: </h4>*/}
+                    {/*                <h4 className={'mb-0'}>{sensorData?.temperature[9] ?? 0}</h4>*/}
+                    {/*            </FormGroup>*/}
 
-                                <FormGroup className={'d-flex align-items-center'}>
-                                    <img src={icnHumidity} width={30}/>
-                                    <h4 className={'mr-1 mb-0 ml-1'}>Humidity: </h4>
-                                    <h4 className={'mb-0'}>34%</h4>
-                                </FormGroup>
+                    {/*            <FormGroup className={'d-flex align-items-center'}>*/}
+                    {/*                <img src={icnHumidity} width={30}/>*/}
+                    {/*                <h4 className={'mr-1 mb-0 ml-1'}>Humidity: </h4>*/}
+                    {/*                <h4 className={'mb-0'}>{sensorData?.humidity[9] ?? 0}</h4>*/}
+                    {/*            </FormGroup>*/}
 
-                                <FormGroup className={'d-flex align-items-center'}>
-                                    <img src={icnPh} width={30}/>
-                                    <h4 className={'mr-1 mb-0 ml-1'}>pH: </h4>
-                                    <h4 className={'mb-0'}>34%</h4>
-                                </FormGroup>
+                    {/*            <FormGroup className={'d-flex align-items-center'}>*/}
+                    {/*                <img src={icnPh} width={30}/>*/}
+                    {/*                <h4 className={'mr-1 mb-0 ml-1'}>pH: </h4>*/}
+                    {/*                <h4 className={'mb-0'}>{sensorData?.ph[9] ?? 0}</h4>*/}
+                    {/*            </FormGroup>*/}
 
-                                <FormGroup className={'d-flex align-items-center'}>
-                                    <img src={icnRainfall} width={30}/>
-                                    <h4 className={'mr-1 mb-0 ml-1'}>Rainfall: </h4>
-                                    <h4 className={'mb-0'}>34%</h4>
-                                </FormGroup>
-                            </div>
-                        </CardText>
-                    </Col>
-                    <Col md={6}
+                    {/*            <FormGroup className={'d-flex align-items-center'}>*/}
+                    {/*                <img src={icnRainfall} width={30}/>*/}
+                    {/*                <h4 className={'mr-1 mb-0 ml-1'}>Rainfall: </h4>*/}
+                    {/*                <h4 className={'mb-0'}>34%</h4>*/}
+                    {/*            </FormGroup>*/}
+                    {/*        </div>*/}
+                    {/*    </CardText>*/}
+                    {/*</Col>*/}
+                    <Col md={12}
                          style={steps === plansResultSteps.FIND ? {
                              display: 'flex',
                              justifyContent: 'center',

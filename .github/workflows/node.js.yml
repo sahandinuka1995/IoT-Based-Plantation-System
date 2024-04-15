@@ -28,10 +28,6 @@ jobs:
       working-directory: ./nodejs-backend # Correct path to your Node.js project
       run: npm install
 
-    - name: Build with NodeJS
-      working-directory: ./nodejs-backend
-      run: npm run build
-
     - name: Test with Jest
       working-directory: ./nodejs-backend
       run: npm test

@@ -26,7 +26,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - name: Build with Maven
+    - name: Build with NodeJS
       working-directory: "nodejs-backend"
-    - run: npm ci
-    - run: npm test
+      run: npm ci
+    - name: Test with Jest
+      run: npm test

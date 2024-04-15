@@ -1,5 +1,5 @@
-import {Card, CardHeader, CardBody, CardTitle, CardText, CardLink, Row, Col, FormGroup, Label, Button} from 'reactstrap'
-import {useEffect, useState} from "react"
+import {Card, CardHeader, CardBody, CardTitle, CardText, Row, Col, Button} from 'reactstrap'
+import {useState} from "react"
 import {plansResultSteps} from '@consts/consts'
 import {Search} from "react-feather"
 import '../assets/scss/custom-styles.scss'

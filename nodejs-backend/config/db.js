@@ -1,7 +1,7 @@
 const config = {
-    host: "localhost",
+    host: "18.207.171.3",
     user: "root",
-    password: "root",
+    password: "$apiit@123",
     waitForConnections: true,
     connectionLimit: 10,
     maxIdle: 10, // max idle connections, the default value is the same as `connectionLimit`

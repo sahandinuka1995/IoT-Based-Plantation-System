@@ -1,16 +1,37 @@
 const config = require('../config/db')
 const mysql = require('mysql2/promise')
-const {CREATE_DATABASE, CREATE_USER_TABLE, USE_DATABASE, ADD_ADMIN_USER} = require("../const/query")
+const {CREATE_DATABASE, CREATE_USER_TABLE, USE_DATABASE, ADD_ADMIN_USER, CREATE_DATA_TABLE} = require("../const/query")
 
+let conn;
 const db = async () => {
-    const conn = await mysql.createConnection(config)
+    if (conn) return conn;
 
-    await conn.query(CREATE_DATABASE)
-    await conn.query(USE_DATABASE)
-    await conn.query(CREATE_USER_TABLE)
-    await conn.query(ADD_ADMIN_USER)
+    try {
+        conn = await mysql.createConnection(config)
 
-    return conn
+        await conn.query(CREATE_DATABASE)
+        await conn.query(USE_DATABASE)
+        await conn.query(CREATE_USER_TABLE)
+        await conn.query(ADD_ADMIN_USER)
+        await conn.query(CREATE_DATA_TABLE)
+
+        return conn
+    } catch (e) {
+        console.error('DB connection error:', error);
+        throw error;
+    }
 }
 
-module.exports = db
+const closeDB = async () => {
+    if (!conn) return;
+
+    try {
+        await conn.end();
+        console.log('DB connection closed');
+    } catch (error) {
+        console.error('Error closing the DB connection:', error);
+        throw error;
+    }
+};
+
+module.exports = {db, closeDB}

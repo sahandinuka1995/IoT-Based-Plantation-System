@@ -1,14 +1,14 @@
 // ** React Imports
-import { Suspense, lazy } from 'react'
+import {Suspense, lazy} from 'react'
 import ReactDOM from 'react-dom'
 
 // ** Redux Imports
-import { Provider } from 'react-redux'
-import { store } from './redux/storeConfig/store'
+import {Provider} from 'react-redux'
+import {store} from './redux/storeConfig/store'
 
 // ** Toast & ThemeColors Context
-import { ToastContainer } from 'react-toastify'
-import { ThemeContext } from './utility/context/ThemeColors'
+import {ToastContainer} from 'react-toastify'
+import {ThemeContext} from './utility/context/ThemeColors'
 
 // ** Spinner (Splash Screen)
 import Spinner from './@core/components/spinner/Fallback-spinner'
@@ -31,23 +31,28 @@ import '@styles/react/libs/toastify/toastify.scss'
 import './@core/assets/fonts/feather/iconfont.css'
 import './@core/scss/core.scss'
 import './assets/scss/style.scss'
+import './@core/scss/react/libs/tables/react-dataTable-component.scss'
 
 // ** Service Worker
 import * as serviceWorker from './serviceWorker'
+import {Toaster} from "react-hot-toast"
+import ApiSpinner from "./@core/components/spinner/Api-spinner"
 
 // ** Lazy load app
 const LazyApp = lazy(() => import('./App'))
 
 ReactDOM.render(
-  <Provider store={store}>
-    <Suspense fallback={<Spinner />}>
-      <ThemeContext>
-        <LazyApp />
-        <ToastContainer newestOnTop />
-      </ThemeContext>
-    </Suspense>
-  </Provider>,
-  document.getElementById('root')
+    <Provider store={store}>
+        <ApiSpinner/>
+        <Toaster/>
+        <Suspense fallback={<Spinner/>}>
+            <ThemeContext>
+                <LazyApp/>
+                <ToastContainer newestOnTop/>
+            </ThemeContext>
+        </Suspense>
+    </Provider>,
+    document.getElementById('root')
 )
 
 // If you want your app to work offline and load faster, you can change

@@ -4,6 +4,12 @@ const createUserError = {
     password: false
 }
 
+const authError = {
+    username: false,
+    password: false
+}
+
 module.exports = {
-    createUserError
+    createUserError,
+    authError
 }

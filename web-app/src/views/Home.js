@@ -1,68 +1,251 @@
-import {Card, CardHeader, CardBody, CardTitle, CardText, CardLink, Row, Col} from 'reactstrap'
+import {Card, CardHeader, CardBody, CardTitle, CardText, CardLink, Row, Col, Label} from 'reactstrap'
+import Chart from "react-apexcharts"
+import {useEffect, useState} from "react"
+import RealtimeStats from "../@core/components/realtimeStats"
+import icnNitrogen from '@src/assets/images/icons/icons8-nitrogen-64.png'
+import icnPhosphorus from '@src/assets/images/icons/icons8-phosphorus-64.png'
+import icnPotassium from '@src/assets/images/icons/icons8-potassium-64.png'
+import icnTemperature from '@src/assets/images/icons/icons8-temperature-50.png'
+import icnHumidity from '@src/assets/images/icons/icons8-humidity-48.png'
+import icnPh from '@src/assets/images/icons/icons8-ph.png'
+import icnRainfall from '@src/assets/images/icons/icons8-rainfall-48.png'
+import {getSensorDataCommon} from "../utility/Utils"
+
+const initialData = {
+    n: [],
+    p: [],
+    k: [],
+    temperature: [],
+    humidity: [],
+    ph: []
+}
 
 const Home = () => {
-    return (
-        <div>
-            <Card>
-                <CardHeader className={'border-bottom mb-2'}>
-                    <CardTitle>Realtime Feeds</CardTitle>
-                </CardHeader>
-                <CardBody>
-                    <CardText>
-                        <Row>
-                            <Col md={6}>
-                                <iframe
-                                    width="100%" height="260"
-                                    style={{border: "1px solid #cccccc"}}
-                                    src="https://thingspeak.com/channels/2412416/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
-                            </Col>
+    const [sensorData, setSensorData] = useState(initialData)
+    const [dateList, setDateList] = useState([])
+    const [counter, setCounter] = useState(5)
 
-                            <Col md={6}>
-                                <iframe
-                                    width="100%" height="260"
-                                    style={{border: "1px solid #cccccc"}}
-                                    src="https://thingspeak.com/channels/2412416/charts/2?bgcolor=%23ffffff&color=%23d62020&results=60&title=Phosphorus+%28P%29"></iframe>
-                            </Col>
+    const loadData = async () => {
+        const res = await getSensorDataCommon()
+        if (res) {
+            setSensorData({...sensorData, ...res})
+            setDateList(res.dates)
+        }
+    }
 
-                            <Col md={5}>
-                                <iframe
-                                    width="100%" height="260"
-                                    style={{border: "1px solid #cccccc"}}
-                                    src="https://thingspeak.com/channels/2412416/charts/3?bgcolor=%23ffffff&color=%23d62020&results=60&title=Potassium+%28K%29"></iframe>
-                            </Col>
+    useEffect(() => {
+        loadData()
+    }, [])
 
-                            <Col md={4}>
-                                <iframe
-                                    width="100%" height="260"
-                                    style={{border: "1px solid #cccccc"}}
-                                    src="https://thingspeak.com/channels/2412416/widgets/791350"></iframe>
-                            </Col>
-                        </Row>
-                    </CardText>
-                </CardBody>
-            </Card>
+    useEffect(async () => {
+        if (counter > 0) {
+            const timer = setTimeout(() => setCounter(counter - 1), 1000)
+            return () => clearTimeout(timer)
+        } else {
+            await loadData()
+            setTimeout(() => {
+                setCounter(5)
+            }, 2000)
+        }
+    }, [counter])
 
-            <Card>
-                <CardHeader>
-                    <CardTitle>Want to integrate JWT? 🔒</CardTitle>
-                </CardHeader>
-                <CardBody>
-                    <CardText>
-                        We carefully crafted JWT flow so you can implement JWT with ease and with minimum efforts.
-                    </CardText>
-                    <CardText>
-                        Please read our{' '}
-                        <CardLink
-                            href='https://pixinvent.com/demo/vuexy-react-admin-dashboard-template/documentation/development/auth'
-                            target='_blank'
-                        >
-                            JWT Documentation
-                        </CardLink>{' '}
-                        to get more out of JWT authentication.
-                    </CardText>
-                </CardBody>
-            </Card>
-        </div>
+    const chartOptions = {
+        stroke: {
+            show: true,
+            curve: 'smooth',
+            lineCap: 'butt',
+            colors: undefined,
+            width: 3,
+            dashArray: 0
+        },
+        chart: {
+            height: 350,
+            type: "line",
+            stacked: false,
+            toolbar: {
+                show: true
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        colors: ["#0E9373", "#1C60D5", "#EA8D00", "#F10B2F"],
+        plotOptions: {
+            bar: {
+                columnWidth: "20%"
+            }
+        },
+        xaxis: {
+            categories: dateList
+        },
+        tooltip: {
+            shared: false,
+            intersect: true,
+            x: {
+                show: false
+            }
+        },
+        legend: {
+            horizontalAlign: "left",
+            offsetX: 40
+        }
+    }
+
+    const chartNSeries = [
+        {
+            name: 'Nitrogen',
+            data: sensorData.n,
+            title: 'ddd'
+        },
+        {
+            name: 'Phosphorus',
+            data: sensorData.p
+        },
+        {
+            name: 'Potassium',
+            data: sensorData.k
+        },
+        {
+            name: 'Humidity',
+            data: sensorData.humidity
+        }
+    ]
+
+    const temperatureOptions = {
+        chart: {
+            height: 350,
+            type: 'radialBar',
+            offsetY: -10
+        },
+        plotOptions: {
+            radialBar: {
+                startAngle: -135,
+                endAngle: 135,
+                dataLabels: {
+                    name: {
+                        fontSize: '16px',
+                        color: '#000',
+                        offsetY: 120
+                    },
+                    value: {
+                        offsetY: 76,
+                        fontSize: '22px',
+                        color: undefined,
+                        formatter: (val) => {
+                            return `${val} °C`
+                        }
+                    }
+                }
+            }
+        },
+        fill: {
+            type: 'gradient',
+            colors: ['#0E9373'],
+            gradient: {
+                gradientToColors: ['#ff5e62'],
+                stops: [0, 150],
+                inverseColors: true
+            }
+        },
+        stroke: {
+            dashArray: 4
+        },
+        labels: ['Temperature']
+    }
+
+    const phOptions = {
+        chart: {
+            height: 350,
+            type: 'radialBar'
+        },
+        plotOptions: {
+            radialBar: {
+                hollow: {
+                    size: '40%'
+                },
+                dataLabels: {
+                    value: {
+                        formatter: (val) => {
+                            return val
+                        }
+                    }
+                }
+            }
+        },
+        labels: ['Ph']
+    }
+
+    return (<Row>
+            <Col md={7}>
+                <Card>
+                    <CardHeader className={'border-bottom mb-2 d-flex justify-content-between'}>
+                        <CardTitle>Sensor Data History</CardTitle>
+                        <div className={'font-weight-bold'}>
+                            <span style={{color: 'red'}}>{counter} </span>
+                            Refresh after second{counter > 1 ? 's' : ''}!
+                        </div>
+                    </CardHeader>
+                    <CardBody>
+                        <Chart options={chartOptions} series={chartNSeries}/>
+                    </CardBody>
+                </Card>
+            </Col>
+
+            <Col md={5}>
+                <Row>
+                    <Col md={12}>
+                        <RealtimeStats
+                            data={[
+                                {
+                                    title: 'Nitrogen',
+                                    value: sensorData.n[9] ?? 0,
+                                    color: 'success',
+                                    icon: icnNitrogen
+                                },
+                                {
+                                    title: 'Phosphorus',
+                                    value: sensorData.p[9] ?? 0,
+                                    color: 'info',
+                                    icon: icnPhosphorus
+                                },
+                                {
+                                    title: 'Potassium',
+                                    value: sensorData.k[9] ?? 0,
+                                    color: 'warning',
+                                    icon: icnPotassium
+                                },
+                                {
+                                    title: 'Humidity',
+                                    value: sensorData.humidity[9] ?? 0,
+                                    color: 'info',
+                                    icon: icnHumidity
+                                },
+                                {
+                                    title: 'Rainfall',
+                                    value: sensorData.humidity[9] ?? 0,
+                                    color: 'info',
+                                    icon: icnRainfall
+                                }
+                            ]}
+                        />
+                    </Col>
+
+                    <Col md={6}>
+                        <Card>
+                            <Chart options={temperatureOptions} type="radialBar" height={250}
+                                   series={sensorData.temperature}/>
+                        </Card>
+                    </Col>
+
+                    <Col md={6}>
+                        <Card>
+                            <Chart options={phOptions} type="radialBar" height={258}
+                                   series={sensorData.ph}/>
+                        </Card>
+                    </Col>
+                </Row>
+            </Col>
+        </Row>
     )
 }
 

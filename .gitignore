@@ -36,3 +36,14 @@ dataset.csv
 /dataset.csv
 nodejs-backend/node_modules
 web-app/node_modules
+nodejs-backend/config/keys.js
+
+#python files
+/python-backend/.venv
+python-backend/.venv
+
+/nodejs-backend/config/keys.js
+nodejs-backend/config/keys.js
+
+nodejs-backend/config/db.js
+/nodejs-backend/config/db.js

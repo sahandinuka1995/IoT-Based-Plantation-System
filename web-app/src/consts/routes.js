@@ -1,4 +1,6 @@
 export default {
     plantFinder: '/plant-finder',
-    users: '/users'
+    users: '/users',
+    feeds: '/home',
+    login: '/login'
 }

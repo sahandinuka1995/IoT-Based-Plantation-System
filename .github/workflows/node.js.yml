@@ -7,31 +7,38 @@ on:
     branches: [ "production" ]
 
 jobs:
-  build:
+  qodana:
+    build:
+  
+      runs-on: ubuntu-latest
+  
+      steps:
+      - uses: actions/checkout@v3
 
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v3
-    - name: Set up MySQL 8.0
-      uses: mirromutth/mysql-action@v1.1
-      with:
-        mysql version: '8.0'
-        mysql database: 'iot_plantation'
-        mysql root password: '$apiit@123'
-        mysql user: 'root'
-        mysql password: '$apiit@123'
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-        cache-dependency-path: nodejs-backend/package-lock.json # Ensure this points to your lock file
-
-    - name: Install dependencies
-      working-directory: ./nodejs-backend # Correct path to your Node.js project
-      run: npm install
-
-    - name: Test with Jest
-      working-directory: ./nodejs-backend
-      run: npm test
+      - name: 'Qodana Scan'
+        uses: JetBrains/qodana-action@v2023.3
+        env:
+          QODANA_TOKEN: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcmdhbml6YXRpb24iOiJBbG1PViIsInByb2plY3QiOiJBRHk0dyIsInRva2VuIjoiekVMeHgifQ.qCwNgFBv89cCa4wIj3ACt5p8hJxmfKXgKIoLGqTSs0k'
+          
+      - name: Set up MySQL 8.0
+        uses: mirromutth/mysql-action@v1.1
+        with:
+          mysql version: '8.0'
+          mysql database: 'iot_plantation'
+          mysql root password: '$apiit@123'
+          mysql user: 'root'
+          mysql password: '$apiit@123'
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: nodejs-backend/package-lock.json # Ensure this points to your lock file
+  
+      - name: Install dependencies
+        working-directory: ./nodejs-backend # Correct path to your Node.js project
+        run: npm install
+  
+      - name: Test with Jest
+        working-directory: ./nodejs-backend
+        run: npm test

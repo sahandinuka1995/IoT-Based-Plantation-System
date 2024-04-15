@@ -7,19 +7,13 @@ on:
     branches: [ "production" ]
 
 jobs:
-  qodana:
     build:
   
       runs-on: ubuntu-latest
   
       steps:
       - uses: actions/checkout@v3
-
-      - name: 'Qodana Scan'
-        uses: JetBrains/qodana-action@v2023.3
-        env:
-          QODANA_TOKEN: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcmdhbml6YXRpb24iOiJBbG1PViIsInByb2plY3QiOiJBRHk0dyIsInRva2VuIjoiekVMeHgifQ.qCwNgFBv89cCa4wIj3ACt5p8hJxmfKXgKIoLGqTSs0k'
-          
+      
       - name: Set up MySQL 8.0
         uses: mirromutth/mysql-action@v1.1
         with:

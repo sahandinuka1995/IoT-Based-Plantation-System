@@ -1,4 +1,4 @@
-import {Link, Redirect} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import InputPasswordToggle from '@components/input-password-toggle'
 import {Row, Col, CardTitle, CardText, Form, FormGroup, Label, Input, CustomInput, Button} from 'reactstrap'
 import '@styles/base/pages/page-auth.scss'

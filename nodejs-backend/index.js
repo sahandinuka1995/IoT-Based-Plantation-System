@@ -21,6 +21,7 @@ const server = app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`)
 })
 
+// routes
 app.use(`${BASE_PATH}/user`, userRoute)
 app.use(`${BASE_PATH}/auth`, authRoute)
 app.use(`${BASE_PATH}/data`, dataRoute)

@@ -1,13 +1,11 @@
-import {Card, CardHeader, CardBody, CardTitle, CardText, CardLink, Row, Col, Label} from 'reactstrap'
+import {Card, CardHeader, CardBody, CardTitle, Row, Col} from 'reactstrap'
 import Chart from "react-apexcharts"
 import {useEffect, useState} from "react"
 import RealtimeStats from "../@core/components/realtimeStats"
 import icnNitrogen from '@src/assets/images/icons/icons8-nitrogen-64.png'
 import icnPhosphorus from '@src/assets/images/icons/icons8-phosphorus-64.png'
 import icnPotassium from '@src/assets/images/icons/icons8-potassium-64.png'
-import icnTemperature from '@src/assets/images/icons/icons8-temperature-50.png'
 import icnHumidity from '@src/assets/images/icons/icons8-humidity-48.png'
-import icnPh from '@src/assets/images/icons/icons8-ph.png'
 import icnRainfall from '@src/assets/images/icons/icons8-rainfall-48.png'
 import {getSensorDataCommon} from "../utility/Utils"
 

@@ -42,19 +42,21 @@ void loop() {
       mySerial.readBytes(receivedData, sizeof(receivedData));  // Read the received data into the receivedData array
 
       // Parse and print the received data in decimal format
-      unsigned int nitrogen = (receivedData[11] << 8) | receivedData[12];
-      unsigned int phosphorus = (receivedData[13] << 8) | receivedData[14];
-      unsigned int potassium = (receivedData[15] << 8) | receivedData[16];
-      unsigned int soilTemperature = (receivedData[5] << 8) | receivedData[6];
-      unsigned int soilHumidity = (receivedData[3] << 8) | receivedData[4];
-      unsigned int soilPH = (receivedData[9] << 8) | receivedData[10];
+      unsigned int nitrogen = (float)((receivedData[11] << 8) | receivedData[12]);
+      unsigned int phosphorus = (float)((receivedData[13] << 8) | receivedData[14]);
+      unsigned int potassium = (float)((receivedData[15] << 8) | receivedData[16]);
+      unsigned int soilTemperature = (float)((receivedData[5] << 8) | receivedData[6]);
+      unsigned int soilHumidity = (float)((receivedData[3] << 8) | receivedData[4]);
+      unsigned int soilPH = (float)((receivedData[9] << 8) | receivedData[10]);
 
-      float nitrogenResult = (float)soilHumidity / 10.0;
-      float temperatureResult = (float)soilTemperature / 10.0;
-      float humidityResult = (float)soilHumidity / 10.0;
-      float phResult = (float)soilPH / 10.0;
+      float nitrogenResult = calculateUsableData(nitrogen);
+      float phosphorusResult = calculateUsableData(phosphorus);
+      float potassiumResult = calculateUsableData(potassium);
+      float temperatureResult = soilTemperature / 10.0;
+      float humidityResult = soilHumidity / 10.0;
+      float phResult = calculateUsableData(soilPH);
 
-      updateThingSpeak(String(nitrogenResult), String(phosphorus), String(potassium), String(temperatureResult), String(humidityResult), String(phResult));
+      updateThingSpeak(String(nitrogenResult), String(phosphorusResult), String(potassiumResult), String(temperatureResult), String(humidityResult), String(phResult));
 
       delay(sensorQueryDelay);
       digitalWrite(RX_LED, LOW);
@@ -83,18 +85,24 @@ void connectToWifi() {
   Serial.println(WiFi.localIP());
 }
 
+float calculateUsableData(float value) {
+  return value > 99 ? value / 100 : value > 999  ? 1000
+                                  : value > 9999 ? 10000
+                                                 : value;
+}
+
 void updateThingSpeak(String nitrogenResult, String phosphorus, String potassium, String temperatureResult, String humidityResult, String phResult) {
   WiFiClientSecure client;
   HTTPClient http;
 
   client.setInsecure();
-  http.begin(client, server + "/update?api_key=" + myWriteAPIKey + "&field1=" + nitrogenResult + "&field2=" + phosphorus + "&field3=" + potassium + "&field4=" + temperatureResult + "&field5=" + humidityResult + "&field6=" + phosphorus);
+  http.begin(client, server + "/update?api_key=" + myWriteAPIKey + "&field1=" + nitrogenResult + "&field2=" + phosphorus + "&field3=" + potassium + "&field4=" + temperatureResult + "&field5=" + humidityResult + "&field6=" + phResult);
 
   int httpCode = http.GET();  //Make the request
 
   if (httpCode == 200) {  //Check for the returning code
     Serial.println("Data updated successfully");
-    Serial.println("N:" + nitrogenResult + " | " + "P:" + phosphorus + " | " + "K:" + potassium + " | " + "Temperature:" + temperatureResult + " | " + "Humidity:" + humidityResult + " | " + "Ph:" + phosphorus);
+    Serial.println("N:" + nitrogenResult + " | " + "P:" + phosphorus + " | " + "K:" + potassium + " | " + "Temperature:" + temperatureResult + " | " + "Humidity:" + humidityResult + " | " + "Ph:" + phResult);
   } else {
     Serial.println("Error on HTTP request");
   }

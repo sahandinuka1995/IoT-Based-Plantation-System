@@ -8,6 +8,7 @@ import icnPotassium from '@src/assets/images/icons/icons8-potassium-64.png'
 import icnHumidity from '@src/assets/images/icons/icons8-humidity-48.png'
 import icnRainfall from '@src/assets/images/icons/icons8-rainfall-48.png'
 import {getSensorDataCommon} from "../utility/Utils"
+import {getRainfallData} from "../services/sensorService"
 
 const initialData = {
     n: [],
@@ -15,7 +16,8 @@ const initialData = {
     k: [],
     temperature: [],
     humidity: [],
-    ph: []
+    ph: [],
+    rainfall: 0
 }
 
 const Home = () => {
@@ -31,8 +33,14 @@ const Home = () => {
         }
     }
 
+    const loadRainfall = async () => {
+        const sensorRes = await getSensorDataCommon(true)
+        const res = await getRainfallData()
+        if (res) setSensorData({...sensorRes, rainfall: res?.data?.clouds?.all})
+    }
+
     useEffect(() => {
-        loadData()
+        loadRainfall()
     }, [])
 
     useEffect(async () => {
@@ -220,7 +228,7 @@ const Home = () => {
                                 },
                                 {
                                     title: 'Rainfall',
-                                    value: sensorData.humidity[9] ?? 0,
+                                    value: sensorData.rainfall ?? 0,
                                     color: 'info',
                                     icon: icnRainfall
                                 }

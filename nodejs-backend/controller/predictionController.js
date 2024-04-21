@@ -17,13 +17,14 @@ const getPrediction = async (req, resp) => {
                 console.log('error', error)
             });
 
-        // await axios.get(tomorrow.url)
-        //     .then((response) => {
-        //         rainfall = response?.data?.data?.timelines[0]?.intervals[0]?.values?.precipitationIntensity
-        //     })
-        //     .catch((error) => {
-        //         console.log('error', error)
-        //     });
+        await axios.get(tomorrow.url)
+            .then((response) => {
+                //rainfall = response?.data?.data?.timelines[0]?.intervals[0]?.values?.precipitationIntensity
+                rainfall = response?.data?.clouds?.all
+            })
+            .catch((error) => {
+                console.log('error', error)
+            });
 
         const request_data = {
             N: sensorData.field1,
@@ -47,7 +48,7 @@ const getPrediction = async (req, resp) => {
         let res = null
         await axios.request(config)
             .then((response) => {
-                res = predictionList[response.data.data]
+                res = {predictionResult: predictionList[response.data.data], sensorData: request_data}
             })
             .catch((error) => {
                 console.log('prediction error :', error.data);

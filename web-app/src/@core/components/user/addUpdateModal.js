@@ -68,6 +68,7 @@ const AddUpdateModal = (props) => {
                     <FormGroup>
                         <Label>Name</Label>
                         <Input
+                            autoComplete={false}
                             value={formData.name}
                             onChange={(e) => setFormData({...formData, name: e.target.value})}
                             invalid={error.name && formData?.name?.trim() === ''}
@@ -79,6 +80,7 @@ const AddUpdateModal = (props) => {
                     <FormGroup>
                         <Label>Username</Label>
                         <Input
+                            autoComplete={false}
                             value={formData.username}
                             onChange={(e) => setFormData({...formData, username: e.target.value})}
                             invalid={error.username && formData?.username?.trim() === ''}
@@ -107,6 +109,7 @@ const AddUpdateModal = (props) => {
                     <FormGroup>
                         <Label>Password</Label>
                         <Input
+                            autoComplete={false}
                             type={'password'}
                             value={formData.password}
                             onChange={(e) => setFormData({...formData, password: e.target.value})}
@@ -119,6 +122,7 @@ const AddUpdateModal = (props) => {
                     <FormGroup>
                         <Label>Confirm Password</Label>
                         <Input
+                            autoComplete={false}
                             type={'password'}
                             value={formData.confirmPassword}
                             onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}

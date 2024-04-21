@@ -1,7 +1,7 @@
 // ** Checks if an object is empty (returns boolean)
 import Cookies from "js-cookie"
 import {COOKIES_TYPES} from "../consts/consts"
-import {getSensorData} from "../services/sensorService"
+import {getRainfallData, getSensorData} from "../services/sensorService"
 import moment from "moment/moment"
 
 export const isObjEmpty = obj => Object.keys(obj).length === 0

@@ -8,6 +8,7 @@ import {getPrediction} from "../services/predictService"
 import {PLANT_IMG_LIST} from "../consts/consts"
 import {getSensorDataCommon} from "../utility/Utils"
 import {toPng} from 'html-to-image'
+import {getRainfallData} from "../services/sensorService"
 
 const initialData = {
     n: [],
@@ -15,7 +16,8 @@ const initialData = {
     k: [],
     temperature: [],
     humidity: [],
-    ph: []
+    ph: [],
+    rainfall: 0
 }
 
 const PlantFinder = () => {
@@ -33,8 +35,14 @@ const PlantFinder = () => {
         }
     }
 
-    useEffect(() => {
-        loadData()
+    const loadRainfall = async () => {
+        const sensorRes = await getSensorDataCommon(true)
+        const res = await getRainfallData()
+        if (res) setSensorData({...sensorRes, rainfall: res?.data?.clouds?.all})
+    }
+
+    useEffect(async () => {
+        await loadRainfall()
     }, [])
 
     useEffect(async () => {
@@ -83,43 +91,43 @@ const PlantFinder = () => {
         <Row className={'justify-content-between'}>
             <Col md={2} lg={1}>
                 <Card className={'p-1'}>
-                    <Label><b>N:</b> {sensorData?.n[9]}</Label>
+                    <Label><b>N:</b> {sensorData?.n[9] ?? 0}</Label>
                 </Card>
             </Col>
 
             <Col md={2} lg={1}>
                 <Card className={'p-1'}>
-                    <Label><b>P:</b> {sensorData?.p[9]}</Label>
+                    <Label><b>P:</b> {sensorData?.p[9] ?? 0}</Label>
                 </Card>
             </Col>
 
             <Col md={2} lg={1}>
                 <Card className={'p-1'}>
-                    <Label><b>K:</b> {sensorData?.k[9]}</Label>
+                    <Label><b>K:</b> {sensorData?.k[9] ?? 0}</Label>
                 </Card>
             </Col>
 
             <Col md={6} lg={2}>
                 <Card className={'p-1'}>
-                    <Label><b>Temperature:</b> {sensorData?.temperature[9]}</Label>
+                    <Label><b>Temperature:</b> {sensorData?.temperature[9] ?? 0}</Label>
                 </Card>
             </Col>
 
             <Col md={4} lg={2}>
                 <Card className={'p-1'}>
-                    <Label><b>Humidity:</b> {sensorData?.humidity[9]}</Label>
+                    <Label><b>Humidity:</b> {sensorData?.humidity[9] ?? 0}</Label>
                 </Card>
             </Col>
 
             <Col md={4} lg={2}>
                 <Card className={'p-1'}>
-                    <Label><b>Rainfall:</b> 52</Label>
+                    <Label><b>Rainfall:</b> {sensorData?.rainfall ?? 0}</Label>
                 </Card>
             </Col>
 
             <Col md={4} lg={2}>
                 <Card className={'p-1'}>
-                    <Label><b>Ph:</b> {sensorData?.ph[9]}</Label>
+                    <Label><b>Ph:</b> {sensorData?.ph[9] ?? 0}</Label>
                 </Card>
             </Col>
         </Row>

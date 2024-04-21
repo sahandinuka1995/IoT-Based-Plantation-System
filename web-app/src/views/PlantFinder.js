@@ -60,7 +60,7 @@ const PlantFinder = () => {
     const onPredict = async () => {
         const res = await getPrediction()
         if (res.status === 200) {
-            await setResult(res.data)
+            await setResult(res.data.predictionResult)
             await setSteps(plansResultSteps.RESULT)
         }
     }

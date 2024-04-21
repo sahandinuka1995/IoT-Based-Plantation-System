@@ -102,7 +102,7 @@ export const roundValues = (value) => {
     return Number.parseFloat(result).toFixed(2)
 }
 
-export const getSensorDataCommon = async () => {
+export const getSensorDataCommon = async (isChart) => {
     let sensorData = null
 
     const res = await getSensorData()
@@ -119,9 +119,19 @@ export const getSensorDataCommon = async () => {
             n.push(roundValues(item.field1))
             p.push(roundValues(item.field2))
             k.push(roundValues(item.field3))
-            if (i === (res.data.feeds.length - 1)) temperature.push(roundValues(item.field4))
             humidity.push(roundValues(item.field5))
-            if (i === (res.data.feeds.length - 1)) ph.push(roundValues(item.field6))
+
+            if (isChart) {
+                if (i === (res.data.feeds.length - 1)) temperature.push(roundValues(item.field4))
+            } else {
+                temperature.push(roundValues(item.field4))
+            }
+
+            if (isChart) {
+                if (i === (res.data.feeds.length - 1)) ph.push(roundValues(item.field6))
+            } else {
+                ph.push(roundValues(item.field6))
+            }
 
             dates.push(item?.created_at ? moment(item.created_at).format('HH:mm:ss') : '')
         })

@@ -1,16 +1,53 @@
-import {Card, CardHeader, CardBody, CardTitle, CardText, Row, Col, Button} from 'reactstrap'
-import {useState} from "react"
+import {Card, CardHeader, CardBody, CardTitle, CardText, Row, Col, Button, Label} from 'reactstrap'
+import {useEffect, useRef, useState} from "react"
 import {plansResultSteps} from '@consts/consts'
 import {Search} from "react-feather"
 import '../assets/scss/custom-styles.scss'
 import icnLoader from '@src/assets/images/loader.gif'
 import {getPrediction} from "../services/predictService"
 import {PLANT_IMG_LIST} from "../consts/consts"
+import {getSensorDataCommon} from "../utility/Utils"
+import {toPng} from 'html-to-image'
+
+const initialData = {
+    n: [],
+    p: [],
+    k: [],
+    temperature: [],
+    humidity: [],
+    ph: []
+}
 
 const PlantFinder = () => {
+    const elementRef = useRef(null)
     const [steps, setSteps] = useState(plansResultSteps.FIND)
     const [loader, setLoader] = useState(false)
     const [result, setResult] = useState(null)
+    const [counter, setCounter] = useState(5)
+    const [sensorData, setSensorData] = useState(initialData)
+
+    const loadData = async () => {
+        const res = await getSensorDataCommon()
+        if (res) {
+            setSensorData({...sensorData, ...res})
+        }
+    }
+
+    useEffect(() => {
+        loadData()
+    }, [])
+
+    useEffect(async () => {
+        if (counter > 0) {
+            const timer = setTimeout(() => setCounter(counter - 1), 1000)
+            return () => clearTimeout(timer)
+        } else {
+            await loadData()
+            setTimeout(() => {
+                setCounter(5)
+            }, 2000)
+        }
+    }, [counter])
 
     const onPredict = async () => {
         const res = await getPrediction()
@@ -29,7 +66,64 @@ const PlantFinder = () => {
         }, 1000)
     }
 
-    return (
+    const htmlToImageConvert = () => {
+        toPng(elementRef.current, {cacheBust: false})
+            .then((dataUrl) => {
+                const link = document.createElement("a")
+                link.download = "prediction-result-agropulse.png"
+                link.href = dataUrl
+                link.click()
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    return (<>
+        <Row className={'justify-content-between'}>
+            <Col md={2} lg={1}>
+                <Card className={'p-1'}>
+                    <Label><b>N:</b> {sensorData?.n[9]}</Label>
+                </Card>
+            </Col>
+
+            <Col md={2} lg={1}>
+                <Card className={'p-1'}>
+                    <Label><b>P:</b> {sensorData?.p[9]}</Label>
+                </Card>
+            </Col>
+
+            <Col md={2} lg={1}>
+                <Card className={'p-1'}>
+                    <Label><b>K:</b> {sensorData?.k[9]}</Label>
+                </Card>
+            </Col>
+
+            <Col md={6} lg={2}>
+                <Card className={'p-1'}>
+                    <Label><b>Temperature:</b> {sensorData?.temperature[9]}</Label>
+                </Card>
+            </Col>
+
+            <Col md={4} lg={2}>
+                <Card className={'p-1'}>
+                    <Label><b>Humidity:</b> {sensorData?.humidity[9]}</Label>
+                </Card>
+            </Col>
+
+            <Col md={4} lg={2}>
+                <Card className={'p-1'}>
+                    <Label><b>Rainfall:</b> 52</Label>
+                </Card>
+            </Col>
+
+            <Col md={4} lg={2}>
+                <Card className={'p-1'}>
+                    <Label><b>Ph:</b> {sensorData?.ph[9]}</Label>
+                </Card>
+            </Col>
+        </Row>
+
         <Card>
             <CardHeader className={'border-bottom'}>
                 <CardTitle>
@@ -92,9 +186,9 @@ const PlantFinder = () => {
                              alignItems: 'center'
                          } : {}}>
                         <CardText>
-                            {(steps === plansResultSteps.RESULT && !loader) &&
+                            {(steps === plansResultSteps.RESULT && !loader) && <div align={'center'} ref={elementRef}>
                                 <div className={'d-flex justify-content-center p-2'}>
-                                    <Row className={'border p-2 mb-2 align-items-center'}
+                                    <Row className={'border p-2 align-items-center bg-white'}
                                          style={{maxWidth: 800, borderRadius: 6}}>
                                         <Col md={3}>
                                             <div align={'center'}>
@@ -103,11 +197,14 @@ const PlantFinder = () => {
                                             </div>
                                         </Col>
 
-                                        <Col md={9}>
+                                        <Col md={9} align={'left'}>
                                             <p>{result.description}</p>
                                         </Col>
                                     </Row>
-                                </div>}
+                                </div>
+
+                                <p className={'text-white'}>www.agropulse.com</p>
+                            </div>}
 
                             {(steps === plansResultSteps.FIND && !loader) &&
                                 <div align={'center fade'} className={'mt-2'}>
@@ -120,9 +217,16 @@ const PlantFinder = () => {
 
                             {
                                 (steps === plansResultSteps.RESULT && !loader) && <div align={'center'}>
-                                    <Button color={'primary'} onClick={() => {
-                                        setSteps(plansResultSteps.FIND)
-                                    }}>Find Again</Button>
+                                    <Button color={'secondary'}
+                                            onClick={() => {
+                                                setSteps(plansResultSteps.FIND)
+                                            }}
+                                    >Find Again</Button>
+
+                                    <Button color={'warning'}
+                                            className={'ml-1'}
+                                            onClick={htmlToImageConvert}
+                                    >Save Result</Button>
                                 </div>
                             }
                         </CardText>
@@ -136,7 +240,7 @@ const PlantFinder = () => {
                 </Row>
             </CardBody>
         </Card>
-    )
+    </>)
 }
 
 export default PlantFinder

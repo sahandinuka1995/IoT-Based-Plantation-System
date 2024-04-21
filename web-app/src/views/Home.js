@@ -24,7 +24,7 @@ const Home = () => {
     const [counter, setCounter] = useState(5)
 
     const loadData = async () => {
-        const res = await getSensorDataCommon()
+        const res = await getSensorDataCommon(true)
         if (res) {
             setSensorData({...sensorData, ...res})
             setDateList(res.dates)

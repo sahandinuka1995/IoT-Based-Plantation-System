@@ -38,7 +38,8 @@ const PlantFinder = () => {
     const loadRainfall = async () => {
         const sensorRes = await getSensorDataCommon(true)
         const res = await getRainfallData()
-        if (res) setSensorData({...sensorRes, rainfall: res?.data?.clouds?.all})
+        const rainfall = res?.data?.clouds?.all
+        if (res) setSensorData({...sensorRes, rainfall: rainfall > 10 ? Number.parseInt(rainfall / 10) - 4 : 2})
     }
 
     useEffect(async () => {

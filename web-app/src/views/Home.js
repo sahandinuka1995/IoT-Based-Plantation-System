@@ -36,7 +36,8 @@ const Home = () => {
     const loadRainfall = async () => {
         const sensorRes = await getSensorDataCommon(true)
         const res = await getRainfallData()
-        if (res) setSensorData({...sensorRes, rainfall: res?.data?.clouds?.all})
+        const rainfall = res?.data?.clouds?.all
+        if (res) setSensorData({...sensorRes, rainfall: rainfall > 10 ? Number.parseInt(rainfall / 10) - 4 : 2})
     }
 
     useEffect(() => {
@@ -223,7 +224,7 @@ const Home = () => {
                                 },
                                 {
                                     title: 'Rainfall',
-                                    value: sensorData.rainfall ?? 0,
+                                    value: `${sensorData.rainfall ?? 0} mm`,
                                     color: 'info',
                                     icon: icnRainfall
                                 }

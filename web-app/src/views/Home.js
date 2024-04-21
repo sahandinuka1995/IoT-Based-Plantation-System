@@ -100,8 +100,7 @@ const Home = () => {
     const chartNSeries = [
         {
             name: 'Nitrogen',
-            data: sensorData.n,
-            title: 'ddd'
+            data: sensorData.n
         },
         {
             name: 'Phosphorus',
@@ -110,10 +109,6 @@ const Home = () => {
         {
             name: 'Potassium',
             data: sensorData.k
-        },
-        {
-            name: 'Humidity',
-            data: sensorData.humidity
         }
     ]
 

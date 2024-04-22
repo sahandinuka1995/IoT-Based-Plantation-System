@@ -4,6 +4,7 @@ const {thingspeak} = require("../config/thingspeak")
 const {tomorrow} = require("../config/rainfall")
 const predictionList = require("../const/predictions")
 const {roundValues} = require("../utils/commonFunc");
+const cheerio = require("cheerio");
 
 const getPrediction = async (req, resp) => {
     try {
@@ -18,14 +19,13 @@ const getPrediction = async (req, resp) => {
                 console.log('error', error)
             });
 
-        await axios.get(tomorrow.url)
-            .then((response) => {
-                //rainfall = response?.data?.data?.timelines[0]?.intervals[0]?.values?.precipitationIntensity
-                rainfall = response?.data?.clouds?.all
-            })
-            .catch((error) => {
-                console.log('error', error)
-            });
+        await axios.get('https://www.meteo.gov.lk/index.php?lang=en').then(response => {
+            const $ = cheerio.load(response.data)
+            const title = $('.last24title').last().text()
+            const lastData = title.split(' ')[2]
+            const match = lastData.match(/\d+(\.\d+)?/)
+            rainfall = match[0]
+        })
 
         const request_data = {
             N: roundValues(sensorData.field1),

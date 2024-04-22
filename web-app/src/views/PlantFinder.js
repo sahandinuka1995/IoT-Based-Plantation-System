@@ -202,7 +202,7 @@ const PlantFinder = () => {
 
                                             <div className={'mt-2 border-bottom-cus mb-2 pb-2'}>
                                                 <Label
-                                                    className={'d-block mb-0'}>Date: {moment().format('yyyy-mm-DD')}</Label>
+                                                    className={'d-block mb-0'}>Date: {moment().format('yyyy-MM-DD')}</Label>
                                                 <Label className={'d-block'}>Time: {moment().format('HH:mm')}</Label>
                                             </div>
                                         </Col>
@@ -247,7 +247,9 @@ const PlantFinder = () => {
                                     </Row>
                                 </div>
 
-                                <p className={'text-white'}>www.agropulse.com</p>
+                                <p className={'text-white'}>
+                                    This report was generated using AgroPulse | Developed by Sahan Dinuka
+                                </p>
                             </div>}
 
                             {(steps === plansResultSteps.FIND && !loader) &&

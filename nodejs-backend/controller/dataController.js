@@ -4,6 +4,7 @@ const {STATUS_200, STATUS_500} = require("../const/const")
 const axios = require("axios")
 const cheerio = require('cheerio')
 const {thingspeak} = require("../config/thingspeak");
+const {roundValues} = require("../utils/commonFunc");
 
 const saveData = async (req, resp) => {
     try {
@@ -53,12 +54,12 @@ const getSensorData = async (req, resp) => {
                 dataList.map((item, i) => {
                     const tempRow = {
                         ...currentData,
-                        n: item.field1,
-                        p: item.field2,
-                        k: item.field3,
-                        temperature: item.field4,
-                        humidity: item.field5,
-                        ph: item.field6,
+                        n: roundValues(item.field1),
+                        p: roundValues(item.field2),
+                        k: roundValues(item.field3),
+                        temperature: roundValues(item.field4),
+                        humidity: roundValues(item.field5),
+                        ph: roundValues(item.field6),
                         date: item.created_at
                     }
 

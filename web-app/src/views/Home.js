@@ -22,13 +22,15 @@ const initialData = {
 
 const Home = () => {
     const [sensorData, setSensorData] = useState(initialData)
+    const [sensorDataList, setSensorDataList] = useState(null)
     const [dateList, setDateList] = useState([])
     const [counter, setCounter] = useState(5)
 
     const loadData = async () => {
-        const res = await getSensorDataCommon(true)
+        const res = await getSensorDataCommon()
         if (res) {
-            setSensorData({...sensorData, ...res})
+            setSensorData({...sensorData, ...res.currentData})
+            setSensorDataList({n: res.n, p: res.p, k: res.k})
             setDateList(res.dates)
         }
     }
@@ -94,15 +96,15 @@ const Home = () => {
     const chartNSeries = [
         {
             name: 'Nitrogen',
-            data: sensorData.n
+            data: sensorDataList?.n ?? []
         },
         {
             name: 'Phosphorus',
-            data: sensorData.p
+            data: sensorDataList?.p ?? []
         },
         {
             name: 'Potassium',
-            data: sensorData.k
+            data: sensorDataList?.k ?? []
         }
     ]
 
@@ -181,7 +183,7 @@ const Home = () => {
                         </div>
                     </CardHeader>
                     <CardBody>
-                        {/*<Chart options={chartOptions} series={chartNSeries}/>*/}
+                        <Chart options={chartOptions} series={chartNSeries}/>
                     </CardBody>
                 </Card>
             </Col>

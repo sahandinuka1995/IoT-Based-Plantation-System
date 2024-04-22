@@ -31,19 +31,12 @@ const PlantFinder = () => {
     const loadData = async () => {
         const res = await getSensorDataCommon()
         if (res) {
-            setSensorData({...sensorData, ...res})
+            setSensorData({...sensorData, ...res.currentData})
         }
     }
 
-    const loadRainfall = async () => {
-        const sensorRes = await getSensorDataCommon(true)
-        const res = await getRainfallData()
-        const rainfall = res?.data?.clouds?.all
-        if (res) setSensorData({...sensorRes, rainfall: rainfall > 10 ? Number.parseInt(rainfall / 10) - 4 : 2})
-    }
-
     useEffect(async () => {
-        await loadRainfall()
+        await loadData()
     }, [])
 
     useEffect(async () => {
@@ -92,31 +85,31 @@ const PlantFinder = () => {
         <Row className={'justify-content-between'}>
             <Col md={2} lg={1}>
                 <Card className={'p-1'}>
-                    <Label><b>N:</b> {sensorData?.n[9] ?? 0}</Label>
+                    <Label><b>N:</b> {sensorData?.n ?? 0}</Label>
                 </Card>
             </Col>
 
             <Col md={2} lg={1}>
                 <Card className={'p-1'}>
-                    <Label><b>P:</b> {sensorData?.p[9] ?? 0}</Label>
+                    <Label><b>P:</b> {sensorData?.p ?? 0}</Label>
                 </Card>
             </Col>
 
             <Col md={2} lg={1}>
                 <Card className={'p-1'}>
-                    <Label><b>K:</b> {sensorData?.k[9] ?? 0}</Label>
+                    <Label><b>K:</b> {sensorData?.k ?? 0}</Label>
                 </Card>
             </Col>
 
             <Col md={6} lg={2}>
                 <Card className={'p-1'}>
-                    <Label><b>Temperature:</b> {sensorData?.temperature[9] ?? 0}</Label>
+                    <Label><b>Temperature:</b> {sensorData?.temperature ?? 0}</Label>
                 </Card>
             </Col>
 
             <Col md={4} lg={2}>
                 <Card className={'p-1'}>
-                    <Label><b>Humidity:</b> {sensorData?.humidity[9] ?? 0}</Label>
+                    <Label><b>Humidity:</b> {sensorData?.humidity ?? 0}</Label>
                 </Card>
             </Col>
 
@@ -128,7 +121,7 @@ const PlantFinder = () => {
 
             <Col md={4} lg={2}>
                 <Card className={'p-1'}>
-                    <Label><b>Ph:</b> {sensorData?.ph[9] ?? 0}</Label>
+                    <Label><b>Ph:</b> {sensorData?.ph ?? 0}</Label>
                 </Card>
             </Col>
         </Row>

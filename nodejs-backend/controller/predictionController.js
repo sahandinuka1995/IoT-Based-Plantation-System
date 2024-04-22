@@ -3,6 +3,7 @@ const axios = require('axios')
 const {thingspeak} = require("../config/thingspeak")
 const {tomorrow} = require("../config/rainfall")
 const predictionList = require("../const/predictions")
+const {roundValues} = require("../utils/commonFunc");
 
 const getPrediction = async (req, resp) => {
     try {
@@ -27,12 +28,12 @@ const getPrediction = async (req, resp) => {
             });
 
         const request_data = {
-            N: sensorData.field1,
-            P: sensorData.field2,
-            K: sensorData.field3,
-            temperature: sensorData.field4,
-            humidity: sensorData.field5,
-            ph: sensorData.field6,
+            N: roundValues(sensorData.field1),
+            P: roundValues(sensorData.field2),
+            K: roundValues(sensorData.field3),
+            temperature: roundValues(sensorData.field4),
+            humidity: roundValues(sensorData.field5),
+            ph: roundValues(sensorData.field6),
             rainfall
         }
 

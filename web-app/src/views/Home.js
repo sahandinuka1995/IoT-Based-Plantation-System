@@ -11,11 +11,11 @@ import {getSensorDataCommon} from "../utility/Utils"
 import {getRainfallData} from "../services/sensorService"
 
 const initialData = {
-    n: [],
-    p: [],
-    k: [],
+    n: 0,
+    p: 0,
+    k: 0,
     temperature: [],
-    humidity: [],
+    humidity: 0,
     ph: [],
     rainfall: 0
 }
@@ -33,15 +33,8 @@ const Home = () => {
         }
     }
 
-    const loadRainfall = async () => {
-        const sensorRes = await getSensorDataCommon(true)
-        const res = await getRainfallData()
-        const rainfall = res?.data?.clouds?.all
-        if (res) setSensorData({...sensorRes, rainfall: rainfall > 10 ? Number.parseInt(rainfall / 10) - 4 : 2})
-    }
-
     useEffect(() => {
-        loadRainfall()
+        loadData()
     }, [])
 
     useEffect(async () => {
@@ -188,7 +181,7 @@ const Home = () => {
                         </div>
                     </CardHeader>
                     <CardBody>
-                        <Chart options={chartOptions} series={chartNSeries}/>
+                        {/*<Chart options={chartOptions} series={chartNSeries}/>*/}
                     </CardBody>
                 </Card>
             </Col>
@@ -200,31 +193,31 @@ const Home = () => {
                             data={[
                                 {
                                     title: 'Nitrogen',
-                                    value: sensorData.n[9] ?? 0,
+                                    value: sensorData.n ?? 0,
                                     color: 'success',
                                     icon: icnNitrogen
                                 },
                                 {
                                     title: 'Phosphorus',
-                                    value: sensorData.p[9] ?? 0,
+                                    value: sensorData.p ?? 0,
                                     color: 'info',
                                     icon: icnPhosphorus
                                 },
                                 {
                                     title: 'Potassium',
-                                    value: sensorData.k[9] ?? 0,
+                                    value: sensorData.k ?? 0,
                                     color: 'warning',
                                     icon: icnPotassium
                                 },
                                 {
                                     title: 'Humidity',
-                                    value: sensorData.humidity[9] ?? 0,
+                                    value: sensorData.humidity ?? 0,
                                     color: 'info',
                                     icon: icnHumidity
                                 },
                                 {
                                     title: 'Rainfall',
-                                    value: `${sensorData.rainfall ?? 0} mm`,
+                                    value: sensorData.rainfall ?? 0,
                                     color: 'info',
                                     icon: icnRainfall
                                 }
@@ -235,14 +228,14 @@ const Home = () => {
                     <Col md={6}>
                         <Card>
                             <Chart options={temperatureOptions} type="radialBar" height={250}
-                                   series={sensorData.temperature}/>
+                                   series={[sensorData.temperature]}/>
                         </Card>
                     </Col>
 
                     <Col md={6}>
                         <Card>
                             <Chart options={phOptions} type="radialBar" height={258}
-                                   series={sensorData.ph}/>
+                                   series={[sensorData.ph]}/>
                         </Card>
                     </Col>
                 </Row>

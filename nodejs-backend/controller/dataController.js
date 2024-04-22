@@ -27,7 +27,7 @@ const saveData = async (req, resp) => {
 
 const getSensorData = async (req, resp) => {
     try {
-        let sensorData = {
+        let currentData = {
             n: 0,
             p: 0,
             k: 0,
@@ -36,33 +36,40 @@ const getSensorData = async (req, resp) => {
             ph: 0,
             rainfall: 0
         }
+        const previousData = []
 
         await axios.get('https://www.meteo.gov.lk/index.php?lang=en').then(response => {
             const $ = cheerio.load(response.data)
             const title = $('.last24title').last().text()
             const lastData = title.split(' ')[2]
             const match = lastData.match(/\d+(\.\d+)?/)
-            sensorData = {...sensorData, rainfall: match[0]}
+            currentData = {...currentData, rainfall: match[0]}
         })
 
-        await axios.get(`${thingspeak.url}/${thingspeak.channelId}/feeds.json?results=1`)
+        await axios.get(`${thingspeak.url}/${thingspeak.channelId}/feeds.json?results=10`)
             .then((response) => {
-                const data = response?.data?.feeds[0]
-                sensorData = {
-                    ...sensorData,
-                    n: data.field1,
-                    p: data.field2,
-                    k: data.field3,
-                    temperature: data.field4,
-                    humidity: data.field5,
-                    ph: data.field6
-                }
+                const dataList = response?.data?.feeds
+
+                dataList.map((item, i) => {
+                    const tempRow = {
+                        ...currentData,
+                        n: item.field1,
+                        p: item.field2,
+                        k: item.field3,
+                        temperature: item.field4,
+                        humidity: item.field5,
+                        ph: item.field6
+                    }
+
+                    previousData.push(tempRow)
+                    if (i === (dataList.length - 1)) currentData = tempRow
+                })
             })
             .catch((error) => {
                 console.log('error', error)
             })
 
-        resp.status(200).json(STATUS_200(sensorData))
+        resp.status(200).json(STATUS_200({currentData, previousData}))
     } catch (e) {
         resp.status(500).json(STATUS_500)
     }

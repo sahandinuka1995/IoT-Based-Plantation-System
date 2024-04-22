@@ -106,37 +106,38 @@ export const getSensorDataCommon = async (isChart) => {
     let sensorData = null
 
     const res = await getSensorData()
+    console.log(res)
     if (res?.data) {
-        const n = []
-        const p = []
-        const k = []
-        const temperature = []
-        const humidity = []
-        const ph = []
-        const dates = []
+        // const n = []
+        // const p = []
+        // const k = []
+        // const temperature = []
+        // const humidity = []
+        // const ph = []
+        // const dates = []
+        //
+        // res.data.feeds.map((item, i) => {
+        //     n.push(roundValues(item.field1))
+        //     p.push(roundValues(item.field2))
+        //     k.push(roundValues(item.field3))
+        //     humidity.push(roundValues(item.field5))
+        //
+        //     if (isChart) {
+        //         if (i === (res.data.feeds.length - 1)) temperature.push(roundValues(item.field4))
+        //     } else {
+        //         temperature.push(roundValues(item.field4))
+        //     }
+        //
+        //     if (isChart) {
+        //         if (i === (res.data.feeds.length - 1)) ph.push(roundValues(item.field6))
+        //     } else {
+        //         ph.push(roundValues(item.field6))
+        //     }
+        //
+        //     dates.push(item?.created_at ? moment(item.created_at).format('HH:mm:ss') : '')
+        // })
 
-        res.data.feeds.map((item, i) => {
-            n.push(roundValues(item.field1))
-            p.push(roundValues(item.field2))
-            k.push(roundValues(item.field3))
-            humidity.push(roundValues(item.field5))
-
-            if (isChart) {
-                if (i === (res.data.feeds.length - 1)) temperature.push(roundValues(item.field4))
-            } else {
-                temperature.push(roundValues(item.field4))
-            }
-
-            if (isChart) {
-                if (i === (res.data.feeds.length - 1)) ph.push(roundValues(item.field6))
-            } else {
-                ph.push(roundValues(item.field6))
-            }
-
-            dates.push(item?.created_at ? moment(item.created_at).format('HH:mm:ss') : '')
-        })
-
-        sensorData = {n, p, k, temperature, humidity, ph, dates}
+        sensorData = {...res?.data}
     }
 
     return sensorData

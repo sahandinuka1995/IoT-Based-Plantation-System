@@ -8,15 +8,15 @@ import {getPrediction} from "../services/predictService"
 import {PLANT_IMG_LIST} from "../consts/consts"
 import {getSensorDataCommon} from "../utility/Utils"
 import {toPng} from 'html-to-image'
-import {getRainfallData} from "../services/sensorService"
+import moment from "moment/moment"
 
 const initialData = {
-    n: [],
-    p: [],
-    k: [],
-    temperature: [],
-    humidity: [],
-    ph: [],
+    n: 0,
+    p: 0,
+    k: 0,
+    temperature: 0,
+    humidity: 0,
+    ph: 0,
     rainfall: 0
 }
 
@@ -25,6 +25,7 @@ const PlantFinder = () => {
     const [steps, setSteps] = useState(plansResultSteps.FIND)
     const [loader, setLoader] = useState(false)
     const [result, setResult] = useState(null)
+    const [envInfo, setEnvInfo] = useState(null)
     const [counter, setCounter] = useState(5)
     const [sensorData, setSensorData] = useState(initialData)
 
@@ -54,6 +55,7 @@ const PlantFinder = () => {
     const onPredict = async () => {
         const res = await getPrediction()
         if (res.status === 200) {
+            await setEnvInfo(res.data.sensorData)
             await setResult(res.data.predictionResult)
             await setSteps(plansResultSteps.RESULT)
         }
@@ -197,10 +199,50 @@ const PlantFinder = () => {
                                                 <img src={PLANT_IMG_LIST[result.name.toLowerCase()]} width={100}/>
                                                 <h4 className={'text-primary mt-1'}>{result.name}</h4>
                                             </div>
+
+                                            <div className={'mt-2 border-bottom-cus mb-2 pb-2'}>
+                                                <Label
+                                                    className={'d-block mb-0'}>Date: {moment().format('yyyy-mm-DD')}</Label>
+                                                <Label className={'d-block'}>Time: {moment().format('HH:mm')}</Label>
+                                            </div>
                                         </Col>
 
-                                        <Col md={9} align={'left'}>
+                                        <Col md={9} align={'left'} className={'border-left-cus'}>
                                             <p>{result.description}</p>
+
+                                            <div>
+                                                <b className={'d-block mb-1'}>Environmental Information</b>
+                                                <table>
+                                                    <tr>
+                                                        <td className={'pr-1'}>Nitrogen (N):</td>
+                                                        <td>{envInfo?.N ?? 0}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className={'pr-1'}>Potassium (P):</td>
+                                                        <td>{envInfo?.P ?? 0}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className={'pr-1'}>Phosphorus (K):</td>
+                                                        <td>{envInfo?.K ?? 0}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className={'pr-1'}>Temperature:</td>
+                                                        <td>{envInfo?.temperature ?? 0}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className={'pr-1'}>Humidity:</td>
+                                                        <td>{envInfo?.humidity ?? 0}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className={'pr-1'}>Rainfall:</td>
+                                                        <td>{envInfo?.rainfall ?? 0}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className={'pr-1'}>Ph:</td>
+                                                        <td>{envInfo?.ph ?? 0}</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
                                         </Col>
                                     </Row>
                                 </div>

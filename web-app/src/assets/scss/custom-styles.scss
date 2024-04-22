@@ -20,3 +20,21 @@
 .fade {
   transition: 0.4s all ease-in-out;
 }
+
+.pr-1 {
+  padding-right: 10px;
+}
+
+.border-left-cus {
+  border-left: 1px solid rgba(34, 41, 47, 0.125);
+}
+
+@media only screen and (max-width: 768px) {
+  .border-left-cus {
+    border-left: none;
+  }
+
+  .border-bottom-cus {
+    border-bottom: 1px solid rgba(34, 41, 47, 0.125);
+  }
+}

@@ -58,7 +58,8 @@ const getSensorData = async (req, resp) => {
                         k: item.field3,
                         temperature: item.field4,
                         humidity: item.field5,
-                        ph: item.field6
+                        ph: item.field6,
+                        date: item.created_at
                     }
 
                     previousData.push(tempRow)

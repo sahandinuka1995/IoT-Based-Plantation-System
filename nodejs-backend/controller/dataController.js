@@ -5,38 +5,32 @@ const axios = require("axios")
 const cheerio = require('cheerio')
 const {thingspeak} = require("../config/thingspeak");
 const {roundValues} = require("../utils/commonFunc");
+const {EnvData} = require("../modal/envData")
 
 const saveData = async (req, resp) => {
     try {
-        const sql = ADD_DATA({
-            n: req.body.n,
-            p: req.body.p,
-            k: req.body.k,
-            temperature: req.body.temperature,
-            humidity: req.body.humidity,
-            ph: req.body.ph,
-            rainfall: req.body.rainfall
-        })
+        const envModal = new EnvData();
+        envModal.n = req.body.n
+        envModal.p = req.body.p
+        envModal.k = req.body.k
+        envModal.temperature = req.body.temperature
+        envModal.humidity = req.body.humidity
+        envModal.ph = req.body.ph
+        envModal.rainfall = req.body.rainfall
 
+        const sql = ADD_DATA(envModal)
         const conn = await db()
         await conn.query(sql)
         resp.status(200).json(STATUS_200(null))
     } catch (e) {
+        console.error(e)
         resp.status(500).json(STATUS_500)
     }
 }
 
 const getSensorData = async (req, resp) => {
     try {
-        let currentData = {
-            n: 0,
-            p: 0,
-            k: 0,
-            humidity: 0,
-            temperature: 0,
-            ph: 0,
-            rainfall: 0
-        }
+        const envModal = new EnvData();
         const previousData = []
 
         await axios.get('https://www.meteo.gov.lk/index.php?lang=en').then(response => {
@@ -44,7 +38,7 @@ const getSensorData = async (req, resp) => {
             const title = $('.last24title').last().text()
             const lastData = title.split(' ')[2]
             const match = lastData.match(/\d+(\.\d+)?/)
-            currentData = {...currentData, rainfall: match[0]}
+            envModal.rainfall = match[0]
         })
 
         await axios.get(`${thingspeak.url}/${thingspeak.channelId}/feeds.json?results=10`)
@@ -52,26 +46,31 @@ const getSensorData = async (req, resp) => {
                 const dataList = response?.data?.feeds
 
                 dataList.map((item, i) => {
-                    const tempRow = {
-                        ...currentData,
-                        n: roundValues(item.field1),
-                        p: roundValues(item.field2),
-                        k: roundValues(item.field3),
-                        temperature: roundValues(item.field4),
-                        humidity: roundValues(item.field5),
-                        ph: roundValues(item.field6),
-                        date: item.created_at
-                    }
+                    const envTempModal = new EnvData();
+                    envTempModal.n = roundValues(item.field1)
+                    envTempModal.p = roundValues(item.field2)
+                    envTempModal.k = roundValues(item.field3)
+                    envTempModal.temperature = roundValues(item.field4)
+                    envTempModal.humidity = roundValues(item.field5)
+                    envTempModal.ph = roundValues(item.field6)
+                    envTempModal.date = item.created_at
 
-                    previousData.push(tempRow)
-                    if (i === (dataList.length - 1)) currentData = tempRow
+                    previousData.push(envTempModal)
+                    if (i === (dataList.length - 1)) {
+                        envModal.n = roundValues(item.field1)
+                        envModal.p = roundValues(item.field2)
+                        envModal.k = roundValues(item.field3)
+                        envModal.temperature = roundValues(item.field4)
+                        envModal.humidity = roundValues(item.field5)
+                        envModal.ph = roundValues(item.field6)
+                    }
                 })
             })
             .catch((error) => {
                 console.log('error', error)
             })
 
-        resp.status(200).json(STATUS_200({currentData, previousData}))
+        resp.status(200).json(STATUS_200({currentData: envModal, previousData}))
     } catch (e) {
         resp.status(500).json(STATUS_500)
     }

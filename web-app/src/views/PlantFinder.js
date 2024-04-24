@@ -84,49 +84,49 @@ const PlantFinder = () => {
     }
 
     return (<>
-        <Row className={'justify-content-between'}>
-            <Col md={2} lg={1}>
-                <Card className={'p-1'}>
-                    <Label><b>N:</b> {sensorData?.n ?? 0}</Label>
-                </Card>
-            </Col>
+        {/*<Row className={'justify-content-between'}>*/}
+        {/*    <Col md={2} lg={1}>*/}
+        {/*        <Card className={'p-1'}>*/}
+        {/*            <Label><b>N:</b> {sensorData?.n ?? 0}</Label>*/}
+        {/*        </Card>*/}
+        {/*    </Col>*/}
 
-            <Col md={2} lg={1}>
-                <Card className={'p-1'}>
-                    <Label><b>P:</b> {sensorData?.p ?? 0}</Label>
-                </Card>
-            </Col>
+        {/*    <Col md={2} lg={1}>*/}
+        {/*        <Card className={'p-1'}>*/}
+        {/*            <Label><b>P:</b> {sensorData?.p ?? 0}</Label>*/}
+        {/*        </Card>*/}
+        {/*    </Col>*/}
 
-            <Col md={2} lg={1}>
-                <Card className={'p-1'}>
-                    <Label><b>K:</b> {sensorData?.k ?? 0}</Label>
-                </Card>
-            </Col>
+        {/*    <Col md={2} lg={1}>*/}
+        {/*        <Card className={'p-1'}>*/}
+        {/*            <Label><b>K:</b> {sensorData?.k ?? 0}</Label>*/}
+        {/*        </Card>*/}
+        {/*    </Col>*/}
 
-            <Col md={6} lg={2}>
-                <Card className={'p-1'}>
-                    <Label><b>Temperature:</b> {sensorData?.temperature ?? 0}</Label>
-                </Card>
-            </Col>
+        {/*    <Col md={6} lg={2}>*/}
+        {/*        <Card className={'p-1'}>*/}
+        {/*            <Label><b>Temperature:</b> {sensorData?.temperature ?? 0}</Label>*/}
+        {/*        </Card>*/}
+        {/*    </Col>*/}
 
-            <Col md={4} lg={2}>
-                <Card className={'p-1'}>
-                    <Label><b>Humidity:</b> {sensorData?.humidity ?? 0}</Label>
-                </Card>
-            </Col>
+        {/*    <Col md={4} lg={2}>*/}
+        {/*        <Card className={'p-1'}>*/}
+        {/*            <Label><b>Humidity:</b> {sensorData?.humidity ?? 0}</Label>*/}
+        {/*        </Card>*/}
+        {/*    </Col>*/}
 
-            <Col md={4} lg={2}>
-                <Card className={'p-1'}>
-                    <Label><b>Rainfall:</b> {sensorData?.rainfall ?? 0}</Label>
-                </Card>
-            </Col>
+        {/*    <Col md={4} lg={2}>*/}
+        {/*        <Card className={'p-1'}>*/}
+        {/*            <Label><b>Rainfall:</b> {sensorData?.rainfall ?? 0}</Label>*/}
+        {/*        </Card>*/}
+        {/*    </Col>*/}
 
-            <Col md={4} lg={2}>
-                <Card className={'p-1'}>
-                    <Label><b>Ph:</b> {sensorData?.ph ?? 0}</Label>
-                </Card>
-            </Col>
-        </Row>
+        {/*    <Col md={4} lg={2}>*/}
+        {/*        <Card className={'p-1'}>*/}
+        {/*            <Label><b>Ph:</b> {sensorData?.ph ?? 0}</Label>*/}
+        {/*        </Card>*/}
+        {/*    </Col>*/}
+        {/*</Row>*/}
 
         <Card>
             <CardHeader className={'border-bottom'}>

@@ -111,15 +111,23 @@ export const getSensorDataCommon = async () => {
         const n = []
         const p = []
         const k = []
+        const humidity = []
+        const rainfall = []
+        const temperature = []
+        const ph = []
 
         res?.data?.previousData?.map(item => {
             dates.push(moment(item.date).format('hh:mm:ss'))
             n.push(item.n)
             p.push(item.p)
             k.push(item.k)
+            humidity.push(item.humidity)
+            rainfall.push(item.rainfall)
+            temperature.push(item.temperature)
+            ph.push(item.ph)
         })
 
-        sensorData = {...res?.data, dates, n, p, k}
+        sensorData = {...res?.data, dates, n, p, k, humidity, rainfall, temperature, ph}
     }
 
     return sensorData

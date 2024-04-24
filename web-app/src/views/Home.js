@@ -30,7 +30,15 @@ const Home = () => {
         const res = await getSensorDataCommon()
         if (res) {
             setSensorData({...sensorData, ...res.currentData})
-            setSensorDataList({n: res.n, p: res.p, k: res.k})
+            setSensorDataList({
+                n: res.n,
+                p: res.p,
+                k: res.k,
+                humidity: res.humidity,
+                rainfall: res.rainfall,
+                temperature: res.temperature,
+                ph: res.ph
+            })
             setDateList(res.dates)
         }
     }
@@ -71,7 +79,15 @@ const Home = () => {
         dataLabels: {
             enabled: false
         },
-        colors: ["#0E9373", "#1C60D5", "#EA8D00", "#F10B2F"],
+        colors: [
+            "#FF6F61",
+            "#6B5B95",
+            "#88B04B",
+            "#29AC8D",
+            "#92A8D1",
+            "#955251",
+            "#1976D2"
+        ],
         plotOptions: {
             bar: {
                 columnWidth: "20%"
@@ -105,6 +121,22 @@ const Home = () => {
         {
             name: 'Potassium',
             data: sensorDataList?.k ?? []
+        },
+        {
+            name: 'Humidity',
+            data: sensorDataList?.humidity ?? []
+        },
+        {
+            name: 'Rainfall',
+            data: sensorDataList?.rainfall ?? []
+        },
+        {
+            name: 'Temperature',
+            data: sensorDataList?.temperature ?? []
+        },
+        {
+            name: 'Ph',
+            data: sensorDataList?.ph ?? []
         }
     ]
 

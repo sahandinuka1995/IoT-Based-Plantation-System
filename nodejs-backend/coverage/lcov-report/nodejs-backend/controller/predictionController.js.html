@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">33.33% </span>
+                <span class="strong">31.03% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>7/21</span>
+                <span class='fraction'>9/29</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/5</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">33.33% </span>
+                <span class="strong">31.03% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>7/21</span>
+                <span class='fraction'>9/29</span>
             </div>
         
             
@@ -125,11 +125,15 @@
 <a name='L60'></a><a href='#L60'>60</a>
 <a name='L61'></a><a href='#L61'>61</a>
 <a name='L62'></a><a href='#L62'>62</a>
-<a name='L63'></a><a href='#L63'>63</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -144,12 +148,12 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -192,6 +196,8 @@ const axios = require('axios')
 const {thingspeak} = require("../config/thingspeak")
 const {tomorrow} = require("../config/rainfall")
 const predictionList = require("../const/predictions")
+const {roundValues} = require("../utils/commonFunc");
+const cheerio = require("cheerio");
 &nbsp;
 const getPrediction = <span class="fstat-no" title="function not covered" >as</span>ync (req, resp) =&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
@@ -206,21 +212,21 @@ const getPrediction = <span class="fstat-no" title="function not covered" >as</s
 <span class="cstat-no" title="statement not covered" >                console.log('error', error)</span>
             });
 &nbsp;
-        // await axios.get(tomorrow.url)
-        //     .then((response) =&gt; {
-        //         rainfall = response?.data?.data?.timelines[0]?.intervals[0]?.values?.precipitationIntensity
-        //     })
-        //     .catch((error) =&gt; {
-        //         console.log('error', error)
-        //     });
+<span class="cstat-no" title="statement not covered" >        await axios.get('https://www.meteo.gov.lk/index.php?lang=en').then(<span class="fstat-no" title="function not covered" >re</span>sponse =&gt; {</span>
+            const $ = <span class="cstat-no" title="statement not covered" >cheerio.load(response.data)</span>
+            const title = <span class="cstat-no" title="statement not covered" >$('.last24title').last().text()</span>
+            const lastData = <span class="cstat-no" title="statement not covered" >title.split(' ')[2]</span>
+            const match = <span class="cstat-no" title="statement not covered" >lastData.match(/\d+(\.\d+)?/)</span>
+<span class="cstat-no" title="statement not covered" >            rainfall = match[0]</span>
+        })
 &nbsp;
         const request_data = <span class="cstat-no" title="statement not covered" >{</span>
-            N: sensorData.field1,
-            P: sensorData.field2,
-            K: sensorData.field3,
-            temperature: sensorData.field4,
-            humidity: sensorData.field5,
-            ph: sensorData.field6,
+            N: roundValues(sensorData.field1),
+            P: roundValues(sensorData.field2),
+            K: roundValues(sensorData.field3),
+            temperature: roundValues(sensorData.field4),
+            humidity: roundValues(sensorData.field5),
+            ph: roundValues(sensorData.field6),
             rainfall
         }
 &nbsp;
@@ -236,7 +242,7 @@ const getPrediction = <span class="fstat-no" title="function not covered" >as</s
         let res = <span class="cstat-no" title="statement not covered" >null</span>
 <span class="cstat-no" title="statement not covered" >        await axios.request(config)</span>
             .then(<span class="fstat-no" title="function not covered" >(r</span>esponse) =&gt; {
-<span class="cstat-no" title="statement not covered" >                res = predictionList[response.data.data]</span>
+<span class="cstat-no" title="statement not covered" >                res = {predictionResult: predictionList[response.data.data], sensorData: request_data}</span>
             })
             .catch(<span class="fstat-no" title="function not covered" >(e</span>rror) =&gt; {
 <span class="cstat-no" title="statement not covered" >                console.log('prediction error :', error.data);</span>
@@ -256,7 +262,7 @@ module.exports = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-04-19T09:19:24.609Z
+                at 2024-04-22T17:44:52.053Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -1,8 +1,9 @@
 // ** Checks if an object is empty (returns boolean)
 import Cookies from "js-cookie"
 import {COOKIES_TYPES} from "../consts/consts"
-import {getRainfallData, getSensorData} from "../services/sensorService"
+import {getSensorData} from "../services/sensorService"
 import moment from "moment/moment"
+import EnvData from "../modal/envData"
 
 export const isObjEmpty = obj => Object.keys(obj).length === 0
 
@@ -116,18 +117,28 @@ export const getSensorDataCommon = async () => {
         const temperature = []
         const ph = []
 
+        const currentData = res?.data?.currentData
+        const envData = new EnvData()
+        envData.n = currentData._n
+        envData.p = currentData._p
+        envData.k = currentData._k
+        envData.temperature = currentData._temperature
+        envData.humidity = currentData._humidity
+        envData.ph = currentData._ph
+        envData.rainfall = currentData._rainfall
+
         res?.data?.previousData?.map(item => {
-            dates.push(moment(item.date).format('hh:mm:ss'))
-            n.push(item.n)
-            p.push(item.p)
-            k.push(item.k)
-            humidity.push(item.humidity)
-            rainfall.push(item.rainfall)
-            temperature.push(item.temperature)
-            ph.push(item.ph)
+            dates.push(moment(item._date).format('hh:mm:ss'))
+            n.push(item._n)
+            p.push(item._p)
+            k.push(item._k)
+            humidity.push(item._humidity)
+            rainfall.push(item._rainfall)
+            temperature.push(item._temperature)
+            ph.push(item._ph)
         })
 
-        sensorData = {...res?.data, dates, n, p, k, humidity, rainfall, temperature, ph}
+        sensorData = {...res?.data, dates, n, p, k, humidity, rainfall, temperature, ph, currentData: envData}
     }
 
     return sensorData

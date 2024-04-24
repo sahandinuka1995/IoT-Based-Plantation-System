@@ -6,6 +6,7 @@ import {getAllUsers, deleteUser} from "../services/userService"
 import {getCookiesData} from "../utility/Utils"
 import AddUpdateModal from "../@core/components/user/addUpdateModal"
 import ConfirmationBox from "../@core/components/confirmation-box"
+import User from '../modal/user'
 
 const userData = getCookiesData()
 
@@ -18,7 +19,18 @@ const Users = () => {
     const loadAllUsers = async () => {
         const res = await getAllUsers()
         if (res?.status === 200) {
-            setTableData(res.data)
+            const userList = []
+            console.log(res)
+            res?.data?.map(item => {
+                console.log(item)
+                const user = new User()
+                user.id = item.id
+                user.name = item.name
+                user.role = item.role
+                user.username = item.username
+                userList.push(user)
+            })
+            setTableData(userList)
         }
     }
 
@@ -36,18 +48,12 @@ const Users = () => {
 
     const columns = [
         {
-            name: 'Name',
-            selector: row => row.name
-        },
-        {
-            name: 'Username',
-            selector: row => row.username
-        },
-        {
-            name: 'Role',
-            selector: row => row.role
-        },
-        {
+            name: 'Name', selector: row => row.name
+        }, {
+            name: 'Username', selector: row => row.username
+        }, {
+            name: 'Role', selector: row => row.role
+        }, {
             name: 'Actions',
             minWidth: '150px',
             selector: row => <div>

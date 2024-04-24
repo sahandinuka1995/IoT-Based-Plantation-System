@@ -82,7 +82,7 @@ const getAllUsers = async (req, resp) => {
         const [rows, fields] = await conn.query(GET_ALL_USERS)
         if (rows?.length > 0) {
             const userList = []
-            await resp.status(200).json(STATUS_200(rows.map(item => {
+            rows.map(item => {
                 // loop rows and make password as null for security
                 const user = new User()
                 user.id = item.id
@@ -90,9 +90,8 @@ const getAllUsers = async (req, resp) => {
                 user.role = item.role
                 user.username = item.username
                 userList.push(user)
-            })))
-
-            return userList
+            })
+            await resp.status(200).json(STATUS_200(userList))
         }
     } catch (err) {
         resp.status(500).json(STATUS_500)

@@ -11,13 +11,13 @@ import {toPng} from 'html-to-image'
 import moment from "moment/moment"
 
 const initialData = {
-    n: 0,
-    p: 0,
-    k: 0,
-    temperature: 0,
-    humidity: 0,
-    ph: 0,
-    rainfall: 0
+    _n: 0,
+    _p: 0,
+    _k: 0,
+    _temperature: 0,
+    _humidity: 0,
+    _ph: 0,
+    _rainfall: 0
 }
 
 const PlantFinder = () => {
@@ -28,6 +28,8 @@ const PlantFinder = () => {
     const [envInfo, setEnvInfo] = useState(null)
     const [counter, setCounter] = useState(5)
     const [sensorData, setSensorData] = useState(initialData)
+    const [date, setDate] = useState(null)
+    const [time, setTime] = useState(null)
 
     const loadData = async () => {
         const res = await getSensorDataCommon()
@@ -36,9 +38,9 @@ const PlantFinder = () => {
         }
     }
 
-    useEffect(async () => {
-        await loadData()
-    }, [])
+    // useEffect(async () => {
+    //     await loadData()
+    // }, [])
 
     useEffect(async () => {
         if (counter > 0) {
@@ -58,6 +60,8 @@ const PlantFinder = () => {
             await setEnvInfo(res.data.sensorData)
             await setResult(res.data.predictionResult)
             await setSteps(plansResultSteps.RESULT)
+            await setDate(moment().format('yyyy-MM-DD'))
+            await setTime(moment().format('HH:mm'))
         }
     }
 
@@ -202,8 +206,8 @@ const PlantFinder = () => {
 
                                             <div className={'mt-2 border-bottom-cus mb-2 pb-2'}>
                                                 <Label
-                                                    className={'d-block mb-0'}>Date: {moment().format('yyyy-MM-DD')}</Label>
-                                                <Label className={'d-block'}>Time: {moment().format('HH:mm')}</Label>
+                                                    className={'d-block mb-0'}>Date: {date}</Label>
+                                                <Label className={'d-block'}>Time: {time}</Label>
                                             </div>
                                         </Col>
 
@@ -213,34 +217,36 @@ const PlantFinder = () => {
                                             <div>
                                                 <b className={'d-block mb-1'}>Environmental Information</b>
                                                 <table>
+                                                    <tbody>
                                                     <tr>
                                                         <td className={'pr-1'}>Nitrogen (N):</td>
-                                                        <td>{envInfo?.N ?? 0}</td>
+                                                        <td>{envInfo?._n ?? 0}</td>
                                                     </tr>
                                                     <tr>
                                                         <td className={'pr-1'}>Potassium (P):</td>
-                                                        <td>{envInfo?.P ?? 0}</td>
+                                                        <td>{envInfo?._p ?? 0}</td>
                                                     </tr>
                                                     <tr>
                                                         <td className={'pr-1'}>Phosphorus (K):</td>
-                                                        <td>{envInfo?.K ?? 0}</td>
+                                                        <td>{envInfo?._k ?? 0}</td>
                                                     </tr>
                                                     <tr>
                                                         <td className={'pr-1'}>Temperature:</td>
-                                                        <td>{envInfo?.temperature ?? 0}</td>
+                                                        <td>{envInfo?._temperature ?? 0}</td>
                                                     </tr>
                                                     <tr>
                                                         <td className={'pr-1'}>Humidity:</td>
-                                                        <td>{envInfo?.humidity ?? 0}</td>
+                                                        <td>{envInfo?._humidity ?? 0}</td>
                                                     </tr>
                                                     <tr>
                                                         <td className={'pr-1'}>Rainfall:</td>
-                                                        <td>{envInfo?.rainfall ?? 0}</td>
+                                                        <td>{envInfo?._rainfall ?? 0}</td>
                                                     </tr>
                                                     <tr>
                                                         <td className={'pr-1'}>Ph:</td>
-                                                        <td>{envInfo?.ph ?? 0}</td>
+                                                        <td>{envInfo?._ph ?? 0}</td>
                                                     </tr>
+                                                    </tbody>
                                                 </table>
                                             </div>
                                         </Col>

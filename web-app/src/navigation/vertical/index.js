@@ -22,7 +22,7 @@ const navigation = [
     }
 ]
 
-if (data?.role === USER_ROLES.ADMIN) {
+if (data?._role === USER_ROLES.ADMIN) {
     navigation.push({
         id: 'users',
         title: 'Users',

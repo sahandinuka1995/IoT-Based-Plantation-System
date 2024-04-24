@@ -20,14 +20,12 @@ const Users = () => {
         const res = await getAllUsers()
         if (res?.status === 200) {
             const userList = []
-            console.log(res)
             res?.data?.map(item => {
-                console.log(item)
                 const user = new User()
-                user.id = item.id
-                user.name = item.name
-                user.role = item.role
-                user.username = item.username
+                user.id = item._id
+                user.name = item._name
+                user.role = item._role
+                user.username = item._username
                 userList.push(user)
             })
             setTableData(userList)
@@ -71,7 +69,7 @@ const Users = () => {
                             setSelectedRow(row)
                             setDeleteConfirm(true)
                         }}
-                        className={'ml-1'} disabled={userData?.id === row?.id}>
+                        className={'ml-1'} disabled={userData?._id === row?._id}>
                     <Trash size={15}/>
                 </Button>
             </div>

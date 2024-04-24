@@ -5,6 +5,7 @@ const {FIND_USER_BY_USERNAME} = require("../const/query")
 const {db} = require("../service/db")
 const jwt = require('jsonwebtoken')
 const {JWT_SECRET_KEY} = require("../config/keys");
+const {User} = require("../modal/user");
 
 const login = async (req, resp) => {
     try {
@@ -26,12 +27,16 @@ const login = async (req, resp) => {
                             userId: user.id,
                         }
                         let signedToken = jwt.sign(data, jwtSecretKey)
+
+                        const userModal = new User()
+                        userModal.id = user.id
+                        userModal.username = user.username
+                        userModal.name = user.name
+                        userModal.role = user.role
+
                         resp.status(200).json(STATUS_200({
                             access_token: signedToken,
-                            user: {
-                                ...user,
-                                password: null
-                            }
+                            user: userModal
                         }))
                     } else {
                         resp.status(404).json(STATUS_400('invalid password'))

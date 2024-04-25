@@ -1,0 +1,186 @@
+<!DOCTYPE HTML><html xmlns:jmeter="http://jmeter.apache.org/">
+   <title>Schematic view of Test Plan</title>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <style>
+ul.tree, ul.tree ul {
+    list-style-type: none;
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAKAQMAAABPHKYJAAAAA1BMVEWIiIhYZW6zAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH1ggGExMZBky19AAAAAtJREFUCNdjYMAEAAAUAAHlhrBKAAAAAElFTkSuQmCC') repeat-y;
+    margin: 0;
+    padding: 0;
+}
+ul.tree ul {
+    margin-left: 10px;
+}
+ul.tree li {
+    margin: 0;
+    padding: 0 12px;
+    line-height: 20px;
+    background:  url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAUAQMAAACK1e4oAAAABlBMVEUAAwCIiIgd2JB2AAAAAXRSTlMAQObYZgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9YIBhQIJYVaFGwAAAARSURBVAjXY2hgQIf/GTDFGgDSkwqATqpCHAAAAABJRU5ErkJggg==') no-repeat;
+    color: #369;
+}
+ul.tree li:last-child {
+    background: #fff url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAUAQMAAACK1e4oAAAABlBMVEUAAwCIiIgd2JB2AAAAAXRSTlMAQObYZgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9YIBhQIIhs+gc8AAAAQSURBVAjXY2hgQIf/GbAAAKCTBYBUjWvCAAAAAElFTkSuQmCC') no-repeat;
+}
+</style>
+   </head>
+   <body>
+      <ul class="tree" id="tree">
+         <li><b>load test </b>
+            "IoT Plantation" 
+            (globalVars:[],
+            executeTearDownThreadsOnShutdown: )
+            </li>
+         <li>
+            <ul>
+               <li><b>run</b>
+                  "Thread Group" 
+                  (
+                  threads: "",
+                  loops: "1",
+                  ramp-up: ""
+                  )
+                  </li>
+               <li>
+                  <ul>
+                     <li><b>http request</b>
+                        "Get All Sensor Data" 
+                        (method: "GET",
+                        url: "
+                        ://iot-based-plantation-system-nodejs.onrender.com://api/v1/prediction",
+                        
+                        body: [
+                        
+                        ]
+                        ,
+                        upload-files: [
+                        
+                        ]
+                        )
+                        </li>
+                     <li>
+                        <ul>
+                           <li><b>write samples</b>
+                              "View Results Tree" </li>
+                        </ul>
+                     </li>
+                     <li><b>http request</b>
+                        "Get All Users" 
+                        (method: "GET",
+                        url: "
+                        ://iot-based-plantation-system-nodejs.onrender.com://api/v1/user/get-all",
+                        
+                        body: [
+                        
+                        ]
+                        ,
+                        upload-files: [
+                        
+                        ]
+                        )
+                        </li>
+                     <li>
+                        <ul>
+                           <li><b>write samples</b>
+                              "View Results Tree" </li>
+                        </ul>
+                     </li>
+                     <li><b>http request</b>
+                        "Add New User" 
+                        (method: "POST",
+                        url: "
+                        ://iot-based-plantation-system-nodejs.onrender.com://api/v1/user/create",
+                        
+                        body: "{&#xD;
+                        	"name": "Sample User",&#xD;
+                        	"password": "1234",&#xD;
+                        	"role": "USER",&#xD;
+                        	"username": "sample"&#xD;
+                        }&#xD;
+                        "
+                        ,
+                        upload-files: [
+                        
+                        ]
+                        )
+                        </li>
+                     <li>
+                        <ul>
+                           <li><b>write samples</b>
+                              "View Results Tree" </li>
+                        </ul>
+                     </li>
+                     <li><b>http request</b>
+                        "Update User" 
+                        (method: "PUT",
+                        url: "
+                        ://iot-based-plantation-system-nodejs.onrender.com://api/v1/user/update/11",
+                        
+                        body: "{&#xD;
+                        	"name": "Updated Sample User",&#xD;
+                        	"password": "1234",&#xD;
+                        	"role": "USER",&#xD;
+                        	"username": "updated sample"&#xD;
+                        }&#xD;
+                        "
+                        ,
+                        upload-files: [
+                        
+                        ]
+                        )
+                        </li>
+                     <li>
+                        <ul>
+                           <li><b>write samples</b>
+                              "View Results Tree" </li>
+                        </ul>
+                     </li>
+                     <li><b>http request</b>
+                        "Delete User" 
+                        (method: "DELETE",
+                        url: "
+                        ://iot-based-plantation-system-nodejs.onrender.com://api/v1/user/delete/19",
+                        
+                        body: [
+                        
+                        ]
+                        ,
+                        upload-files: [
+                        
+                        ]
+                        )
+                        </li>
+                     <li>
+                        <ul>
+                           <li><b>write samples</b>
+                              "View Results Tree" </li>
+                        </ul>
+                     </li>
+                     <li><b>http request</b>
+                        "Get Prediction" 
+                        (method: "GET",
+                        url: "
+                        ://iot-based-plantation-system-nodejs.onrender.com://api/v1/prediction",
+                        
+                        body: [
+                        
+                        ]
+                        ,
+                        upload-files: [
+                        
+                        ]
+                        )
+                        </li>
+                     <li>
+                        <ul>
+                           <li><b>write samples</b>
+                              "View Results Tree" </li>
+                        </ul>
+                     </li>
+                  </ul>
+               </li>
+            </ul>
+         </li>
+      </ul>
+   </body>
+</html>

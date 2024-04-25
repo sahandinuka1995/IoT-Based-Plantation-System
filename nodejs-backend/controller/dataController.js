@@ -26,8 +26,6 @@ const saveData = async (req, resp) => {
         console.error(e)
         resp.status(500).json(STATUS_500)
     }
-
-    await closeDB()
 }
 
 const getSensorData = async (req, resp) => {

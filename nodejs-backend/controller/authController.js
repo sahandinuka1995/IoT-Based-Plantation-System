@@ -45,8 +45,6 @@ const login = async (req, resp) => {
             } else {
                 resp.status(404).json(STATUS_400('user not found'))
             }
-
-            await closeDB()
         }
     } catch (e) {
         resp.status(500).json(STATUS_500)

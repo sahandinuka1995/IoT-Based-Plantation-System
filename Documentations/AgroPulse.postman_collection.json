@@ -1,0 +1,189 @@
+{
+	"info": {
+		"_postman_id": "d6660d9f-48bb-483a-8099-45d32f576064",
+		"name": "AgroPulse",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11611849"
+	},
+	"item": [
+		{
+			"name": "User Management",
+			"item": [
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{iot-plantation}}/api/v1/user/get-all",
+							"host": [
+								"{{iot-plantation}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"get-all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"John Doe\",\r\n    \"username\": \"johndoe\",\r\n    \"password\": \"\",\r\n    \"role\": \"ADMIN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{iot-plantation}}/api/v1/user/update/11",
+							"host": [
+								"{{iot-plantation}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"update",
+								"11"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{iot-plantation}}/api/v1/user/delete/13",
+							"host": [
+								"{{iot-plantation}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"delete",
+								"13"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add New User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"John Doe\",\r\n    \"username\": \"johndoe\",\r\n    \"password\": \"1234\",\r\n    \"role\": \"ADMIN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{iot-plantation}}/api/v1/user/create",
+							"host": [
+								"{{iot-plantation}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"create"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get All Sensor Data",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{iot-plantation}}/api/v1/data/sensor-data",
+					"host": [
+						"{{iot-plantation}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"data",
+						"sensor-data"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find Plant",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{iot-plantation}}/api/v1/prediction",
+					"host": [
+						"{{iot-plantation}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"prediction"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "sahan",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "1234",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{iot-plantation}}/api/v1/auth/login",
+					"host": [
+						"{{iot-plantation}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

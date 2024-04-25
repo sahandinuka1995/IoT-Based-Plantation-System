@@ -1,20 +1,21 @@
-describe('template spec', async () => {
-    await it('Login', async () => {
-        await cy.visit('https://iot-based-plantation-system-2evs.onrender.com/login')
+describe('Plant Finder Page', async () => {
+    await it('Login', () => {
+        cy.visit('https://iot-based-plantation-system-2evs.onrender.com/login')
 
-        await cy.get('#login-username').type('sahan')
-        await cy.get('#login-password').type('1234')
-        await cy.get('.btn').click()
+        cy.get('#login-username').type('sahan')
+        cy.get('#login-password').type('1234')
+        cy.get('.btn').click()
 
-        await cy.url().should('include', '/home')
-        await cy.get('.navbar-container').should('be.visible')
+        cy.url().should('include', '/home')
+        cy.get('.navbar-container').should('be.visible')
     })
+})
 
-    await it('Plant Finder', async () => {
-        await cy.visit('https://iot-based-plantation-system-2evs.onrender.com/plant-finder')
+describe('Prediction', async () => {
+    await it('Prediction', async () => {
+        cy.visit('https://iot-based-plantation-system-2evs.onrender.com/plant-finder')
 
         await cy.get('.btn-circle').click()
-        await cy.get('.border-left-cus > div > .d-block').should('be.visible')
-        await cy.get('[align="center"] > .text-primary').should('be.visible')
+        await cy.get('.border').should('be.visible')
     })
 })

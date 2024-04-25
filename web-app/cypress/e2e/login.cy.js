@@ -15,10 +15,10 @@ describe('Login Page', async () => {
 
         await cy.get('#login-username').type('sahand')
         await cy.get('#login-password').type('1234')
-        // await cy.get('.btn').click()
-        //
-        // await cy.get('.go2072408551').should('be.visible')
-        // await cy.get('.go2072408551').should('contain', 'user not found')
+        await cy.get('.btn').click()
+
+        await cy.get('.go2072408551').should('be.visible')
+        await cy.get('.go2072408551').should('contain', 'user not found')
     })
 
     await it('Login with valid username and password', async () => {

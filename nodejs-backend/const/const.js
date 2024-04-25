@@ -23,10 +23,22 @@ const STATUS_200 = (data) => {
 // user roles
 const USER_ROLES = ['ADMIN', 'USER']
 
+// environmental types
+const ENV_TYPES = {
+    NITROGEN: 'NITROGEN',
+    PHOSPHORUS: 'PHOSPHORUS',
+    POTASSIUM: 'POTASSIUM',
+    HUMIDITY: 'HUMIDITY',
+    RAINFALL: 'RAINFALL',
+    TEMPERATURE: 'TEMPERATURE',
+    PH: 'PH'
+}
+
 module.exports = {
     BASE_PATH,
     STATUS_200,
     STATUS_500,
     STATUS_400,
-    USER_ROLES
+    USER_ROLES,
+    ENV_TYPES
 }

@@ -1,10 +1,10 @@
 const {ADD_DATA} = require("../const/query")
 const {db, closeDB} = require("../service/db")
-const {STATUS_200, STATUS_500} = require("../const/const")
+const {STATUS_200, STATUS_500, ENV_TYPES} = require("../const/const")
 const axios = require("axios")
 const cheerio = require('cheerio')
 const {thingspeak} = require("../config/thingspeak")
-const {roundValues} = require("../utils/commonFunc")
+const {ParseFloat} = require("../utils/commonFunc")
 const {EnvData} = require("../modal/envData")
 
 const saveData = async (req, resp) => {
@@ -47,22 +47,23 @@ const getSensorData = async (req, resp) => {
 
                 dataList.map((item, i) => {
                     const envTempModal = new EnvData();
-                    envTempModal.n = roundValues(item.field1)
-                    envTempModal.p = roundValues(item.field2)
-                    envTempModal.k = roundValues(item.field3)
-                    envTempModal.temperature = roundValues(item.field4)
-                    envTempModal.humidity = roundValues(item.field5)
-                    envTempModal.ph = roundValues(item.field6)
+                    envTempModal.n = ParseFloat(ENV_TYPES.NITROGEN, item.field1)
+                    envTempModal.p = ParseFloat(ENV_TYPES.PHOSPHORUS, item.field2)
+                    envTempModal.k = ParseFloat(ENV_TYPES.POTASSIUM, item.field3)
+                    envTempModal.temperature = ParseFloat(ENV_TYPES.TEMPERATURE, item.field4)
+                    envTempModal.humidity = ParseFloat(ENV_TYPES.HUMIDITY, item.field5)
+                    envTempModal.ph = ParseFloat(ENV_TYPES.PH, item.field6)
+                    envTempModal.rainfall = envModal.rainfall
                     envTempModal.date = item.created_at
 
                     previousData.push(envTempModal)
                     if (i === (dataList.length - 1)) {
-                        envModal.n = roundValues(item.field1)
-                        envModal.p = roundValues(item.field2)
-                        envModal.k = roundValues(item.field3)
-                        envModal.temperature = roundValues(item.field4)
-                        envModal.humidity = roundValues(item.field5)
-                        envModal.ph = roundValues(item.field6)
+                        envModal.n = ParseFloat(ENV_TYPES.NITROGEN, item.field1)
+                        envModal.p = ParseFloat(ENV_TYPES.PHOSPHORUS, item.field2)
+                        envModal.k = ParseFloat(ENV_TYPES.POTASSIUM, item.field3)
+                        envModal.temperature = ParseFloat(ENV_TYPES.TEMPERATURE, item.field4)
+                        envModal.humidity = ParseFloat(ENV_TYPES.HUMIDITY, item.field5)
+                        envModal.ph = ParseFloat(ENV_TYPES.PH, item.field6)
                     }
                 })
             })

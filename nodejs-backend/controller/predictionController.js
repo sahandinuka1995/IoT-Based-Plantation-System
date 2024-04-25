@@ -2,7 +2,7 @@ const {STATUS_200, STATUS_500} = require("../const/const")
 const axios = require('axios')
 const {thingspeak} = require("../config/thingspeak")
 const predictionList = require("../const/predictions")
-const {roundValues} = require("../utils/commonFunc");
+const {ParseFloat} = require("../utils/commonFunc");
 const cheerio = require("cheerio");
 const {EnvData} = require("../modal/envData")
 
@@ -13,12 +13,12 @@ const getPrediction = async (req, resp) => {
         await axios.get(`${thingspeak.url}/${thingspeak.channelId}/feeds.json?results=1`)
             .then((response) => {
                 const sensorData = response?.data?.feeds[0]
-                envModal.n = sensorData.field1
-                envModal.p = sensorData.field2
-                envModal.k = sensorData.field3
-                envModal.temperature = sensorData.field4
-                envModal.humidity = sensorData.field5
-                envModal.ph = sensorData.field6
+                envModal.n = ParseFloat(sensorData.field1)
+                envModal.p = ParseFloat(sensorData.field2)
+                envModal.k = ParseFloat(sensorData.field3)
+                envModal.temperature = ParseFloat(sensorData.field4)
+                envModal.humidity = ParseFloat(sensorData.field5)
+                envModal.ph = ParseFloat(sensorData.field6)
             })
             .catch((error) => {
                 console.log('error', error)

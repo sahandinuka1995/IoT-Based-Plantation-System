@@ -1,3 +1,4 @@
+const config = require('../config/db')
 const mysql = require('mysql2/promise')
 const {CREATE_DATABASE, CREATE_USER_TABLE, USE_DATABASE, ADD_ADMIN_USER, CREATE_DATA_TABLE} = require("../const/query")
 
@@ -6,15 +7,7 @@ const db = async () => {
     if (conn) return conn;
 
     try {
-        conn = await mysql.createPool({
-            host: process.env.DATABASE_HOST.trim(),
-            port: parseInt(process.env.DATABASE_PORT.trim(), 10),
-            user: process.env.DATABASE_USER.trim(),
-            password: process.env.DATABASE_PASSWORD.trim(),
-            database: process.env.DATABASE_NAME.trim(),
-            multipleStatements: true,
-            waitForConnections: true,
-        });
+        conn = await mysql.createPool(config)
 
         await conn.query(CREATE_DATABASE)
         await conn.query(USE_DATABASE)

@@ -42,17 +42,17 @@ const PlantFinder = () => {
     //     await loadData()
     // }, [])
 
-    useEffect(async () => {
-        if (counter > 0) {
-            const timer = setTimeout(() => setCounter(counter - 1), 1000)
-            return () => clearTimeout(timer)
-        } else {
-            await loadData()
-            setTimeout(() => {
-                setCounter(5)
-            }, 2000)
-        }
-    }, [counter])
+    // useEffect(async () => {
+    //     if (counter > 0) {
+    //         const timer = setTimeout(() => setCounter(counter - 1), 1000)
+    //         return () => clearTimeout(timer)
+    //     } else {
+    //         await loadData()
+    //         setTimeout(() => {
+    //             setCounter(5)
+    //         }, 2000)
+    //     }
+    // }, [counter])
 
     const onPredict = async () => {
         const res = await getPrediction()

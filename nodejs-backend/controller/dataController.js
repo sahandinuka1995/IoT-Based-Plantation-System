@@ -55,8 +55,8 @@ const getSensorData = async (req, resp) => {
                     envTempModal.ph = ParseFloat(ENV_TYPES.PH, item.field6)
                     envTempModal.rainfall = envModal.rainfall
                     envTempModal.date = item.created_at
-
                     previousData.push(envTempModal)
+
                     if (i === (dataList.length - 1)) {
                         envModal.n = ParseFloat(ENV_TYPES.NITROGEN, item.field1)
                         envModal.p = ParseFloat(ENV_TYPES.PHOSPHORUS, item.field2)

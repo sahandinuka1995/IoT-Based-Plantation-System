@@ -34,15 +34,13 @@ const ParseFloat = (type, value) => {
 
 const normalizeValue = (value, min, max) => {
     let sum = value
-    if (value < min || value > max) {
-        sum = sumDigits(value);
-        if (sum > 0) {
-            if (sum < min) sum += min
-            while (sum < min || sum > max) {
-                sum = sumDigits(sum);
-            }
-        }
+
+    if (value < min) value += min
+    sum = sumDigits(value)
+    while (sum >= max) {
+        sum = sumDigits(sum);
     }
+
     return sum
 }
 

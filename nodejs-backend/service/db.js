@@ -7,7 +7,7 @@ const db = async () => {
     if (conn) return conn;
 
     try {
-        conn = await mysql.createConnection(config)
+        conn = await mysql.createPool(config)
 
         await conn.query(CREATE_DATABASE)
         await conn.query(USE_DATABASE)

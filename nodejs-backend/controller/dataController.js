@@ -1,10 +1,10 @@
 const {ADD_DATA} = require("../const/query")
-const {db} = require("../service/db")
+const {db, closeDB} = require("../service/db")
 const {STATUS_200, STATUS_500} = require("../const/const")
 const axios = require("axios")
 const cheerio = require('cheerio')
-const {thingspeak} = require("../config/thingspeak");
-const {roundValues} = require("../utils/commonFunc");
+const {thingspeak} = require("../config/thingspeak")
+const {roundValues} = require("../utils/commonFunc")
 const {EnvData} = require("../modal/envData")
 
 const saveData = async (req, resp) => {
@@ -26,6 +26,8 @@ const saveData = async (req, resp) => {
         console.error(e)
         resp.status(500).json(STATUS_500)
     }
+
+    await closeDB()
 }
 
 const getSensorData = async (req, resp) => {

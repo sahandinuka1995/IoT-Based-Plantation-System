@@ -2,10 +2,10 @@ const {STATUS_500, STATUS_400, STATUS_200} = require("../const/const")
 const {authValidation} = require("../validation/auth")
 const bcrypt = require("bcrypt")
 const {FIND_USER_BY_USERNAME} = require("../const/query")
-const {db} = require("../service/db")
+const {db, closeDB} = require("../service/db")
 const jwt = require('jsonwebtoken')
-const {JWT_SECRET_KEY} = require("../config/keys");
-const {User} = require("../modal/user");
+const {JWT_SECRET_KEY} = require("../config/keys")
+const {User} = require("../modal/user")
 
 const login = async (req, resp) => {
     try {
@@ -45,6 +45,8 @@ const login = async (req, resp) => {
             } else {
                 resp.status(404).json(STATUS_400('user not found'))
             }
+
+            await closeDB()
         }
     } catch (e) {
         resp.status(500).json(STATUS_500)

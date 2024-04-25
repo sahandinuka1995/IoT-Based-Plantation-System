@@ -1,7 +1,7 @@
-const {db} = require("../service/db");
-const {GET_ALL_USERS, ADD_NEW_USER, FIND_USER_BY_ID, DELETE_USER_BY_ID, UPDATE_USER_BY_ID} = require("../const/query");
-const {userCreateValidation} = require("../validation/user");
-const {STATUS_400, STATUS_500, STATUS_200} = require("../const/const");
+const {db, closeDB} = require("../service/db")
+const {GET_ALL_USERS, ADD_NEW_USER, FIND_USER_BY_ID, DELETE_USER_BY_ID, UPDATE_USER_BY_ID} = require("../const/query")
+const {userCreateValidation} = require("../validation/user")
+const {STATUS_400, STATUS_500, STATUS_200} = require("../const/const")
 const bcrypt = require("bcrypt")
 const {User} = require("../modal/user")
 
@@ -23,6 +23,7 @@ const createUser = async (req, resp) => {
                 const conn = await db()
                 const result = await conn.query(sql)
                 resp.status(200).json(STATUS_200(result[0]))
+                await closeDB()
             });
         }
     } catch (err) {
@@ -54,6 +55,8 @@ const updateUser = async (req, resp) => {
             } else {
                 resp.status(400).json(STATUS_400("user not found"))
             }
+
+            await closeDB()
         }
     } catch (err) {
         resp.status(500).json(STATUS_500)
@@ -71,6 +74,8 @@ const deleteUser = async (req, resp) => {
         } else {
             resp.status(400).json(STATUS_400("user not found"))
         }
+
+        await closeDB()
     } catch (err) {
         resp.status(500).json(STATUS_500)
     }

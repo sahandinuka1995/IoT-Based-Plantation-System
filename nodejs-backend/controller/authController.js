@@ -21,7 +21,7 @@ const login = async (req, resp) => {
                 const user = rows[0]
                 bcrypt.compare(req.body.password, user.password, function (err, res) {
                     if (res) {
-                        let jwtSecretKey = JWT_SECRET_KEY
+                        let jwtSecretKey = process.env.JWT_SECRET_KEY.trim()
                         let data = {
                             time: Date(),
                             userId: user.id,

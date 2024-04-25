@@ -33,7 +33,6 @@ BRF:2
 BRH:2
 end_of_record
 TN:
-SF:config\db.js
 FNF:0
 FNH:0
 DA:1,1
@@ -451,7 +450,6 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:service\db.js
 FN:6,(anonymous_0)
 FN:25,(anonymous_1)
 FNF:2

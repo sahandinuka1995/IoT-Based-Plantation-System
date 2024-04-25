@@ -10,7 +10,7 @@ describe('template spec', () => {
     cy.get('.navbar-container').should('be.visible')
   })
 
-  it('passes', () => {
+  it('Plant Finder', () => {
     cy.visit('https://iot-based-plantation-system-2evs.onrender.com/plant-finder')
   })
 })

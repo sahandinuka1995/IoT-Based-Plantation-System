@@ -1,4 +1,4 @@
-const {STATUS_200, STATUS_500} = require("../const/const")
+const {STATUS_200, STATUS_500, ENV_TYPES} = require("../const/const")
 const axios = require('axios')
 const {thingspeak} = require("../config/thingspeak")
 const predictionList = require("../const/predictions")
@@ -13,12 +13,12 @@ const getPrediction = async (req, resp) => {
         await axios.get(`${thingspeak.url}/${thingspeak.channelId}/feeds.json?results=1`)
             .then((response) => {
                 const sensorData = response?.data?.feeds[0]
-                envModal.n = ParseFloat(sensorData.field1)
-                envModal.p = ParseFloat(sensorData.field2)
-                envModal.k = ParseFloat(sensorData.field3)
-                envModal.temperature = ParseFloat(sensorData.field4)
-                envModal.humidity = ParseFloat(sensorData.field5)
-                envModal.ph = ParseFloat(sensorData.field6)
+                envModal.n = ParseFloat(ENV_TYPES.NITROGEN, sensorData.field1)
+                envModal.p = ParseFloat(ENV_TYPES.PHOSPHORUS, sensorData.field2)
+                envModal.k = ParseFloat(ENV_TYPES.POTASSIUM, sensorData.field3)
+                envModal.temperature = ParseFloat(ENV_TYPES.TEMPERATURE, sensorData.field4)
+                envModal.humidity = ParseFloat(ENV_TYPES.HUMIDITY, sensorData.field5)
+                envModal.ph = ParseFloat(ENV_TYPES.PH, sensorData.field6)
             })
             .catch((error) => {
                 console.log('error', error)

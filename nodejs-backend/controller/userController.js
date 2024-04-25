@@ -23,7 +23,6 @@ const createUser = async (req, resp) => {
                 const conn = await db()
                 const result = await conn.query(sql)
                 resp.status(200).json(STATUS_200(result[0]))
-                await closeDB()
             });
         }
     } catch (err) {
@@ -55,8 +54,6 @@ const updateUser = async (req, resp) => {
             } else {
                 resp.status(400).json(STATUS_400("user not found"))
             }
-
-            await closeDB()
         }
     } catch (err) {
         resp.status(500).json(STATUS_500)
@@ -74,8 +71,6 @@ const deleteUser = async (req, resp) => {
         } else {
             resp.status(400).json(STATUS_400("user not found"))
         }
-
-        await closeDB()
     } catch (err) {
         resp.status(500).json(STATUS_500)
     }

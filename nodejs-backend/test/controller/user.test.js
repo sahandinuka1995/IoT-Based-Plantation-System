@@ -35,11 +35,11 @@ describe('User API Tests', () => {
                 username: 'janedoe',
                 password: 'newpassword123'
             };
-
+            console.log('user id ---', userId)
             const response = await request(app)
                 .put(`${BASE_PATH}/user/update/${userId}`)
                 .send(updatedData);
-
+            console.log(response.body)
             expect(response.statusCode).toBe(200);
             expect(response.body.message).toBe('Operation Successfully');
         });

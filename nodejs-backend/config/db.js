@@ -1,7 +1,7 @@
 const config = {
-    host: "sql6.freesqldatabase.com",
-    user: "sql6701700",
-    password: "arfp6G4t2e",
+    host: process.env.DATABASE_HOST.trim(),
+    user: process.env.DATABASE_USER.trim(),
+    password: process.env.DATABASE_PASSWORD.trim(),
     waitForConnections: true,
     connectionLimit: 10,
     maxIdle: 10, // max idle connections, the default value is the same as `connectionLimit`

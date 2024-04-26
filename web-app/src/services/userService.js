@@ -29,5 +29,6 @@ export const deleteUser = async (id) => {
     const apiObject = {}
     apiObject.method = 'delete'
     apiObject.endpoint = `user/delete/${id}`
+    apiObject.successToast = true
     return await apiHandler(apiObject)
 }

@@ -19,6 +19,18 @@ describe('View All Users', async () => {
     })
 })
 
+describe('Delete User', async () => {
+    await it('Delete User', async () => {
+        cy.visit('http://localhost:3000/users')
+
+        await cy.get('#btn-delete-1').click()
+        await cy.get('.modal-footer > .btn-primary').click()
+
+        await cy.get('.go2072408551').should('be.visible')
+        await cy.get('.go2072408551').should('contain', 'Operation Successfully')
+    })
+})
+
 describe('Update User', async () => {
     await it('Update User', async () => {
         await cy.visit('http://localhost:3000/users')

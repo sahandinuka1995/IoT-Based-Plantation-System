@@ -65,6 +65,7 @@ const Users = () => {
                 </Button>
 
                 <Button size={'sm'}
+                        id={`btn-delete-${i}`}
                         color={'danger'}
                         onClick={() => {
                             setSelectedRow(row)

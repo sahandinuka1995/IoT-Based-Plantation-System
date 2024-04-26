@@ -226,31 +226,31 @@ const Home = () => {
                             data={[
                                 {
                                     title: 'Nitrogen',
-                                    value: sensorData._n ?? 0,
+                                    value: `${sensorData._n ?? 0} mg`,
                                     color: 'success',
                                     icon: icnNitrogen
                                 },
                                 {
                                     title: 'Phosphorus',
-                                    value: sensorData._p ?? 0,
+                                    value: `${sensorData._p ?? 0} mg`,
                                     color: 'info',
                                     icon: icnPhosphorus
                                 },
                                 {
                                     title: 'Potassium',
-                                    value: sensorData._k ?? 0,
+                                    value: `${sensorData._k ?? 0} mg`,
                                     color: 'warning',
                                     icon: icnPotassium
                                 },
                                 {
                                     title: 'Humidity',
-                                    value: sensorData._humidity ?? 0,
+                                    value: `${sensorData._humidity ?? 0} %`,
                                     color: 'info',
                                     icon: icnHumidity
                                 },
                                 {
                                     title: 'Rainfall',
-                                    value: sensorData._rainfall ?? 0,
+                                    value: `${sensorData._rainfall ?? 0} mm`,
                                     color: 'info',
                                     icon: icnRainfall
                                 }

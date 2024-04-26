@@ -12,6 +12,7 @@ export const addNewUser = async (data) => {
     apiObject.method = 'post'
     apiObject.endpoint = 'user/create'
     apiObject.body = data
+    apiObject.successToast = true
     return await apiHandler(apiObject)
 }
 
@@ -20,6 +21,7 @@ export const updateUser = async (data, id) => {
     apiObject.method = 'put'
     apiObject.endpoint = `user/update/${id}`
     apiObject.body = data
+    apiObject.successToast = true
     return await apiHandler(apiObject)
 }
 

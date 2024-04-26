@@ -86,7 +86,7 @@ export const selectThemeColors = theme => ({
 
 export const getCookiesData = () => {
     const user = Cookies.get(COOKIES_TYPES.USER_DATA)
-    return JSON.parse(user)
+    return user ? JSON.parse(user) : null
 }
 
 export const findObject = (array, value) => {

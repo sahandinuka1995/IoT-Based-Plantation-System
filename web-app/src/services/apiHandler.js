@@ -23,6 +23,8 @@ export const apiHandler = async (apiObject) => {
                 data: apiObject.url ? response.data : response.data.data,
                 message: response.data.message
             }
+
+            if (apiObject.successToast) toast.success(response.data.message)
         })
         .catch(error => {
             // handle error

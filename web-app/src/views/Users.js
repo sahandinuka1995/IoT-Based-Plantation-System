@@ -54,8 +54,9 @@ const Users = () => {
         }, {
             name: 'Actions',
             minWidth: '150px',
-            selector: row => <div>
+            selector: (row, i) => <div key={i}>
                 <Button size={'sm'} color={'warning'}
+                        id={`btn-update-${i}`}
                         onClick={() => {
                             setSelectedRow(row)
                             setModal(true)

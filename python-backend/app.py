@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 
 def load_modal():
-    model_url = 'https://raw.githubusercontent.com/sahandinuka1995/iot-plantation-modal/master/model.pkl'
+    model_url = 'https://github.com/sahandinuka1995/iot-plantation-modal/raw/master/model.pkl'
     response = requests.get(model_url)
     if response.status_code == 200:
         return pickle.loads(response.content)

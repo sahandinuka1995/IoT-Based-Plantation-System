@@ -1,16 +1,25 @@
-import imgBeans from '../assets/images/icons/plants/icons8-kidney-beans-96.png'
-import imgMungBeans from '../assets/images/icons/plants/icons8-mung-bean-100.png'
-import imgPomegranate from '../assets/images/icons/plants/icons8-pomegrande-96.png'
-import imgBanana from '../assets/images/icons/plants/icons8-banana-96.png'
-import imgRice from '../assets/images/icons/plants/icons8-rice-48.png'
-import imgMaize from '../assets/images/icons/plants/icons8-maize-96.png'
-import imgMango from '../assets/images/icons/plants/icons8-mango-96.png'
-import imgJackfruit from '../assets/images/icons/plants/icons8-jackfruit-64.png'
-import imgWatermelon from '../assets/images/icons/plants/icons8-watermelon-100.png'
-import imgOrange from '../assets/images/icons/plants/icons8-orange-64.png'
-import imgPapaya from '../assets/images/icons/plants/icons8-papaya-96.png'
-import imgCoconut from '../assets/images/icons/plants/icons8-coconut-96.png'
-import imgCoffee from '../assets/images/icons/plants/icons8-coffee-96.png'
+import imgBanana from '../assets/images/icons/plants/banana.png'
+import imgCassava from '../assets/images/icons/plants/cassava.png'
+import imgCinnamon from '../assets/images/icons/plants/cinnamon.png'
+import imgCoconut from '../assets/images/icons/plants/coconut.png'
+import imgCoffee from '../assets/images/icons/plants/coffee.png'
+import imgGinger from '../assets/images/icons/plants/ginger.png'
+import imgMaize from '../assets/images/icons/plants/maize.png'
+import imgMango from '../assets/images/icons/plants/mango.png'
+import imgMungBeans from '../assets/images/icons/plants/mungbean.png'
+import imgOrange from '../assets/images/icons/plants/orange.png'
+import imgPapaya from '../assets/images/icons/plants/papaya.png'
+import imgPepper from '../assets/images/icons/plants/pepper.png'
+import imgPineapple from '../assets/images/icons/plants/pineapple.png'
+import imgPomegranate from '../assets/images/icons/plants/pomegranate.png'
+import imgPotatoes from '../assets/images/icons/plants/potatoes.png'
+import imgRice from '../assets/images/icons/plants/rice.png'
+import imgRubber from '../assets/images/icons/plants/rubber.png'
+import imgSugarcane from '../assets/images/icons/plants/sugarcane.png'
+import imgSpinach from '../assets/images/icons/plants/spinach.png'
+import imgTea from '../assets/images/icons/plants/tea.png'
+import imgTurmeric from '../assets/images/icons/plants/turmeric.png'
+import imgWatermelon from '../assets/images/icons/plants/watermelon.png'
 
 export const plansResultSteps = {
     FIND: 'FIND',
@@ -33,17 +42,26 @@ export const USER_ROLES_DROPDOWN = [
 ]
 
 export const PLANT_IMG_LIST = {
-    beans: imgBeans,
-    mungbean: imgMungBeans,
-    pomegranate: imgPomegranate,
     banana: imgBanana,
-    rice: imgRice,
+    cassava: imgCassava,
+    cinnamon: imgCinnamon,
+    coconut: imgCoconut,
+    coffee: imgCoffee,
+    ginger: imgGinger,
     maize: imgMaize,
     mango: imgMango,
-    jackfruit: imgJackfruit,
-    watermelon: imgWatermelon,
+    mungbean: imgMungBeans,
     orange: imgOrange,
     papaya: imgPapaya,
-    coconut: imgCoconut,
-    coffee: imgCoffee
+    pepper: imgPepper,
+    pineapple: imgPineapple,
+    pomegranate: imgPomegranate,
+    potatoes: imgPotatoes,
+    rice: imgRice,
+    rubber: imgRubber,
+    sugarcane: imgSugarcane,
+    spinach: imgSpinach,
+    tea: imgTea,
+    turmeric: imgTurmeric,
+    watermelon: imgWatermelon
 }

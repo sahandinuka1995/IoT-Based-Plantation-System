@@ -76,9 +76,9 @@ const Login = () => {
                                     <Label className='form-label' for='login-password'>
                                         Password
                                     </Label>
-                                    <Link to='/'>
-                                        <small>Forgot Password?</small>
-                                    </Link>
+                                    {/*<Link to='/'>*/}
+                                    {/*    <small>Forgot Password?</small>*/}
+                                    {/*</Link>*/}
                                 </div>
                                 <InputPasswordToggle
                                     value={formData.password}

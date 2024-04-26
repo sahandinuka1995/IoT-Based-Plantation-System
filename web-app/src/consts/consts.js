@@ -65,3 +65,5 @@ export const PLANT_IMG_LIST = {
     turmeric: imgTurmeric,
     watermelon: imgWatermelon
 }
+
+export const PH_COLORS = ['#EE3722', '#EE3479', '#F57E26', '#FBA923', '#F4EC08', '#A3CD39', '#4DB847', '#019247', '#059495', '#5175BA', '#454A9F', '#2A2F84', '#94248C', '#7B2779']

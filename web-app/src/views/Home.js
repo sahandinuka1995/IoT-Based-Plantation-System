@@ -8,6 +8,7 @@ import icnPotassium from '@src/assets/images/icons/icons8-potassium-64.png'
 import icnHumidity from '@src/assets/images/icons/icons8-humidity-48.png'
 import icnRainfall from '@src/assets/images/icons/icons8-rainfall-48.png'
 import {getSensorDataCommon} from "../utility/Utils"
+import {PH_COLORS} from "../consts/consts"
 
 const initialData = {
     _n: 0,
@@ -168,7 +169,7 @@ const Home = () => {
         },
         fill: {
             type: 'gradient',
-            colors: ['#0E9373'],
+            colors: ['#0d95d2'],
             gradient: {
                 gradientToColors: ['#ff5e62'],
                 stops: [0, 150],
@@ -176,7 +177,7 @@ const Home = () => {
             }
         },
         stroke: {
-            dashArray: 4
+            dashArray: 0
         },
         labels: ['Temperature']
     }
@@ -199,6 +200,9 @@ const Home = () => {
                     }
                 }
             }
+        },
+        fill: {
+            colors: [PH_COLORS[Number.parseInt(sensorData._ph)]]
         },
         labels: ['Ph']
     }

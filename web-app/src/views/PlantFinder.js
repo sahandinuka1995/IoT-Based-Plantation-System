@@ -220,27 +220,27 @@ const PlantFinder = () => {
                                                     <tbody>
                                                     <tr>
                                                         <td className={'pr-1'}>Nitrogen (N):</td>
-                                                        <td>{envInfo?._n ?? 0}</td>
+                                                        <td>{envInfo?._n ?? 0} mm</td>
                                                     </tr>
                                                     <tr>
                                                         <td className={'pr-1'}>Potassium (P):</td>
-                                                        <td>{envInfo?._p ?? 0}</td>
+                                                        <td>{envInfo?._p ?? 0} mm</td>
                                                     </tr>
                                                     <tr>
                                                         <td className={'pr-1'}>Phosphorus (K):</td>
-                                                        <td>{envInfo?._k ?? 0}</td>
+                                                        <td>{envInfo?._k ?? 0} mm</td>
                                                     </tr>
                                                     <tr>
                                                         <td className={'pr-1'}>Temperature:</td>
-                                                        <td>{envInfo?._temperature ?? 0}</td>
+                                                        <td>{envInfo?._temperature ?? 0} °C</td>
                                                     </tr>
                                                     <tr>
                                                         <td className={'pr-1'}>Humidity:</td>
-                                                        <td>{envInfo?._humidity ?? 0}</td>
+                                                        <td>{envInfo?._humidity ?? 0} %</td>
                                                     </tr>
                                                     <tr>
                                                         <td className={'pr-1'}>Rainfall:</td>
-                                                        <td>{envInfo?._rainfall ?? 0}</td>
+                                                        <td>{envInfo?._rainfall ?? 0} mm</td>
                                                     </tr>
                                                     <tr>
                                                         <td className={'pr-1'}>Ph:</td>

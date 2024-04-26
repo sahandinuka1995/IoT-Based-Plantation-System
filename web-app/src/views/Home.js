@@ -13,9 +13,9 @@ const initialData = {
     _n: 0,
     _p: 0,
     _k: 0,
-    _temperature: [],
+    _temperature: [0],
     _humidity: 0,
-    _ph: [],
+    _ph: [0],
     _rainfall: 0
 }
 

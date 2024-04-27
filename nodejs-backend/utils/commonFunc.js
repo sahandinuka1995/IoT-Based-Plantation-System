@@ -17,7 +17,7 @@ const ParseFloat = (type, value) => {
             break
 
         case ENV_TYPES.HUMIDITY:
-            result = normalizeValue(value, 1, 60)
+            result = normalizeValue(value, 1, 100)
             break
 
         case ENV_TYPES.TEMPERATURE:

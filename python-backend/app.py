@@ -22,8 +22,7 @@ def get():
 @app.post("/prediction")
 def prediction():
     try:
-        # loaded_model = load_modal()
-        loaded_model = pickle.load(open('model.pkl', 'rb'))
+        loaded_model = load_modal()
         data = request.get_json()
         new_data = {
             'N': [data['N']],

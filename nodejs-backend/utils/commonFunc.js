@@ -1,6 +1,6 @@
 const {ENV_TYPES} = require("../const/const")
 
-const ParseFloat = (type, value) => {
+const ParseFloat = (type, value, locationData) => {
     let result = value
 
     switch (type) {
@@ -29,7 +29,7 @@ const ParseFloat = (type, value) => {
             break
     }
 
-    return Number.parseFloat(result).toFixed(2)
+    return Number.parseFloat(locationData ? (result + locationData) : result).toFixed(2)
 }
 
 const normalizeValue = (value, min, max) => {

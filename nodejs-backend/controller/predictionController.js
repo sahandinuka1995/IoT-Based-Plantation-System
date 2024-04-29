@@ -1,4 +1,4 @@
-const {STATUS_200, STATUS_500, ENV_TYPES} = require("../const/const")
+const {STATUS_200, STATUS_500, ENV_TYPES, RAINFALL_LOCATIONS, STATUS_400} = require("../const/const")
 const axios = require('axios')
 const {thingspeak} = require("../config/thingspeak")
 const predictionList = require("../const/predictions")
@@ -9,6 +9,7 @@ const {EnvData} = require("../modal/envData")
 const getPrediction = async (req, resp) => {
     try {
         const envModal = new EnvData();
+        const locationData = RAINFALL_LOCATIONS[req?.query?.location] ?? RAINFALL_LOCATIONS.colombo
 
         await axios.get(`${thingspeak.url}/${thingspeak.channelId}/feeds.json?results=1`)
             .then((response) => {
@@ -17,19 +18,20 @@ const getPrediction = async (req, resp) => {
                 envModal.p = ParseFloat(ENV_TYPES.PHOSPHORUS, sensorData.field2)
                 envModal.k = ParseFloat(ENV_TYPES.POTASSIUM, sensorData.field3)
                 envModal.temperature = ParseFloat(ENV_TYPES.TEMPERATURE, sensorData.field4)
-                envModal.humidity = ParseFloat(ENV_TYPES.HUMIDITY, sensorData.field5)
+                envModal.humidity = ParseFloat(ENV_TYPES.HUMIDITY, sensorData.field5, locationData.humidity)
                 envModal.ph = ParseFloat(ENV_TYPES.PH, sensorData.field6)
             })
             .catch((error) => {
                 console.log('error', error)
+                resp.status(200).json(STATUS_400("Can't connect to thingspeak"))
             });
 
-        await axios.get('https://www.meteo.gov.lk/index.php?lang=en').then(response => {
+        const rainfallUrl = `https://www.meteoblue.com/en/weather/today/${locationData.name}_sri-lanka_${locationData.id}`
+        await axios.get(rainfallUrl).then(response => {
             const $ = cheerio.load(response.data)
-            const title = $('.last24title').last().text()
-            const lastData = title.split(' ')[2]
-            const match = lastData.match(/\d+(\.\d+)?/)
-            envModal.rainfall = match[0]
+
+            let rainfall = $('.precipitationamounts > td > .now').text()
+            envModal.rainfall = Number.parseFloat(rainfall)
         })
 
         const request_data = {
@@ -58,6 +60,7 @@ const getPrediction = async (req, resp) => {
             })
             .catch((error) => {
                 console.log('prediction error :', error.data);
+                //resp.status(200).json(STATUS_400("Something went wrong in prediction"))
             });
 
         await resp.status(200).json(STATUS_200(res))

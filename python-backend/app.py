@@ -9,6 +9,7 @@ app = Flask(__name__)
 def load_modal():
     # model_url = 'https://raw.githubusercontent.com/sahandinuka1995/iot-plantation-modal/old/model.pkl'
     model_url = 'https://firebasestorage.googleapis.com/v0/b/fir-demo-97ede.appspot.com/o/model.pkl?alt=media&token=d92ca22c-a888-4e68-89bd-10e646ddf2c4'
+    print(model_url)
     response = requests.get(model_url)
     print(response)
     if response.status_code == 200:

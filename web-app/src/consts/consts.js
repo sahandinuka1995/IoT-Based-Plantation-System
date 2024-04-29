@@ -67,3 +67,17 @@ export const PLANT_IMG_LIST = {
 }
 
 export const PH_COLORS = ['#EE3722', '#EE3479', '#F57E26', '#FBA923', '#F4EC08', '#A3CD39', '#4DB847', '#019247', '#059495', '#5175BA', '#454A9F', '#2A2F84', '#94248C', '#7B2779']
+
+export const PREDICTION_MODE = {
+    MANUAL: 'MANUAL',
+    AUTO: 'AUTO'
+}
+
+export const LOCATIONS = [
+    {value: 'colombo', label: 'Colombo'},
+    {value: 'galle', label: 'Galle'},
+    {value: 'panadura', label: 'Panadura'},
+    {value: 'matugama', label: 'Matugama'},
+    {value: 'horana', label: 'Horana'},
+    {value: 'ratnapura', label: 'Ratnapura'}
+]

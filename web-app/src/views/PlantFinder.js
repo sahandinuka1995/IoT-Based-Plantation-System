@@ -1,14 +1,15 @@
-import {Card, CardHeader, CardBody, CardTitle, CardText, Row, Col, Button, Label} from 'reactstrap'
+import {Card, CardHeader, CardBody, CardTitle, CardText, Row, Col, Button, Label, FormGroup} from 'reactstrap'
 import {useEffect, useRef, useState} from "react"
 import {plansResultSteps} from '@consts/consts'
 import {Search} from "react-feather"
 import '../assets/scss/custom-styles.scss'
 import icnLoader from '@src/assets/images/loader.gif'
 import {getPrediction} from "../services/predictService"
-import {PLANT_IMG_LIST} from "../consts/consts"
-import {getSensorDataCommon} from "../utility/Utils"
+import {LOCATIONS, PLANT_IMG_LIST, PREDICTION_MODE} from "../consts/consts"
+import {getSensorDataCommon, selectThemeColors} from "../utility/Utils"
 import {toPng} from 'html-to-image'
 import moment from "moment/moment"
+import Select from "react-select"
 
 const initialData = {
     _n: 0,
@@ -30,6 +31,8 @@ const PlantFinder = () => {
     const [sensorData, setSensorData] = useState(initialData)
     const [date, setDate] = useState(null)
     const [time, setTime] = useState(null)
+    const [mode, setMode] = useState(PREDICTION_MODE.AUTO)
+    const [location, setLocation] = useState(LOCATIONS[0])
 
     const loadData = async () => {
         const res = await getSensorDataCommon()
@@ -55,10 +58,10 @@ const PlantFinder = () => {
     // }, [counter])
 
     const onPredict = async () => {
-        const res = await getPrediction()
+        const res = await getPrediction(location)
         if (res.status === 200) {
-            await setEnvInfo(res.data.sensorData)
-            await setResult(res.data.predictionResult)
+            await setEnvInfo(res?.data?.sensorData)
+            await setResult(res?.data?.predictionResult)
             await setSteps(plansResultSteps.RESULT)
             await setDate(moment().format('yyyy-MM-DD'))
             await setTime(moment().format('HH:mm'))
@@ -134,7 +137,7 @@ const PlantFinder = () => {
 
         <Card>
             <CardHeader className={'border-bottom'}>
-                <CardTitle>
+                <CardTitle className={'w-100'}>
                     <b>Plant Finder</b>
                 </CardTitle>
             </CardHeader>
@@ -188,84 +191,127 @@ const PlantFinder = () => {
                     {/*    </CardText>*/}
                     {/*</Col>*/}
                     <Col md={12}
-                         style={steps === plansResultSteps.FIND ? {
-                             display: 'flex',
-                             justifyContent: 'center',
-                             alignItems: 'center'
-                         } : {}}>
+                        // style={steps === plansResultSteps.FIND ? {
+                        //     display: 'flex',
+                        //     justifyContent: 'center',
+                        //     alignItems: 'center'
+                        // } : {}}
+                    >
                         <CardText>
-                            {(steps === plansResultSteps.RESULT && !loader) && <div align={'center'} ref={elementRef}>
-                                <div className={'d-flex justify-content-center p-2'}>
-                                    <Row className={'border p-2 align-items-center bg-white'}
-                                         style={{maxWidth: 800, borderRadius: 6}}>
-                                        <Col md={3}>
-                                            <div align={'center'}>
-                                                <img src={PLANT_IMG_LIST[result.name.toLowerCase()]} width={100}/>
-                                                <h4 className={'text-primary mt-1'}>{result.name}</h4>
-                                            </div>
+                            {(steps === plansResultSteps.RESULT && !loader) &&
+                                <div align={'center'} ref={elementRef}>
+                                    <div className={'d-flex justify-content-center p-2'}>
+                                        <Row className={'border p-2 align-items-center bg-white'}
+                                             style={{maxWidth: 800, borderRadius: 6}}>
+                                            <Col md={3}>
+                                                <div align={'center'}>
+                                                    <img src={PLANT_IMG_LIST[result.name.toLowerCase()]}
+                                                         width={100}/>
+                                                    <h4 className={'text-primary mt-1'}>{result.name}</h4>
+                                                </div>
 
-                                            <div className={'mt-2 border-bottom-cus mb-2 pb-2'}>
-                                                <Label
-                                                    className={'d-block mb-0'}>Date: {date}</Label>
-                                                <Label className={'d-block'}>Time: {time}</Label>
-                                            </div>
-                                        </Col>
+                                                <div className={'mt-2 border-bottom-cus mb-2 pb-2'}>
+                                                    <Label
+                                                        className={'d-block mb-0'}>Date: {date}</Label>
+                                                    <Label className={'d-block'}>Time: {time}</Label>
+                                                </div>
+                                            </Col>
 
-                                        <Col md={9} align={'left'} className={'border-left-cus'}>
-                                            <p>{result.description}</p>
+                                            <Col md={9} align={'left'} className={'border-left-cus'}>
+                                                <p>{result.description}</p>
 
-                                            <div>
-                                                <b className={'d-block mb-1'}>Environmental Information</b>
-                                                <table>
-                                                    <tbody>
-                                                    <tr>
-                                                        <td className={'pr-1'}>Nitrogen (N):</td>
-                                                        <td>{envInfo?._n ?? 0} mm</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className={'pr-1'}>Potassium (P):</td>
-                                                        <td>{envInfo?._p ?? 0} mm</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className={'pr-1'}>Phosphorus (K):</td>
-                                                        <td>{envInfo?._k ?? 0} mm</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className={'pr-1'}>Temperature:</td>
-                                                        <td>{envInfo?._temperature ?? 0} °C</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className={'pr-1'}>Humidity:</td>
-                                                        <td>{envInfo?._humidity ?? 0} %</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className={'pr-1'}>Rainfall:</td>
-                                                        <td>{envInfo?._rainfall ?? 0} mm</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className={'pr-1'}>Ph:</td>
-                                                        <td>{envInfo?._ph ?? 0}</td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </Col>
-                                    </Row>
-                                </div>
+                                                <div>
+                                                    <b className={'d-block mb-1'}>Environmental Information</b>
+                                                    <table>
+                                                        <tbody>
+                                                        <tr>
+                                                            <td className={'pr-1'}>Nitrogen (N):</td>
+                                                            <td>{envInfo?._n ?? 0} mm</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td className={'pr-1'}>Potassium (P):</td>
+                                                            <td>{envInfo?._p ?? 0} mm</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td className={'pr-1'}>Phosphorus (K):</td>
+                                                            <td>{envInfo?._k ?? 0} mm</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td className={'pr-1'}>Temperature:</td>
+                                                            <td>{envInfo?._temperature ?? 0} °C</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td className={'pr-1'}>Humidity:</td>
+                                                            <td>{envInfo?._humidity ?? 0} %</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td className={'pr-1'}>Rainfall:</td>
+                                                            <td>{envInfo?._rainfall ?? 0} mm</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td className={'pr-1'}>Ph:</td>
+                                                            <td>{envInfo?._ph ?? 0}</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </Col>
+                                        </Row>
+                                    </div>
 
-                                <p className={'text-white'}>
-                                    This report was generated using AgroPulse | Developed by Sahan Dinuka
-                                </p>
-                            </div>}
+                                    <p className={'text-white'}>
+                                        This report was generated using AgroPulse | Developed by Sahan Dinuka
+                                    </p>
+                                </div>}
 
                             {(steps === plansResultSteps.FIND && !loader) &&
-                                <div align={'center fade'} className={'mt-2'}>
-                                    <div className={'btn-circle'}
-                                         onClick={loaderHandler}>
-                                        <Search size={15} style={{marginRight: 5}}/>
-                                        Find Plant
-                                    </div>
-                                </div>}
+                                <Row>
+                                    <Col md={6}>
+                                        <FormGroup>
+                                            <Label className={'d-block'}>Mode</Label>
+                                            <Button color={'primary'}
+                                                    className={'w-50'}
+                                                    style={{borderRadius: '0.358rem 0 0 0.358rem'}}
+                                                    outline={mode === PREDICTION_MODE.MANUAL}
+                                                    onClick={() => setMode(PREDICTION_MODE.AUTO)}
+                                            >
+                                                Auto Mode
+                                            </Button>
+
+                                            <Button color={'primary'}
+                                                    className={'w-50'}
+                                                    style={{borderRadius: '0 0.358rem 0.358rem 0'}}
+                                                    outline={mode === PREDICTION_MODE.AUTO}
+                                                    onClick={() => setMode(PREDICTION_MODE.MANUAL)}
+                                            >
+                                                Manual Mode
+                                            </Button>
+                                        </FormGroup>
+
+                                        {mode === PREDICTION_MODE.MANUAL && <FormGroup>
+                                            <Label>Location</Label>
+                                            <Select
+                                                theme={selectThemeColors}
+                                                className='react-select'
+                                                classNamePrefix='select'
+                                                defaultValue={LOCATIONS[0]}
+                                                value={location}
+                                                options={LOCATIONS}
+                                                isClearable={false}
+                                                onChange={setLocation}
+                                            />
+                                        </FormGroup>}
+                                    </Col>
+                                    <Col md={6}>
+                                        <div align={'center fade'} className={'mt-2 d-flex justify-content-center'}>
+                                            <div className={'btn-circle'}
+                                                 onClick={loaderHandler}>
+                                                <Search size={15} style={{marginRight: 5}}/>
+                                                Find Plant
+                                            </div>
+                                        </div>
+                                    </Col>
+                                </Row>}
 
                             {
                                 (steps === plansResultSteps.RESULT && !loader) && <div align={'center'}>

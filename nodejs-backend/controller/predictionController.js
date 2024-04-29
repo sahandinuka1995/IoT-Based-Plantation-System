@@ -31,6 +31,7 @@ const getPrediction = async (req, resp) => {
             const $ = cheerio.load(response.data)
 
             let rainfall = $('.precipitationamounts > td > .now').text()
+            console.log(rainfall)
             envModal.rainfall = Number.parseFloat(rainfall)
         })
 
@@ -55,15 +56,15 @@ const getPrediction = async (req, resp) => {
 
         let res = null
         await axios.request(config)
-            .then((response) => {
+            .then(async (response) => {
                 res = {predictionResult: predictionList[response.data.data], sensorData: envModal}
+                await resp.status(200).json(STATUS_200(res))
             })
             .catch((error) => {
                 console.log('prediction error :', error.data);
-                //resp.status(200).json(STATUS_400("Something went wrong in prediction"))
+                resp.status(200).json(STATUS_400("Something went wrong in prediction"))
             });
 
-        await resp.status(200).json(STATUS_200(res))
     } catch (e) {
         await resp.status(500).json(STATUS_500)
     }

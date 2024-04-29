@@ -7,8 +7,9 @@ app = Flask(__name__)
 
 
 def load_modal():
-    model_url = 'https://raw.githubusercontent.com/sahandinuka1995/iot-plantation-modal/master/model.pkl'
+    model_url = 'https://raw.githubusercontent.com/sahandinuka1995/iot-plantation-modal/old/model.pkl'
     response = requests.get(model_url)
+    print(response)
     if response.status_code == 200:
         return pickle.loads(response.content)
 
@@ -21,7 +22,8 @@ def get():
 @app.post("/prediction")
 def prediction():
     try:
-        loaded_model = load_modal()
+        # loaded_model = load_modal()
+        loaded_model = pickle.load(open('model.pkl', 'rb'))
         data = request.get_json()
         new_data = {
             'N': [data['N']],
@@ -43,6 +45,6 @@ def prediction():
     except:
         return jsonify({
             "status": 400,
-            "data": null,
+            "data": "",
             "message": 'Something went wrong'
         })

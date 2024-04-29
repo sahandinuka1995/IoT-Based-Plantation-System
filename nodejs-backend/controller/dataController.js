@@ -30,15 +30,15 @@ const saveData = async (req, resp) => {
 
 const getSensorData = async (req, resp) => {
     try {
+        // console.log(req.query)
         const envModal = new EnvData();
         const previousData = []
 
-        await axios.get('https://www.meteo.gov.lk/index.php?lang=en').then(response => {
+        await axios.get('https://www.meteoblue.com/en/weather/today/colombo_sri-lanka_1248991').then(response => {
             const $ = cheerio.load(response.data)
-            const title = $('.last24title').last().text()
-            const lastData = title.split(' ')[2]
-            const match = lastData.match(/\d+(\.\d+)?/)
-            envModal.rainfall = match[0]
+
+            let rainfall = $('.precipitationamounts > td > .now').text()
+            envModal.rainfall = Number.parseFloat(rainfall)
         })
 
         await axios.get(`${thingspeak.url}/${thingspeak.channelId}/feeds.json?results=10`)

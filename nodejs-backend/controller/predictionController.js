@@ -31,7 +31,6 @@ const getPrediction = async (req, resp) => {
             const $ = cheerio.load(response.data)
 
             let rainfall = $('.precipitationamounts > td > .now').text()
-            console.log(rainfall)
             envModal.rainfall = Number.parseFloat(rainfall)
         })
 

@@ -23,7 +23,7 @@ const getPrediction = async (req, resp) => {
             })
             .catch((error) => {
                 console.log('error', error)
-                resp.status(200).json(STATUS_400("Can't connect to thingspeak"))
+                // resp.status(200).json(STATUS_400("Can't connect to thingspeak"))
             });
 
         const rainfallUrl = `https://www.meteoblue.com/en/weather/today/${locationData.name}_sri-lanka_${locationData.id}`
@@ -61,7 +61,7 @@ const getPrediction = async (req, resp) => {
             })
             .catch((error) => {
                 console.log('prediction error :', error.data);
-                resp.status(200).json(STATUS_400("Something went wrong in prediction"))
+                // resp.status(200).json(STATUS_400("Something went wrong in prediction"))
             });
 
     } catch (e) {

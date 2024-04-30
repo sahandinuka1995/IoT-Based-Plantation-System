@@ -43,22 +43,22 @@ const RAINFALL_LOCATIONS = {
     panadura: {
         name: 'panadura',
         id: 1231410,
-        humidity: 60
+        humidity: 90
     },
     colombo: {
         name: 'colombo',
         id: 1248991,
-        humidity: 50
+        humidity: 20
     },
     matugama: {
         name: 'matugama',
         id: 1235806,
-        humidity: 70
+        humidity: 205
     },
     horana: {
         name: 'horana-south',
         id: 1243867,
-        humidity: 30
+        humidity: 188
     },
     ratnapura: {
         name: 'idangoda',

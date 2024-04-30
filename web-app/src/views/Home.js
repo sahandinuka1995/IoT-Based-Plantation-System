@@ -7,8 +7,9 @@ import icnPhosphorus from '@src/assets/images/icons/icons8-phosphorus-64.png'
 import icnPotassium from '@src/assets/images/icons/icons8-potassium-64.png'
 import icnHumidity from '@src/assets/images/icons/icons8-humidity-48.png'
 import icnRainfall from '@src/assets/images/icons/icons8-rainfall-48.png'
-import {getSensorDataCommon} from "../utility/Utils"
+import {getSensorDataCommon, requestLocation} from "../utility/Utils"
 import {PH_COLORS} from "../consts/consts"
+import toast from "react-hot-toast"
 
 const initialData = {
     _n: 0,
@@ -24,6 +25,7 @@ const Home = () => {
     const [sensorData, setSensorData] = useState(initialData)
     const [sensorDataList, setSensorDataList] = useState(null)
     const [dateList, setDateList] = useState([])
+    const [location, setLocation] = useState(null)
     const [counter, setCounter] = useState(5)
 
     const loadData = async () => {
@@ -43,7 +45,13 @@ const Home = () => {
         }
     }
 
+    const requireLocation = async () => {
+        const res = await requestLocation()
+        if (res) setLocation(res)
+    }
+
     useEffect(() => {
+        requireLocation()
         loadData()
     }, [])
 
@@ -207,7 +215,8 @@ const Home = () => {
         labels: ['Ph']
     }
 
-    return (<Row>
+    return (<>
+        <Row>
             <Col md={7}>
                 <Card>
                     <CardHeader className={'border-bottom mb-2 d-flex justify-content-between'}>
@@ -278,7 +287,7 @@ const Home = () => {
                 </Row>
             </Col>
         </Row>
-    )
+    </>)
 }
 
 export default Home

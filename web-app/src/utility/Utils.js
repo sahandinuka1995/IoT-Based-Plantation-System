@@ -4,6 +4,7 @@ import {COOKIES_TYPES} from "../consts/consts"
 import {getSensorData} from "../services/sensorService"
 import moment from "moment/moment"
 import EnvData from "../modal/envData"
+import toast from "react-hot-toast"
 
 export const isObjEmpty = obj => Object.keys(obj).length === 0
 
@@ -134,4 +135,30 @@ export const getSensorDataCommon = async () => {
     }
 
     return sensorData
+}
+
+export const requestLocation = async () => {
+    await navigator.geolocation.getCurrentPosition(
+        position => {
+            return ({
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude
+            })
+        },
+        err => {
+            if (err.code === 1) toast.success('If location permission is not granted, the system will not be able to provide rainfall information', {
+                style: {
+                    border: '1px solid #FFB02E',
+                    padding: '16px',
+                    color: '#e07218'
+                },
+                iconTheme: {
+                    primary: '#e07218',
+                    secondary: '#FFFAEE'
+                },
+                icon: '⚠️',
+                duration: 6000
+            })
+        }
+    )
 }

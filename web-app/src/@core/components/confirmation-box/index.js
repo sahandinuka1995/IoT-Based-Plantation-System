@@ -15,7 +15,7 @@ const ConfirmationBox = (props) => {
         </ModalBody>
         <ModalFooter>
             <Button onClick={yesAction} color={'primary'}>{yesLabel}</Button>
-            <Button onClick={noAction} color={'secondary'} outline>{noLabel}</Button>
+            {noLabel && <Button onClick={noAction} color={'secondary'} outline>{noLabel}</Button>}
         </ModalFooter>
     </Modal>
 }

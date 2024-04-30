@@ -9,7 +9,7 @@ const {EnvData} = require("../modal/envData")
 const getPrediction = async (req, resp) => {
     try {
         const envModal = new EnvData();
-        const locationData = RAINFALL_LOCATIONS[req?.query?.location] ?? RAINFALL_LOCATIONS.colombo
+        const locationData = RAINFALL_LOCATIONS[req?.query?.location] ?? RAINFALL_LOCATIONS.kalubowila
 
         await axios.get(`${thingspeak.url}/${thingspeak.channelId}/feeds.json?results=1`)
             .then((response) => {

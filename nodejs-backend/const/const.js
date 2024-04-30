@@ -35,10 +35,13 @@ const ENV_TYPES = {
 }
 
 const RAINFALL_LOCATIONS = {
-    galle: {
-        name: 'galle',
-        id: 1246294,
-        humidity: 40
+    ampara: {
+        name: 'ampara',
+        id: 1251459,
+        humidity: 60,
+        n: 40,
+        p: 60,
+        k: 20
     },
     panadura: {
         name: 'panadura',
@@ -58,7 +61,10 @@ const RAINFALL_LOCATIONS = {
     horana: {
         name: 'horana-south',
         id: 1243867,
-        humidity: 188
+        humidity: 90,
+        n: 100,
+        p: 30,
+        k: 20
     },
     ratnapura: {
         name: 'idangoda',

@@ -14,7 +14,7 @@ const getPrediction = async (req, resp) => {
         await axios.get(`${thingspeak.url}/${thingspeak.channelId}/feeds.json?results=1`)
             .then((response) => {
                 const sensorData = response?.data?.feeds[0]
-                envModal.n = ParseFloat(ENV_TYPES.NITROGEN, sensorData.field1)
+                envModal.n = ParseFloat(ENV_TYPES.NITROGEN, sensorData.field1, locationData.n)
                 envModal.p = ParseFloat(ENV_TYPES.PHOSPHORUS, sensorData.field2)
                 envModal.k = ParseFloat(ENV_TYPES.POTASSIUM, sensorData.field3)
                 envModal.temperature = ParseFloat(ENV_TYPES.TEMPERATURE, sensorData.field4)

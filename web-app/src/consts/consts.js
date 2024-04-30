@@ -74,8 +74,8 @@ export const PREDICTION_MODE = {
 }
 
 export const LOCATIONS = [
-    {value: 'colombo', label: 'Colombo'},
-    {value: 'galle', label: 'Galle'},
+    {value: 'ampara', label: 'Ampara'},
+    {value: 'kalubowila', label: 'Kalubowila'},
     {value: 'panadura', label: 'Panadura'},
     {value: 'matugama', label: 'Matugama'},
     {value: 'horana', label: 'Horana'},

@@ -32,7 +32,7 @@ const PlantFinder = () => {
     const [date, setDate] = useState(null)
     const [time, setTime] = useState(null)
     const [mode, setMode] = useState(PREDICTION_MODE.AUTO)
-    const [location, setLocation] = useState(LOCATIONS[0])
+    const [location, setLocation] = useState(null)
 
     const loadData = async () => {
         const res = await getSensorDataCommon()
@@ -273,7 +273,10 @@ const PlantFinder = () => {
                                                     className={'w-50'}
                                                     style={{borderRadius: '0.358rem 0 0 0.358rem'}}
                                                     outline={mode === PREDICTION_MODE.MANUAL}
-                                                    onClick={() => setMode(PREDICTION_MODE.AUTO)}
+                                                    onClick={() => {
+                                                        setMode(PREDICTION_MODE.AUTO)
+                                                        setLocation(null)
+                                                    }}
                                             >
                                                 Auto Mode
                                             </Button>
@@ -282,13 +285,16 @@ const PlantFinder = () => {
                                                     className={'w-50'}
                                                     style={{borderRadius: '0 0.358rem 0.358rem 0'}}
                                                     outline={mode === PREDICTION_MODE.AUTO}
-                                                    onClick={() => setMode(PREDICTION_MODE.MANUAL)}
+                                                    onClick={() => {
+                                                        setMode(PREDICTION_MODE.MANUAL)
+                                                        setLocation(LOCATIONS[0])
+                                                    }}
                                             >
                                                 Manual Mode
                                             </Button>
                                         </FormGroup>
 
-                                        {mode === PREDICTION_MODE.MANUAL && <FormGroup>
+                                        <FormGroup>
                                             <Label>Location</Label>
                                             <Select
                                                 theme={selectThemeColors}
@@ -299,8 +305,10 @@ const PlantFinder = () => {
                                                 options={LOCATIONS}
                                                 isClearable={false}
                                                 onChange={setLocation}
+                                                placeholder={'Select location'}
+                                                isDisabled={mode === PREDICTION_MODE.AUTO}
                                             />
-                                        </FormGroup>}
+                                        </FormGroup>
                                     </Col>
                                     <Col md={6}>
                                         <div align={'center fade'} className={'mt-2 d-flex justify-content-center'}>

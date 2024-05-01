@@ -54,10 +54,10 @@ const RAINFALL_LOCATIONS = {
     kalubowila: {
         name: 'kalubowila',
         id: 1242067,
-        humidity: 50,
+        humidity: 30,
         n: 30,
-        p: 50,
-        k: 20
+        p: 70,
+        k: 10
     },
     matugama: {
         name: 'matugama',

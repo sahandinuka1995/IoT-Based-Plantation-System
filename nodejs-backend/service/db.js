@@ -16,7 +16,7 @@ const db = async () => {
         await conn.query(CREATE_DATA_TABLE)
 
         return conn
-    } catch (e) {
+    } catch (error) {
         console.error('DB connection error:', error);
         throw error;
     }

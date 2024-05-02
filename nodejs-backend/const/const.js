@@ -82,6 +82,14 @@ const RAINFALL_LOCATIONS = {
         n: 30,
         p: 60,
         k: 20
+    },
+    galle: {
+        name: 'galle',
+        id: 1246294,
+        humidity: 0,
+        n: 0,
+        p: 0,
+        k: 0
     }
 }
 

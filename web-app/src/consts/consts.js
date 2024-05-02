@@ -79,5 +79,6 @@ export const LOCATIONS = [
     {value: 'panadura', label: 'Panadura'},
     {value: 'matugama', label: 'Matugama'},
     {value: 'horana', label: 'Horana'},
-    {value: 'ratnapura', label: 'Ratnapura'}
+    {value: 'ratnapura', label: 'Ratnapura'},
+    {value: 'galle', label: 'Galle'}
 ]

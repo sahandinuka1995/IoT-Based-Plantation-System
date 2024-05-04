@@ -1,4 +1,4 @@
-const SERVER_URL = "https://iot-based-plantation-system-nodejs.onrender.com"
+const SERVER_URL = ""
 const VERSION = "/api/v1"
 
 export const SERVER_PATH = {

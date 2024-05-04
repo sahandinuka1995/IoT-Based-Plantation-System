@@ -11,8 +11,8 @@ const char* password = "sahan1234";
 SoftwareSerial mySerial(5, 4);  // RX, TX
 
 String server = "https://api.thingspeak.com";
-unsigned long myChannelNumber = 2483610;
-String myWriteAPIKey = "TI4TSDD5MQ4RXNBY";
+unsigned long myChannelNumber = 1234567;
+String myWriteAPIKey = "GHFGHFGHFG";
 
 int RX_LED = 12;
 int TX_LED = 13;

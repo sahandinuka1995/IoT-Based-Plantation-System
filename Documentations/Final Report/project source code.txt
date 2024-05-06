@@ -1,0 +1,8 @@
+GitHub Repository URL
+https://github.com/sahandinuka1995/IoT-Based-Plantation-System.git
+
+WebApp URL
+https://iot-based-plantation-system-2evs.onrender.com/
+
+Username - sahan
+Password - 1234

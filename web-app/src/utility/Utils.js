@@ -138,12 +138,13 @@ export const getSensorDataCommon = async () => {
 }
 
 export const requestLocation = async () => {
+    let result = null
     await navigator.geolocation.getCurrentPosition(
-        position => {
-            return ({
+        async position => {
+            result = {
                 latitude: position.coords.latitude,
                 longitude: position.coords.longitude
-            })
+            }
         },
         err => {
             if (err.code === 1) toast.success('If location permission is not granted, the system will not be able to provide rainfall information', {
@@ -161,4 +162,6 @@ export const requestLocation = async () => {
             })
         }
     )
+
+    return result
 }

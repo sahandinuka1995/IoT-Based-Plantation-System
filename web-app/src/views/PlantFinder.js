@@ -42,8 +42,11 @@ const PlantFinder = () => {
     }
 
     const requireLocation = async () => {
-        const res = await requestLocation()
-        if (res) setLocation(res)
+        requestLocation().then(res => {
+            console.log(res)
+        })
+
+        // if (res) setLocation(res)
     }
 
     useEffect(async () => {

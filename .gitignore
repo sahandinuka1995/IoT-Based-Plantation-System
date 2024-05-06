@@ -47,3 +47,6 @@ nodejs-backend/config/keys.js
 
 nodejs-backend/logs
 /nodejs-backend/logs
+
+nodejs-backend/.env
+/nodejs-backend/.env

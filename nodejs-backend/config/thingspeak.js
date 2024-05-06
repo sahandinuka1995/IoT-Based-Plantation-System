@@ -3,6 +3,4 @@ const thingspeak = {
     channelId: '2483610'
 }
 
-module.exports = {
-    thingspeak
-}
+module.exports = {thingspeak}

@@ -1,5 +1,5 @@
-const PROD = window.location.host === 'https://iot-based-plantation-system-2evs.onrender.com'
-console.log(window.location.host, PROD)
+const PROD = window.location.host === 'iot-based-plantation-system-2evs.onrender.com'
+
 const SERVER_URL = PROD ? 'https://iot-based-plantation-system-nodejs.onrender.com' : 'http://localhost:4000'
 const VERSION = "/api/v1"
 

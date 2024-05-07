@@ -51,3 +51,10 @@ jobs:
       run: |
         echo "Perform additional steps"
 
+    - name: Install dependencies
+      working-directory: ./nodejs-backend # Correct path to your Node.js project
+      run: npm install
+
+    - name: Test with Jest
+      working-directory: ./nodejs-backend
+      run: npm test

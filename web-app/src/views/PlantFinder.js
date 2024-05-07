@@ -50,20 +50,21 @@ const PlantFinder = () => {
     }
 
     useEffect(async () => {
+        await loadData()
         requireLocation()
     }, [])
 
-    // useEffect(async () => {
-    //     if (counter > 0) {
-    //         const timer = setTimeout(() => setCounter(counter - 1), 1000)
-    //         return () => clearTimeout(timer)
-    //     } else {
-    //         await loadData()
-    //         setTimeout(() => {
-    //             setCounter(5)
-    //         }, 2000)
-    //     }
-    // }, [counter])
+    useEffect(async () => {
+        if (counter > 0) {
+            const timer = setTimeout(() => setCounter(counter - 1), 1000)
+            return () => clearTimeout(timer)
+        } else {
+            await loadData()
+            setTimeout(() => {
+                setCounter(5)
+            }, 2000)
+        }
+    }, [counter])
 
     const onPredict = async () => {
         const res = await getPrediction(location)
@@ -99,49 +100,49 @@ const PlantFinder = () => {
     }
 
     return (<>
-        {/*<Row className={'justify-content-between'}>*/}
-        {/*    <Col md={2} lg={1}>*/}
-        {/*        <Card className={'p-1'}>*/}
-        {/*            <Label><b>N:</b> {sensorData?.n ?? 0}</Label>*/}
-        {/*        </Card>*/}
-        {/*    </Col>*/}
+        <Row className={'justify-content-between'}>
+            <Col md={2} lg={1}>
+                <Card className={'p-1'}>
+                    <Label><b>N:</b> {sensorData?._n ?? 0}</Label>
+                </Card>
+            </Col>
 
-        {/*    <Col md={2} lg={1}>*/}
-        {/*        <Card className={'p-1'}>*/}
-        {/*            <Label><b>P:</b> {sensorData?.p ?? 0}</Label>*/}
-        {/*        </Card>*/}
-        {/*    </Col>*/}
+            <Col md={2} lg={1}>
+                <Card className={'p-1'}>
+                    <Label><b>P:</b> {sensorData?._p ?? 0}</Label>
+                </Card>
+            </Col>
 
-        {/*    <Col md={2} lg={1}>*/}
-        {/*        <Card className={'p-1'}>*/}
-        {/*            <Label><b>K:</b> {sensorData?.k ?? 0}</Label>*/}
-        {/*        </Card>*/}
-        {/*    </Col>*/}
+            <Col md={2} lg={1}>
+                <Card className={'p-1'}>
+                    <Label><b>K:</b> {sensorData?._k ?? 0}</Label>
+                </Card>
+            </Col>
 
-        {/*    <Col md={6} lg={2}>*/}
-        {/*        <Card className={'p-1'}>*/}
-        {/*            <Label><b>Temperature:</b> {sensorData?.temperature ?? 0}</Label>*/}
-        {/*        </Card>*/}
-        {/*    </Col>*/}
+            <Col md={6} lg={2}>
+                <Card className={'p-1'}>
+                    <Label><b>Temperature:</b> {sensorData?._temperature ?? 0}</Label>
+                </Card>
+            </Col>
 
-        {/*    <Col md={4} lg={2}>*/}
-        {/*        <Card className={'p-1'}>*/}
-        {/*            <Label><b>Humidity:</b> {sensorData?.humidity ?? 0}</Label>*/}
-        {/*        </Card>*/}
-        {/*    </Col>*/}
+            <Col md={4} lg={2}>
+                <Card className={'p-1'}>
+                    <Label><b>Humidity:</b> {sensorData?._humidity ?? 0}</Label>
+                </Card>
+            </Col>
 
-        {/*    <Col md={4} lg={2}>*/}
-        {/*        <Card className={'p-1'}>*/}
-        {/*            <Label><b>Rainfall:</b> {sensorData?.rainfall ?? 0}</Label>*/}
-        {/*        </Card>*/}
-        {/*    </Col>*/}
+            <Col md={4} lg={2}>
+                <Card className={'p-1'}>
+                    <Label><b>Rainfall:</b> {sensorData?._rainfall ?? 0}</Label>
+                </Card>
+            </Col>
 
-        {/*    <Col md={4} lg={2}>*/}
-        {/*        <Card className={'p-1'}>*/}
-        {/*            <Label><b>Ph:</b> {sensorData?.ph ?? 0}</Label>*/}
-        {/*        </Card>*/}
-        {/*    </Col>*/}
-        {/*</Row>*/}
+            <Col md={4} lg={2}>
+                <Card className={'p-1'}>
+                    <Label><b>Ph:</b> {sensorData?._ph ?? 0}</Label>
+                </Card>
+            </Col>
+        </Row>
 
         <Card>
             <CardHeader className={'border-bottom'}>

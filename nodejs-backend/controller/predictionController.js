@@ -6,6 +6,8 @@ const {ParseFloat} = require("../utils/commonFunc");
 const cheerio = require("cheerio");
 const {EnvData} = require("../modal/envData")
 
+const PROD = process.env.SERVER_HOST.trim() === 'PROD'
+
 const getPrediction = async (req, resp) => {
     try {
         const envModal = new EnvData();
@@ -47,12 +49,12 @@ const getPrediction = async (req, resp) => {
         const config = {
             data: request_data,
             method: 'post',
-            url: 'https://iot-based-plantation-system.onrender.com/prediction',
+            url: `${PROD ? process.env.ML_HOST.trim() : 'http://localhost:5000'}/prediction`,
             headers: {
                 'Content-Type': 'application/json'
             }
         }
-
+        console.log(config)
         let res = null
         await axios.request(config)
             .then(async (response) => {

@@ -5,6 +5,7 @@ import requests
 
 app = Flask(__name__)
 
+
 def load_modal():
     # model_url = 'https://raw.githubusercontent.com/sahandinuka1995/iot-plantation-modal/old/model.pkl'
     model_url = 'https://firebasestorage.googleapis.com/v0/b/fir-demo-97ede.appspot.com/o/model-old.pkl?alt=media&token=e27def5a-565a-4ceb-a628-112d6a63027c'
@@ -35,7 +36,7 @@ def prediction():
             'ph': [data['ph']],
             'rainfall': [data['rainfall']]
         }
-
+        print(new_data)
         new_data_df = pd.DataFrame(new_data)
         predicted_label = loaded_model.predict(new_data_df)
         return jsonify({

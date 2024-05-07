@@ -4,10 +4,10 @@ const {BASE_PATH} = require("../../const/const");
 const {closeDB, db} = require("../../service/db");
 
 describe('User API Tests', () => {
-    // beforeAll(async () => {
-    //     await db()
-    // });
-    //
+    beforeAll(async () => {
+        await db()
+    });
+
     // let userId = 0
 
     // describe('POST /create', () => {
@@ -49,15 +49,15 @@ describe('User API Tests', () => {
     //     });
     // });
     //
-    // describe('GET /get-all', () => {
-    //     it('should retrieve all users', async () => {
-    //         const response = await request(app)
-    //             .get(`${BASE_PATH}/user/get-all`);
-    //
-    //         expect(response.statusCode).toBe(200);
-    //         expect(Array.isArray(response.body.data)).toBe(true);
-    //     });
-    // });
+    describe('GET /get-all', () => {
+        it('should retrieve all users', async () => {
+            const response = await request(app)
+                .get(`${BASE_PATH}/user/get-all`);
+
+            expect(response.statusCode).toBe(200);
+            expect(Array.isArray(response.body.data)).toBe(true);
+        });
+    });
     //
     // describe('DELETE /delete/:id', () => {
     //     it('should delete an existing user', async () => {
@@ -69,8 +69,8 @@ describe('User API Tests', () => {
     //     });
     // });
     //
-    // afterAll(async () => {
-    //     await server.close();
-    //     await closeDB();
-    // }, 30000);
+    afterAll(async () => {
+        await server.close();
+        await closeDB();
+    }, 30000);
 });

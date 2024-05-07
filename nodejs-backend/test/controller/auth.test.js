@@ -2,7 +2,6 @@ const {app, server} = require('../../index');
 const request = require('supertest');
 const jwt = require('jsonwebtoken');
 const {db, closeDB} = require('../../service/db');
-const {JWT_SECRET_KEY} = require('../../config/keys');
 const {BASE_PATH} = require("../../const/const");
 
 jest.mock('../../service/db', () => ({
@@ -29,7 +28,7 @@ describe('Auth Controller - Login', () => {
 
             expect(response.statusCode).toBe(200);
             expect(response.body.data).toHaveProperty('access_token');
-            expect(jwt.verify(response.body.data.access_token, JWT_SECRET_KEY)).toBeTruthy();
+            expect(jwt.verify(response.body.data.access_token, process.env.JWT_SECRET_KEY.trim())).toBeTruthy();
         });
     })
 

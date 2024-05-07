@@ -1,14 +1,9 @@
-name: Node.js CI
+name: MySQL Setup in GitHub Actions
 
-on:
-  push:
-    branches: [ "production" ]
-  pull_request:
-    branches: [ "production" ]
+on: [push, pull_request]
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
 
     services:
@@ -25,12 +20,33 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
-          
+
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up MySQL 8.0
+    - name: Check out repository
+      uses: actions/checkout@v2
+
+    - name: Set up JDK 11 # This is just an example, use whatever setup your project requires
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+
     - name: Wait for MySQL
       run: |
         while ! mysqladmin ping -h"127.0.0.1" --silent; do
           sleep 1
         done
+
+    - name: Run tests
+      run: |
+        # Insert your build and test commands here
+        # For example, a Java project might use Maven or Gradle:
+        # mvn clean install
+        # or
+        # gradle test
+        echo "Run your test commands that require MySQL here"
+        
+    - name: Additional commands if needed
+      run: |
+        echo "Perform additional steps"
+

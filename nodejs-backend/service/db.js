@@ -26,7 +26,7 @@ const closeDB = async () => {
     if (!conn) return;
 
     try {
-        await conn.end();
+        await conn.release();
         console.log('DB connection closed');
     } catch (error) {
         console.error('Error closing the DB connection:', error);

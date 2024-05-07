@@ -1,9 +1,13 @@
 const request = require('supertest');
 const {app, server} = require('../../index');
 const {BASE_PATH} = require("../../const/const");
-const {closeDB} = require("../../service/db");
+const {closeDB, db} = require("../../service/db");
 
 describe('User API Tests', () => {
+    beforeAll(async () => {
+        await db()
+    });
+
     let userId = 0
 
     describe('POST /create', () => {

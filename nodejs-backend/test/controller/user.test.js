@@ -8,28 +8,28 @@ describe('User API Tests', () => {
         await db()
     });
 
-    // let userId = 0
+    let userId = 0
 
-    // describe('POST /create', () => {
-    //     it('should create a new user', async () => {
-    //         const userData = {
-    //             name: 'John Doe',
-    //             role: 'ADMIN',
-    //             username: 'johndoe',
-    //             password: 'password123'
-    //         };
-    //
-    //         const response = await request(app)
-    //             .post(`${BASE_PATH}/user/create`)
-    //             .send(userData);
-    //
-    //         // assign created user id for other api uses
-    //         userId = response.body.data.insertId
-    //
-    //         expect(response.statusCode).toBe(200);
-    //         expect(response.body.message).toBe('Operation Successfully');
-    //     });
-    // });
+    describe('POST /create', () => {
+        it('should create a new user', async () => {
+            const userData = {
+                name: 'John Doe',
+                role: 'ADMIN',
+                username: 'johndoe',
+                password: 'password123'
+            };
+
+            const response = await request(app)
+                .post(`${BASE_PATH}/user/create`)
+                .send(userData);
+
+            // assign created user id for other api uses
+            userId = response.body.data.insertId
+
+            expect(response.statusCode).toBe(200);
+            expect(response.body.message).toBe('Operation Successfully');
+        });
+    });
     //
     // describe('PUT /update/:id', () => {
     //     it('should update an existing user', async () => {

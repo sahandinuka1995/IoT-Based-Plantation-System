@@ -11,16 +11,30 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: rootpassword
+          MYSQL_DATABASE: testdb
+        ports:
+          - 3306:3306
+        # Optional: Used to wait for the service to be ready before proceeding.
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+          
     steps:
     - uses: actions/checkout@v3
     - name: Set up MySQL 8.0
-      uses: mirromutth/mysql-action@v1.1
-      with:
-        mysql version: '8.0'
-        mysql database: 'iot_plantation'
-        mysql root password: 'root'
-        mysql user: 'root'
-        mysql password: 'root'
+    - name: Wait for MySQL
+      run: |
+        while ! mysqladmin ping -h"127.0.0.1" --silent; do
+          sleep 1
+        done
+        
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:

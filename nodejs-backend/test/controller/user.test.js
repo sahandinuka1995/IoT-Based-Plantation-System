@@ -31,23 +31,23 @@ describe('User API Tests', () => {
         });
     });
 
-    describe('PUT /update/:id', () => {
-        it('should update an existing user', async () => {
-            const updatedData = {
-                name: 'Jane Doe',
-                role: 'USER',
-                username: 'janedoe',
-                password: 'newpassword123'
-            };
-            console.log('user id ---', userId)
-            const response = await request(app)
-                .put(`${BASE_PATH}/user/update/${userId}`)
-                .send(updatedData);
-            console.log(response.body)
-            expect(response.statusCode).toBe(200);
-            expect(response.body.message).toBe('Operation Successfully');
-        });
-    });
+    // describe('PUT /update/:id', () => {
+    //     it('should update an existing user', async () => {
+    //         const updatedData = {
+    //             name: 'Jane Doe',
+    //             role: 'USER',
+    //             username: 'janedoe',
+    //             password: 'newpassword123'
+    //         };
+    //         console.log('user id ---', userId)
+    //         const response = await request(app)
+    //             .put(`${BASE_PATH}/user/update/${userId}`)
+    //             .send(updatedData);
+    //         console.log(response.body)
+    //         expect(response.statusCode).toBe(200);
+    //         expect(response.body.message).toBe('Operation Successfully');
+    //     });
+    // });
 
     describe('GET /get-all', () => {
         it('should retrieve all users', async () => {

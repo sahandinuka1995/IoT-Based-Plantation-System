@@ -19,10 +19,6 @@ const db = async () => {
     } catch (error) {
         console.error('DB connection error:', error);
         throw error;
-    } finally {
-        if (conn) {
-            await conn.release();
-        }
     }
 }
 

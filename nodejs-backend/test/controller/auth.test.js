@@ -17,6 +17,9 @@ jest.mock('../../service/db', () => ({
 }));
 
 describe('Auth Controller - Login', () => {
+    beforeAll(async () => {
+        await db()
+    });
 
     describe('Login with correct details', () => {
         it('should return a 200 status and JWT token for valid credentials', async () => {

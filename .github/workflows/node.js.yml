@@ -24,18 +24,19 @@ jobs:
     steps:
     - name: Check out repository
       uses: actions/checkout@v2
-
-    - name: Set up JDK 11 # This is just an example, use whatever setup your project requires
-      uses: actions/setup-java@v2
-      with:
-        java-version: '11'
-        distribution: 'adopt'
-
+      
     - name: Wait for MySQL
       run: |
         while ! mysqladmin ping -h"127.0.0.1" --silent; do
           sleep 1
         done
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: nodejs-backend/package-lock.json # Ensure this points to your lock file
 
     - name: Run tests
       run: |

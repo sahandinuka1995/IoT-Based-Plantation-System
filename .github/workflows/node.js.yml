@@ -14,7 +14,6 @@ jobs:
           MYSQL_DATABASE: iot_plantation
         ports:
           - 3306:3306
-        # Optional: Used to wait for the service to be ready before proceeding.
         options: >-
           --health-cmd="mysqladmin ping"
           --health-interval=10s
@@ -36,10 +35,10 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-        cache-dependency-path: nodejs-backend/package-lock.json # Ensure this points to your lock file
+        cache-dependency-path: nodejs-backend/package-lock.json
 
     - name: Install dependencies
-      working-directory: ./nodejs-backend # Correct path to your Node.js project
+      working-directory: ./nodejs-backend
       run: npm install
 
     - name: Test with Jest

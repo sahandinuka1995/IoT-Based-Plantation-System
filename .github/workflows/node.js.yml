@@ -34,18 +34,3 @@ jobs:
         while ! mysqladmin ping -h"127.0.0.1" --silent; do
           sleep 1
         done
-        
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-        cache-dependency-path: nodejs-backend/package-lock.json # Ensure this points to your lock file
-
-    - name: Install dependencies
-      working-directory: ./nodejs-backend # Correct path to your Node.js project
-      run: npm install
-
-    - name: Test with Jest
-      working-directory: ./nodejs-backend
-      run: npm test

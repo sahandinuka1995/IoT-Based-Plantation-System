@@ -1,32 +1,55 @@
-name: Node.js CI
+name: MySQL Setup in GitHub Actions
 
-on:
-  push:
-    branches: [ "production" ]
-  pull_request:
-    branches: [ "production" ]
+on: [push, pull_request]
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: iot_plantation
+        ports:
+          - 3306:3306
+        # Optional: Used to wait for the service to be ready before proceeding.
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up MySQL 8.0
-      uses: mirromutth/mysql-action@v1.1
-      with:
-        mysql version: '8.0'
-        mysql database: 'iot_plantation'
-        mysql root password: '$apiit@123'
-        mysql user: 'root'
-        mysql password: '$apiit@123'
+    - name: Check out repository
+      uses: actions/checkout@v2
+      
+    - name: Wait for MySQL
+      run: |
+        while ! mysqladmin ping -h"127.0.0.1" --silent; do
+          sleep 1
+        done
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: nodejs-backend/package-lock.json # Ensure this points to your lock file
+
+    - name: Run tests
+      run: |
+        # Insert your build and test commands here
+        # For example, a Java project might use Maven or Gradle:
+        # mvn clean install
+        # or
+        # gradle test
+        echo "Run your test commands that require MySQL here"
+        
+    - name: Additional commands if needed
+      run: |
+        echo "Perform additional steps"
 
     - name: Install dependencies
       working-directory: ./nodejs-backend # Correct path to your Node.js project

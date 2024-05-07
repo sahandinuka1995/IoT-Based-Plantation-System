@@ -44,9 +44,10 @@ def prediction():
             "data": predicted_label[0],
             "message": 'Operation Successful'
         })
-    except:
+
+    except Exception as e:
         return jsonify({
             "status": 400,
             "data": "",
-            "message": 'Something went wrong'
-        })
+            "message": 'Something went wrong: ' + str(e)
+        }), 400

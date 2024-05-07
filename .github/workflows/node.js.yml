@@ -38,19 +38,6 @@ jobs:
         cache: 'npm'
         cache-dependency-path: nodejs-backend/package-lock.json # Ensure this points to your lock file
 
-    - name: Run tests
-      run: |
-        # Insert your build and test commands here
-        # For example, a Java project might use Maven or Gradle:
-        # mvn clean install
-        # or
-        # gradle test
-        echo "Run your test commands that require MySQL here"
-        
-    - name: Additional commands if needed
-      run: |
-        echo "Perform additional steps"
-
     - name: Install dependencies
       working-directory: ./nodejs-backend # Correct path to your Node.js project
       run: npm install
@@ -58,3 +45,17 @@ jobs:
     - name: Test with Jest
       working-directory: ./nodejs-backend
       run: npm test
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flask pytest pytest-flask
+
+    - name: Run tests
+      run: |
+        pytest

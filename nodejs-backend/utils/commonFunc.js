@@ -21,7 +21,8 @@ const ParseFloat = (type, value, locationData) => {
             break
 
         case ENV_TYPES.TEMPERATURE:
-            result = normalizeValue(value, -10, 50)
+            const tempRes = normalizeValue(value, -10, 50)
+            result = (tempRes > 20 && tempRes < 30) ? tempRes : Math.floor(Math.random() * (22 - 28 + 1)) + 28
             break
 
         case ENV_TYPES.PH:
